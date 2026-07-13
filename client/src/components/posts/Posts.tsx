@@ -7,6 +7,7 @@ import {useSettingsStore} from "../../store/settingsStore.ts";
 
 import { Pagination } from 'antd';
 import styles from './Posts.module.css'
+import clsx from 'clsx';
 import {FavouriteCircle, Search, ImageDownload2, Delete3} from "clicons-react";
 
 const PAGE_SIZE = 30; // постів на одну стоірнку
@@ -104,12 +105,40 @@ const Posts = () => {
             <div className={styles.searchInputView}><p><Search/> {params.tags}</p></div>
           </div>
 
+          {settings.paginationOnTop ? (
+            <Pagination
+              className={clsx(
+                styles.pagination,
+                {
+                  [styles.pagLeft]: settings.paginationPos === 'left',
+                  [styles.pagCenter]: settings.paginationPos === 'center',
+                  [styles.pagRight]: settings.paginationPos === 'right',
+                }
+              )}
+              align="center"
+              current={page}
+              pageSize={PAGE_SIZE}
+              total={estimatedTotal}
+              onChange={handlePageChange}
+              showSizeChanger={false}
+              disabled={loading}
+            />
+          ) : null}
+
+
           <div className={styles.posts}>
             {currentPagePosts.map(post => <PostItem key={post.id} post={post} />)}
           </div>
 
           <Pagination
-            className={styles.pagination}
+            className={clsx(
+              styles.pagination,
+              {
+                [styles.pagLeft]: settings.paginationPos === 'left',
+                [styles.pagCenter]: settings.paginationPos === 'center',
+                [styles.pagRight]: settings.paginationPos === 'right',
+              }
+            )}
             align="center"
             current={page}
             pageSize={PAGE_SIZE}
@@ -139,7 +168,7 @@ const Posts = () => {
           </ul>
           <p>[ІНФО]: Проект поки слабо оптимізований під мобільні пристрої. Поки немає влаштованого переглядача контенту, натомість, працює окрема вкладка (що не дуже зручно на деяких мобільних браузерах). Але я постійно працюю над вдосконаленнями, тому це не на довго.</p>
           <p>Робота над проектом триває, а кожне оновлення робить його ще кращим. Дякую за інтерес до нього!</p>
-          <p className={styles.version}>v1.0</p>
+          <p className={styles.version}>v{__APP_VERSION__}</p>
         </div>
       )}
     </div>

@@ -5,7 +5,8 @@ interface Settings {
   theme: 'dark' | 'light' | 'original';
   kittyMode: boolean;
 
-  paginationPos: 'center' | 'right';
+  paginationOnTop: boolean;
+  paginationPos: 'left' | 'center' | 'right';
 }
 
 interface SettingsState {
@@ -17,6 +18,7 @@ const defaultSettings: Settings = {
   theme: "dark",
   kittyMode: false,
 
+  paginationOnTop: false,
   paginationPos: 'center',
 }
 

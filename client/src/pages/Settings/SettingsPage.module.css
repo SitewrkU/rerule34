@@ -20,9 +20,23 @@
   flex-direction: column;
   gap: 20px;
 
-  section{
+  .settingsSection{
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
+    padding: 20px;
+    border-radius: 15px;
+
+    h2{
+      border: 1px solid rgb(255 255 255 / 0.2);
+      padding: 6px;
+      border-radius: 10px;
+    }
+
+    > div{
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
   }
 }

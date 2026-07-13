@@ -1,5 +1,6 @@
 import {Switch} from "antd";
 import {useSettingsStore} from "../../../../store/settingsStore.ts";
+import '../defaultSettingsComponents.css'
 import styles from './Switcher.module.css'
 
 type BooleanKeys<T> = {
@@ -29,7 +30,7 @@ const SettingSwitch = ({ settingKey, label, text, disabled }: SettingSwitchProps
 
   return (
     <div className={styles.switcher}>
-      <div className={styles.info}>
+      <div className="info">
         <p>{label}</p>
         <p>{text}</p>
       </div>

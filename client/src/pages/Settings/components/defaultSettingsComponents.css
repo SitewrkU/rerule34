@@ -1,0 +1,14 @@
+.info{
+  display: flex;
+  flex-direction: column;
+  max-width: 300px;
+  margin-right: auto;
+
+
+  p:first-child{
+    font-size: 1.3em;
+  }
+  p:last-child{
+    opacity: 0.8;
+  }
+}

@@ -2,6 +2,7 @@ import type {ReactNode} from "react";
 import { Radio } from "antd";
 import type { RadioChangeEvent } from "antd";
 import { useSettingsStore } from "../../../../store/settingsStore.ts";
+import '../defaultSettingsComponents.css'
 import styles from './Radio.module.css'
 
 type SettingsState = ReturnType<typeof useSettingsStore.getState>['settings'];
@@ -49,7 +50,7 @@ const SettingRadioGroup = <K extends keyof SettingsState>({
 
   return (
     <div className={styles.radio}>
-      <div className={styles.info}>
+      <div className="info">
         <p>{label}</p>
         <p>{text}</p>
       </div>

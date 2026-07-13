@@ -4,7 +4,6 @@ import SettingRadioGroup from "./components/SettingsRadioGroup/Radio.tsx";
 
 import {ChevronLeft} from "clicons-react";
 import styles from './SettingsPage.module.css'
-import clsx from "clsx";
 
 const SettingsPage = () => {
   const navigate = useNavigate();
@@ -18,19 +17,44 @@ const SettingsPage = () => {
       />
 
       <h1>Налаштування</h1>
+
       <div className={styles.sectionList}>
-      <section>
-        <SettingRadioGroup
-          settingKey="theme"
-          label="Тема оформлення" text="Які кольори тобі більше подобаються?"
-          options={[
-            {label: 'Темня', value: 'dark'},
-            {label: 'Світла', value: 'light'},
-            {label: 'Оригінальна', value: 'original'},
-          ]}
-        />
-        <SettingSwitch settingKey="kittyMode" label="Kitty Mode" text="Ти прийшов сюди не за тим, що і всі.. Котики!"/>
-      </section>
+        <section className={styles.settingsSection}>
+          <h2>Основне</h2>
+          <div>
+          <SettingRadioGroup
+            settingKey="theme"
+            label="Тема оформлення" text="Які кольори тобі більше подобаються? (В РОЗРОБЦІ)"
+            options={[
+              {label: 'Темня', value: 'dark'},
+              {label: 'Світла', value: 'light'},
+              {label: 'Оригінальна', value: 'original'},
+            ]}
+          />
+          </div>
+        </section>
+        <section className={styles.settingsSection}>
+          <h2>Стилі</h2>
+          <div>
+            <SettingSwitch settingKey="paginationOnTop" label="Верхня пагінація" text="Щоб не гортати вниз"/>
+            <SettingRadioGroup
+              settingKey="paginationPos"
+              label="Сторона відображення пагінації"
+              options={[
+                {label: 'Ліво', value: 'left'},
+                {label: 'Центр', value: 'center'},
+                {label: 'Право', value: 'right'},
+              ]}
+            />
+          </div>
+        </section>
+        <section className={styles.settingsSection}>
+          <h2>Додаткові</h2>
+          <div>
+          <SettingSwitch settingKey="kittyMode" label="Kitty Mode" text="Ти прийшов сюди не за тим, що і всі.. Котики!"/>
+          </div>
+        </section>
+
       </div>
     </div>
   );

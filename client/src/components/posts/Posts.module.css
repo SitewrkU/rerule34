@@ -109,4 +109,16 @@
 
 .pagination{
   margin: 20px 0;
+
+  &.pagLeft{
+    justify-content: start;
+    margin-left: 10px;
+  }
+  &.pagCenter{
+    justify-content: center;
+  }
+  &.pagRight{
+    justify-content: end;
+    margin-right: 10px;
+  }
 }
