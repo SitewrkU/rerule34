@@ -1,0 +1,14 @@
+.searchbar{
+  width: 100%;
+
+  button{
+    padding: 0;
+    color: black;
+    &:hover{
+      svg{
+        fill: black;
+      }
+
+    }
+  }
+}

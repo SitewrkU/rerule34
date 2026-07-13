@@ -1,0 +1,39 @@
+header{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 10px;
+  svg{
+    width: 48px;
+  }
+  img{
+    width: 86px;
+    image-rendering: pixelated;
+    cursor: pointer;
+    transition: .7s ease-in-out all;
+    user-select: none;
+    &:hover{
+      transform: scale(1.1) rotate(10deg);
+    }
+    &:active{
+      transform: scale(0.95) rotate(0deg);
+    }
+  }
+
+  .navButton{
+    cursor: pointer;
+    transition: .25s ease-in-out all;
+    &:hover{
+      scale: 1.15;
+    }
+
+    &.notAvaible{
+      color: grey;
+      cursor: not-allowed;
+      transition: none;
+      &:hover{
+        scale: 1;
+      }
+    }
+  }
+}

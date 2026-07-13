@@ -1,0 +1,28 @@
+.back{
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  cursor: pointer;
+}
+
+.settings{
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: var(--main-white);
+}
+
+.sectionList{
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  section{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+}

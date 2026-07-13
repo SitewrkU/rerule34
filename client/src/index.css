@@ -1,0 +1,37 @@
+:root {
+  --background: #101210;
+  --background-secondary: #1b1e1b;
+  --main-color: #aae5a4;
+  --main-white: #d8e1d8;
+  --link-color: #c6ceff;
+  --link-color-visited: #8288aa;
+}
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family:"SN Pro", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  margin: 0;
+  background: var(--background);
+  color: var(--main-color);
+  line-height: 1.5em;
+}
+
+svg{
+  vertical-align: -6px;
+}
+
+a{
+  color: var(--link-color);
+  text-decoration: none;
+
+  &:visited{
+    color: var(--link-color-visited);
+  }
+}

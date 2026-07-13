@@ -1,0 +1,91 @@
+.post{
+  position: relative;
+  a{
+    position: relative;
+    color: inherit;
+
+
+
+    img{
+      border-radius: 5px;
+      width: 156px;
+      height: 156px;
+      object-fit: cover;
+
+      &.kittyMode{
+        filter: grayscale(1) blur(8px) brightness(50%);
+      }
+    }
+    .duration{
+      position: absolute;
+      bottom: 10px;
+      right: 5px;
+      padding: 2px 5px;
+      border-radius: 5px;
+      background-color: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(4px);
+      color: #7e8bc6;
+
+      svg{
+        width: 16px;
+      }
+    }
+  }
+}
+
+.imgWrapper{
+  overflow: hidden;
+  border-radius: 5px;
+
+  &:has(img.kittyMode)::after {
+    content: '>⩊<';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(25deg);
+    color: var(--main-white);
+    font-weight: bold;
+    font-size: 3rem;
+  }
+}
+
+.postStats{
+  max-width: inherit;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background-secondary);
+  padding: 10px 5px 5px;
+  top: -10px;
+  z-index: -1;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  .postScores{
+    display: flex;
+    gap: 10px;
+    color: var(--main-white);
+  }
+  .postDate{
+    display: flex;
+    justify-content: end;
+    font-size: 0.9em;
+    color: grey;
+  }
+}
+
+.isVideo{
+  border: 1px solid rgb(135 183 223 / 0.8);
+}
+
+@media (min-width: 768px) {
+  .post {
+    a {
+      img {
+        width: 256px;
+        height: 256px;
+      }
+    }
+  }
+
+
+}

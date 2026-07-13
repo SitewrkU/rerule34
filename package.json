@@ -1,0 +1,5 @@
+{
+  "name": "rerule34",
+  "private": true,
+  "workspaces": ["packages/*", "server", "client"]
+}
