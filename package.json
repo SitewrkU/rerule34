@@ -1,6 +1,10 @@
 {
   "name": "rerule34",
   "private": true,
-  "version": "1.0.0",
-  "workspaces": ["packages/*", "server", "client"]
+  "version": "1.0.1",
+  "workspaces": [
+    "packages/*",
+    "server",
+    "client"
+  ]
 }
