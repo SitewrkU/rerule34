@@ -1,9 +1,9 @@
 import type {Post} from "@rerule34/shared/types/post.ts";
 import {useCallback, useEffect, useState} from "react";
-import {getPosts} from "../../utils/api.ts";
+import {getPosts} from "../../../../utils/api.ts";
 import {PostItem} from "../postItem/PostItem.tsx";
-import {useSearchStore} from "../../store/searchStore.ts";
-import {useSettingsStore} from "../../store/settingsStore.ts";
+import {useSearchStore} from "../../../../store/searchStore.ts";
+import {useSettingsStore} from "../../../../store/settingsStore.ts";
 
 import { Pagination } from 'antd';
 import styles from './Posts.module.css'

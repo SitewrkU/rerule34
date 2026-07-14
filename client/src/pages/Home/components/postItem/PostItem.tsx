@@ -1,7 +1,7 @@
 import type { Post } from "@rerule34/shared/types/post.ts";
 import { ChevronUp, PlayCircle2, Comment } from "clicons-react";
-import { usePostDuration } from "../../utils/usePostDuration";
-import {useSettingsStore} from "../../store/settingsStore.ts";
+import { usePostDuration } from "../../../../utils/usePostDuration.ts";
+import {useSettingsStore} from "../../../../store/settingsStore.ts";
 import clsx from "clsx";
 import styles from './PostItem.module.css';
 

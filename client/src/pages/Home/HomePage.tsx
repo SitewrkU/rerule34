@@ -1,7 +1,7 @@
 import {useSearchStore} from "../../store/searchStore.ts";
 import { useNavigate } from 'react-router-dom';
 import Searchbar from "../../ui/searchbar/Searchbar.tsx";
-import Posts from "../../components/posts/Posts.tsx";
+import Posts from "./components/posts/Posts.tsx";
 
 import { CollectionsBookmark, Settings } from "clicons-react";
 import styles from './HomePage.module.css'
