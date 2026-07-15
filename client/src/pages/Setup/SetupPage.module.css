@@ -1,0 +1,24 @@
+.setupPage{
+  margin: 0 auto;
+  max-width: 800px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.steps{
+  margin: 20px 0 40px;
+}
+
+.buttons{
+  margin: 20px 10px;
+  display: flex;
+  justify-content: space-between;
+
+  .primaryButton{
+    color: #1b1b1b;
+    &:hover{
+      color: black !important;
+    }
+  }
+}

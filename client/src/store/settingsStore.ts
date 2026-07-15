@@ -29,6 +29,6 @@ export const useSettingsStore = create<SettingsState>()(
       updateSettings: (patch) =>
         set((state) => ({ settings: { ...state.settings, ...patch } })),
     }),
-    { name: 'app-settings' }
+    { name: 'settings-storage' }
   )
 );

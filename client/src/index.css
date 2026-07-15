@@ -1,8 +1,10 @@
 :root {
   --background: #101210;
   --background-secondary: #1b1e1b;
+  --border-main: #252725;
   --main-color: #aae5a4;
   --main-white: #d8e1d8;
+  --main-dark: #1a1a1a;
   --link-color: #c6ceff;
   --link-color-visited: #8288aa;
 }

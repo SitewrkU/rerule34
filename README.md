@@ -18,7 +18,7 @@ So, once you've downloaded all the tools, run these commands:
 
 1. Clone this repo:
 ```bash
-git clone https://THISREPO.git
+git clone https://github.com/SitewrkU/rerule34.git
 cd rerule34
 ```
 
