@@ -3,3 +3,22 @@
   align-items: center;
   gap: 10px;
 }
+
+.bigSwitch.bigSwitch {
+  min-width: 60px;
+  height: 32px;
+  line-height: 32px;
+}
+
+.bigSwitch.bigSwitch :global(.ant-switch-handle) {
+  width: 28px;
+  height: 28px;
+}
+
+.bigSwitch.bigSwitch :global(.ant-switch-handle::before) {
+  border-radius: 14px;
+}
+
+.bigSwitch.bigSwitch:global(.ant-switch-checked) :global(.ant-switch-handle) {
+  inset-inline-start: calc(100% - 30px);
+}

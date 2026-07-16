@@ -26,17 +26,37 @@
     gap: 20px;
     padding: 20px;
     border-radius: 15px;
+    border: 2px solid var(--border-main);
+    background-color: var(--background-secondary);
 
     h2{
-      border: 1px solid rgb(255 255 255 / 0.2);
-      padding: 6px;
-      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 4px;
+
+      svg{
+        width: 32px;
+        height: 32px;
+        padding: 6px;
+        vertical-align: top;
+        border-radius: 6px;
+        background: color-mix(in srgb, var(--main-color) 15%, transparent);
+        color: var(--main-color);
+      }
     }
+
 
     > div{
       display: flex;
       flex-direction: column;
       gap: 20px;
     }
+  }
+}
+
+@media (max-width: 768px) {
+  .settings{
+    padding: 30px 5px 20px;
   }
 }

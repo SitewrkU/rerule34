@@ -20,6 +20,7 @@ const SettingSwitch = ({ settingKey, label, text, disabled }: SettingSwitchProps
 
   const switchEl = (
     <Switch
+      className={styles.bigSwitch}
       checked={value}
       disabled={disabled}
       onChange={(checked) => updateSettings({ [settingKey]: checked } as any)}

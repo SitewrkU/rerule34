@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import SettingSwitch from "./components/SettingsSwitcher/Switcher.tsx";
 import SettingRadioGroup from "./components/SettingsRadioGroup/Radio.tsx";
 
-import {ChevronLeft} from "clicons-react";
+import {ChevronLeft, Home3, Brush, Customize} from "clicons-react";
 import styles from './SettingsPage.module.css'
 
 const SettingsPage = () => {
@@ -17,10 +17,13 @@ const SettingsPage = () => {
       />
 
       <h1>Налаштування</h1>
+      <p>Керуй виглядом та поведінкою додатка під себе</p>
 
       <div className={styles.sectionList}>
         <section className={styles.settingsSection}>
-          <h2>Основне</h2>
+
+          <h2><Home3/> Основне</h2>
+
           <div>
           <SettingRadioGroup
             settingKey="theme"
@@ -34,7 +37,7 @@ const SettingsPage = () => {
           </div>
         </section>
         <section className={styles.settingsSection}>
-          <h2>Стилі</h2>
+          <h2><Brush/> Стилі</h2>
           <div>
             <SettingSwitch settingKey="paginationOnTop" label="Верхня пагінація" text="Щоб не гортати вниз"/>
             <SettingRadioGroup
@@ -49,7 +52,7 @@ const SettingsPage = () => {
           </div>
         </section>
         <section className={styles.settingsSection}>
-          <h2>Додаткові</h2>
+          <h2><Customize/> Незвичайні</h2>
           <div>
           <SettingSwitch settingKey="kittyMode" label="Kitty Mode" text="Ти прийшов сюди не за тим, що і всі.. Котики!"/>
           </div>

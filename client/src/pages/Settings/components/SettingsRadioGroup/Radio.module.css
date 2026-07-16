@@ -1,5 +1,39 @@
 .radio{
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 10px;
+}
+
+.radioGroup{
+  display: flex;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow-x: auto;
+  > label{
+    padding: 8px 16px;
+    height: auto;
+    background-color: var(--background-tertiary);
+    flex-shrink: 0;
+  }
+}
+
+.radioGroup :global(.ant-radio-button-wrapper-checked) {
+  background-color: transparent !important;
+}
+
+.radioGroup :global(.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled))::before {
+  background-color: transparent !important;
+}
+
+@media (max-width: 768px) {
+  .radio {
+    gap: 6px;
+  }
+
+  .radioGroup {
+    margin-top: 10px;
+  }
 }

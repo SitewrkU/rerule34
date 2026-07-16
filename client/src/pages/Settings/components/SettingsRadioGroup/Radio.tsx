@@ -37,7 +37,7 @@ const SettingRadioGroup = <K extends keyof SettingsState>({
 
   const radioGroupEl = (
     <Radio.Group
-      vertical
+      className={styles.radioGroup}
       optionType="button"
       value={value}
       onChange={onChange}
