@@ -1,0 +1,10 @@
+.drawer.drawer{
+  background-color: var(--background-secondary);
+}
+
+.button{
+  position: absolute;
+  top: 65px;
+  right: 10px;
+  cursor: pointer;
+}

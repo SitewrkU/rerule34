@@ -21,6 +21,7 @@ header{
   }
 
   .navButton{
+    flex-shrink: 0;
     cursor: pointer;
     transition: .25s ease-in-out all;
     &:hover{
@@ -34,6 +35,15 @@ header{
       &:hover{
         scale: 1;
       }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  header{
+    gap: 6px;
+    .navButton{
+      width: 22px;
     }
   }
 }

@@ -9,8 +9,6 @@ export interface TagSuggestion {
   value: string;
 }
 
-
-
 export async function getPosts(params: any) {
   const { data } = await api.get('/posts', { params });
   console.log(data);

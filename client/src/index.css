@@ -8,6 +8,9 @@
   --main-dark: #1a1a1a;
   --link-color: #c6ceff;
   --link-color-visited: #8288aa;
+
+  --accent-red: #FCA5A5;
+  --accent-green: #86EFAC;
 }
 
 *{

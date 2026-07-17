@@ -33,7 +33,7 @@ export const blackThemes: BlackThemeType[] = [
   {
     title: 'Фуррі',
     description: 'Шерстячки!',
-    tags: ['gay']
+    tags: ['anthro']
   },
   {
     title: 'Футанарі',

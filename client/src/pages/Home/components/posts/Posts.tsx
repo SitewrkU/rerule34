@@ -4,8 +4,10 @@ import {getPosts} from "../../../../utils/api.ts";
 import {PostItem} from "../postItem/PostItem.tsx";
 import {useSearchStore} from "../../../../store/searchStore.ts";
 import {useSettingsStore} from "../../../../store/settingsStore.ts";
+import {useSearchQuery} from "../../../../utils/useSearchQuery.ts";
 
 import { Pagination } from 'antd';
+
 import styles from './Posts.module.css'
 import clsx from 'clsx';
 import {FavouriteCircle, Search, ImageDownload2, Delete3} from "clicons-react";
@@ -16,26 +18,37 @@ const BATCH_SIZE = PAGE_SIZE * PAGES_PER_BATCH; // для апі, скільки
 
 const Posts = () => {
   const [allPosts, setAllPosts] = useState<Post[]>([]);
-
   const [page, setPage] = useState(1);
   const [maxPageReached, setMaxPageReached] = useState(1);
-
   const [loadedBatches, setLoadedBatches] = useState(0);
-
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
 
-
-  const params = useSearchStore((state) => state.params);
+  const SearchBarParams = useSearchStore((state) => state.params);
+  const query = useSearchQuery();
   const resetParams = useSearchStore((state) => state.resetParams);
   const settings = useSettingsStore((state) => state.settings);
 
+  const paginationClassName = clsx(
+    styles.pagination,
+    {
+      [styles.pagLeft]: settings.paginationPos === 'left',
+      [styles.pagCenter]: settings.paginationPos === 'center',
+      [styles.pagRight]: settings.paginationPos === 'right',
+    }
+  );
+
+  // Основна функція загрузки постів (Працює на оновлення пошукових параметрів та на некст сторінку)
   const loadBatch = useCallback(async (batchIndex: number) => {
-    if(params.tags === '') return;
+    if(SearchBarParams.tags === '') return;
     setLoading(true);
 
     try{
-      const data = await getPosts({ tags: params.tags, limit: BATCH_SIZE, pid: batchIndex });
+      const data = await getPosts({
+        tags: query,
+        limit: BATCH_SIZE,
+        pid: batchIndex
+      });
       const newPosts = data.data;
 
       setAllPosts(prev => batchIndex === 0 ? newPosts : [...prev, ...newPosts]);
@@ -46,7 +59,7 @@ const Posts = () => {
     }finally {
       setLoading(false);
     }
-  }, [params.tags]);
+  }, [SearchBarParams.tags, query]);
 
 
   const resetAndReload = useCallback(() => {
@@ -60,10 +73,10 @@ const Posts = () => {
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     resetAndReload();
-    if (params.tags !== '') {
+    if (SearchBarParams.tags !== '') {
       void loadBatch(0);
     }
-  }, [params.tags]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [SearchBarParams.tags]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleClearClick  = () => {
     resetParams();
@@ -102,19 +115,12 @@ const Posts = () => {
                 <Delete3 className={styles.erarsePosts} onClick={handleClearClick}/>
               </p>
             </div>
-            <div className={styles.searchInputView}><p><Search/> {params.tags}</p></div>
+            <div className={styles.searchInputView}><p><Search/> {SearchBarParams.tags}</p></div>
           </div>
 
           {settings.paginationOnTop ? (
             <Pagination
-              className={clsx(
-                styles.pagination,
-                {
-                  [styles.pagLeft]: settings.paginationPos === 'left',
-                  [styles.pagCenter]: settings.paginationPos === 'center',
-                  [styles.pagRight]: settings.paginationPos === 'right',
-                }
-              )}
+              className={clsx(styles.pagination, paginationClassName)}
               align="center"
               current={page}
               pageSize={PAGE_SIZE}
@@ -130,15 +136,12 @@ const Posts = () => {
             {currentPagePosts.map(post => <PostItem key={post.id} post={post} />)}
           </div>
 
+          {!hasMore && (
+            <p className={styles.endofpostsText}>Не видно потрібного поста? Спробуй переглянути свій блек-ліст, можливо, він вирізав якийсь пост. Або в пошук відправився не повний запит, перевір і його.</p>
+          )}
+
           <Pagination
-            className={clsx(
-              styles.pagination,
-              {
-                [styles.pagLeft]: settings.paginationPos === 'left',
-                [styles.pagCenter]: settings.paginationPos === 'center',
-                [styles.pagRight]: settings.paginationPos === 'right',
-              }
-            )}
+            className={clsx(styles.pagination, paginationClassName)}
             align="center"
             current={page}
             pageSize={PAGE_SIZE}
@@ -168,7 +171,7 @@ const Posts = () => {
           </ul>
           <p>[ІНФО]: Проект поки слабо оптимізований під мобільні пристрої. Поки немає влаштованого переглядача контенту, натомість, працює окрема вкладка (що не дуже зручно на деяких мобільних браузерах). Але я постійно працюю над вдосконаленнями, тому це не на довго.</p>
           <p>Робота над проектом триває, а кожне оновлення робить його ще кращим. Дякую за інтерес до нього!</p>
-          <p className={styles.version}>v{__APP_VERSION__}</p>
+          <p className={styles.version}>Made with love, by BattWrku • v{__APP_VERSION__}</p>
         </div>
       )}
     </div>

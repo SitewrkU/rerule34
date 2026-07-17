@@ -1,5 +1,5 @@
-import { useCallback, useState } from 'react'
-import { AutoComplete, Input, ConfigProvider } from 'antd';
+import { useCallback, useState, useMemo } from 'react'
+import { AutoComplete, Input } from 'antd';
 import type { AutoCompleteProps } from 'antd';
 import {useSearchStore} from "../../store/searchStore.ts";
 import {getTagAutocomplete} from "../../utils/api.ts";
@@ -23,7 +23,6 @@ const Searchbar = () => {
   const [options, setOptions] = useState<AutoCompleteProps['options']>([]);
   const [value, setValue] = useState('');
   const setParams = useSearchStore((state) => state.setParams);
-
 
 
   const fetchOptions = useCallback(async (query: string) => {
@@ -55,16 +54,20 @@ const Searchbar = () => {
     }
   }, []);
 
-  const debouncedFetch = useCallback(debounce(fetchOptions, 300), [fetchOptions]);
+  const debouncedFetch = useMemo(
+    () => debounce(fetchOptions, 300),
+    [fetchOptions]
+  );
 
-
+  // Встановлення параметрів з пошука в стор => Загрузка постів, через useEffect в Posts.tsx на стор.параметр
   const handleSubmit = () => {
     setParams({
       tags: value
     })
   }
 
-  const handleSearch = (query: string) => {
+  // Пошук тегів по автокомліту
+  const handleSearchTags = (query: string) => {
     setValue(query);
 
     const currentTag = query.split(/\s+/).pop() ?? ""; // Щоб на api відправлявся тільки останній для autocomplete
@@ -72,7 +75,8 @@ const Searchbar = () => {
     debouncedFetch(currentTag);
   };
 
-  const onSelect = (selectedValue: string) => {
+
+  const onSelectTag = (selectedValue: string) => {
     const tags = value.trim().split(/\s+/); // Розбирає всі теги в рядку
     tags[tags.length - 1] = selectedValue; // Змінює тільки останній тег, який не завершений
     const newValue = tags.join(' ') + ' '; // пробіл
@@ -84,28 +88,20 @@ const Searchbar = () => {
 
 
   return (
-    <ConfigProvider
-      theme={{
-        token: {
-          colorPrimary: '#aae5a4',
-        },
-      }}
+    <AutoComplete
+      popupMatchSelectWidth={252}
+      options={options}
+      value={value}
+      onSelect={onSelectTag}
+      onSearch={handleSearchTags}
+      className={styles.searchbar}
     >
-      <AutoComplete
-        popupMatchSelectWidth={252}
-        options={options}
-        value={value}
-        onSelect={onSelect}
-        onSearch={handleSearch}
-        className={styles.searchbar}
-      >
-        <Input.Search
-          size="large"
-          placeholder="Що сьогодні шукаємо?"
-          enterButton onSearch={handleSubmit}
-        />
-      </AutoComplete>
-    </ConfigProvider>
+      <Input.Search
+        size="large"
+        placeholder="Що сьогодні шукаємо?"
+        enterButton onSearch={handleSubmit}
+      />
+    </AutoComplete>
   );
 };
 

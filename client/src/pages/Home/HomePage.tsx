@@ -1,6 +1,8 @@
 import {useSearchStore} from "../../store/searchStore.ts";
 import { useNavigate } from 'react-router-dom';
 import Searchbar from "../../ui/searchbar/Searchbar.tsx";
+import SearchTagsBlock from "../../ui/searchTagsBlock/SearchTagsBlock.tsx";
+import SearchSettings from "../../ui/searchSettings/SearchSettings.tsx";
 import Posts from "./components/posts/Posts.tsx";
 
 import { CollectionsBookmark, Settings } from "clicons-react";
@@ -15,9 +17,11 @@ const HomePage = () => {
     <>
       <header>
         <img src="/rer34text.png" alt="rer34logo" onClick={resetParams}/>
+        <SearchTagsBlock/>
         <Searchbar/>
         <CollectionsBookmark className={clsx(styles.navButton, styles.notAvaible)}/>
         <Settings className={styles.navButton} onClick={() => navigate('/settings')}/>
+        <SearchSettings/>
       </header>
 
       <Posts />

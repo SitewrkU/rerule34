@@ -1,10 +1,10 @@
-
 .pageInfo{
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
 }
+
 
 .totalPosts{
   padding: 6px 12px;
@@ -56,11 +56,16 @@
   flex-wrap: wrap;
 }
 
-
+.endofpostsText{
+  color: var(--main-white);
+  text-align: center;
+  max-width: 300px;
+  margin: 10px auto;
+}
 
 
 .siteInfo{
-  padding: 0 10px;
+  padding: 0 10px 10px;
   max-width: 600px;
   margin: 0 auto;
   gap: 12px;
