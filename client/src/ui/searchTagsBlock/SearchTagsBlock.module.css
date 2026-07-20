@@ -1,69 +1,150 @@
+/* увага: нижче жесткий хардкод */
 .button{
   position: relative;
   margin: 0;
+  padding: 0;
   height: 40px;
   border-radius: 6px;
   font-size: 16px;
-  padding: 5px;
-  gap: 0;
 
   > div{
+    position: relative;
     display: flex;
-    flex-direction: column;
+    padding-left: 20px;
     font-weight: 600;
+    gap: 5px;
+
+    .tagIcon{
+      position: absolute;
+      top: 50%;
+      left: 5px;
+      padding-left: 10px;
+      transform: translate(-50%, -50%);
+      color: var(--main-color);
+      filter: drop-shadow(0 0 4px #87f08a80)
+              drop-shadow(0 0 6px #87f08a50);
+    }
 
     > p{
       width: 36px;
+
     }
 
     .removed{
+      text-align: right;
       color: var(--accent-red);
-      text-align: end;
     }
 
     .added{
-      text-align: start;
+      text-align: left;
+      margin-right: 10px;
       color: var(--accent-green);
     }
   }
 
-  svg{
+  .dropIcon{
     width: 20px;
     position: absolute;
-    right: 0;
-    bottom: -2px;
-    opacity: 0.3;
+    top: 50%;
+    right: -7px;
+    opacity: 0.5;
+    transform: translate(-50%, -50%);
   }
 }
 
 .dropdown{
   max-width: 400px;
   background-color: var(--background-secondary);
-  border: 1px solid var(--border-main);
-  padding: 8px;
+  border: 1px solid var(--border-main-lighter);
   border-radius: 10px;
   margin-top: 10px;
   margin-right: 10px;
 
+  > *:not(:last-child) {
+    border-bottom: 1px solid var(--border-main-lighter);
+  }
+
+  /*Загаловок дропдауна*/
   .ddHeader{
-    font-size: 1.05rem;
-    margin-bottom: 10px;
-    color: var(--main-color);
-    svg{
-      vertical-align: middle;
-      color: var(--main-color);
+    padding: 8px;
+    display: flex;
+    gap: 10px;
+
+    .headerIcon{
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: inline-block;
+      padding: 10px;
+      background-color: var(--background-tertiary);
+      svg{
+        vertical-align: -4px;
+        color: var(--main-color);
+      }
+    }
+
+    .headerText{
+      > p:first-child{
+        font-size: 1.05rem;
+        color: var(--main-color);
+      }
+
+      > p:last-child{
+        color: var(--main-white);
+        opacity: 0.7;
+      }
     }
   }
 
   .collapse{
+    > *:not(:last-child) {
+      border-bottom: 1px solid var(--border-main-lighter);
+    }
+
     :global(.ant-collapse-title){
-      > p{
-        border-bottom: 2px dotted color-mix(in srgb, var(--main-white) 40%, transparent);
-        &:hover{
-          color: var(--link-color);
-          border-bottom: 2px dotted color-mix(in srgb, var(--link-color) 40%, transparent);
+      .collapseHeader{
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        padding: 5px;
+
+        > svg{
+          width: 20px;
         }
 
+        &.chRemove{
+          > svg{
+            color: var(--accent-red);
+            filter: drop-shadow(0 0 2px color-mix(in srgb, var(--accent-red) 30%, transparent))
+                    drop-shadow(0 0 4px color-mix(in srgb, var(--accent-red) 30%, transparent));
+          }
+
+          > p:last-child{
+            border-radius: 5px;
+            padding: 0 6px;
+            color: var(--accent-red);
+            background-color: color-mix(in srgb, var(--accent-red) 20%, transparent);
+          }
+        }
+
+        &.chAdd{
+          > svg{
+            color: var(--accent-green);
+            filter: drop-shadow(0 0 2px color-mix(in srgb, var(--accent-green) 30%, transparent))
+                    drop-shadow(0 0 4px color-mix(in srgb, var(--accent-green) 30%, transparent));
+          }
+
+          > p:last-child{
+            border-radius: 5px;
+            padding: 0 6px;
+            color: var(--accent-green);
+            background-color: color-mix(in srgb, var(--accent-green) 20%, transparent);
+          }
+        }
+      }
+
+
+      > p{
         > svg{
           color: grey;
           width: 18px;
@@ -81,20 +162,16 @@
 
     :global(.ant-collapse-body){
       > .tagstoremove{
+        padding: 5px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
         > span{
-          color: color-mix(
-            in srgb,
-            color-mix(in srgb, var(--accent-red) 80%, grey) 50%,
-            transparent
-          );
-
-          &:nth-child(odd){
-            color: color-mix(
-              in srgb,
-              color-mix(in srgb, var(--accent-red) 80%, grey) 70%,
-              transparent
-            );
-          }
+          padding: 2px 5px;
+          border-radius: 5px;
+          background-color: color-mix(in srgb, var(--accent-red) 5%, transparent);
+          border: 1px solid color-mix(in srgb, var(--accent-red) 70%, transparent);
+          color: var(--accent-red);
         }
       }
 
