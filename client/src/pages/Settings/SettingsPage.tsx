@@ -26,7 +26,7 @@ const SettingsPage = () => {
           <div>
           <SettingRadioGroup
             settingKey="theme"
-            label="Тема оформлення" text="Які кольори тобі більше подобаються? (В РОЗРОБЦІ)"
+            label="Тема оформлення" text="Які кольори тобі більше подобаються? (Тепер працює! Але стилі все ще храмають)"
             options={[
               {label: 'Темня', value: 'dark'},
               {label: 'Світла', value: 'light'},

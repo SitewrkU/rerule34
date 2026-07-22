@@ -6,6 +6,7 @@ header{
   svg{
     width: 48px;
   }
+
   img{
     width: 86px;
     image-rendering: pixelated;
@@ -17,6 +18,10 @@ header{
     }
     &:active{
       transform: scale(0.95) rotate(0deg);
+    }
+
+    &.darked{
+      filter: brightness(40%);
     }
   }
 
