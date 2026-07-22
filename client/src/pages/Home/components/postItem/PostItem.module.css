@@ -47,6 +47,15 @@
     font-weight: bold;
     font-size: 3rem;
   }
+
+  &:has(img.blackMode) img{
+    filter: brightness(0%);
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: auto;
+  }
 }
 
 .postStats{

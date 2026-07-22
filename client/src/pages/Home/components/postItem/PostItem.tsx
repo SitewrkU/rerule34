@@ -43,7 +43,8 @@ export function PostItem({ post }: { post: Post }) {
           alt="post"
           className={clsx(
             isVideo && styles.isVideo,
-            (settings.kittyMode && post.rating === 'explicit') && styles.kittyMode
+            (settings.kittyMode && post.rating === 'explicit') && styles.kittyMode,
+            settings.blackMode && styles.blackMode
           )}
         />
         </div>

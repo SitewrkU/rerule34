@@ -59,7 +59,8 @@ const SettingsPage = () => {
         <section className={styles.settingsSection}>
           <h2><Customize/> Незвичайні</h2>
           <div>
-          <SettingSwitch settingKey="kittyMode" label="Kitty Mode" text="Ти прийшов сюди не за тим, що і всі.. Котики!"/>
+          <SettingSwitch settingKey="kittyMode" label="Kitty Mode" text="Сховаємо цю неподобщину.. мяу~"/>
+          <SettingSwitch settingKey="blackMode" label="Black Mode" text="Просто тикни в любий із них, і дивись, що попалося :)"/>
           </div>
         </section>
 
