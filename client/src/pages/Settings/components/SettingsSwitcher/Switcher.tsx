@@ -12,16 +12,17 @@ interface SettingSwitchProps {
   label: string;
   text?: string;
   disabled?: boolean;
+  checkedByDef?: boolean;
 }
 
-const SettingSwitch = ({ settingKey, label, text, disabled }: SettingSwitchProps) => {
+const SettingSwitch = ({ settingKey, label, text, disabled, checkedByDef }: SettingSwitchProps) => {
   const value = useSettingsStore((state) => state.settings[settingKey]);
   const updateSettings = useSettingsStore((state) => state.updateSettings);
 
   const switchEl = (
     <Switch
       className={styles.bigSwitch}
-      checked={value}
+      checked={value !== checkedByDef ? value : checkedByDef}
       disabled={disabled}
       onChange={(checked) => updateSettings({ [settingKey]: checked } as any)}
     />

@@ -1,7 +1,8 @@
 import type { Post } from "@rerule34/shared/types/post.ts";
-import { ChevronUp, PlayCircle2, Comment } from "clicons-react";
 import { usePostDuration } from "../../../../utils/usePostDuration.ts";
 import {useSettingsStore} from "../../../../store/settingsStore.ts";
+
+import { ChevronUp, PlayCircle2, Comment } from "clicons-react";
 import clsx from "clsx";
 import styles from './PostItem.module.css';
 
@@ -50,6 +51,8 @@ export function PostItem({ post }: { post: Post }) {
           <span className={styles.duration}><PlayCircle2/> {formatDuration(duration)}</span>
         )}
       </a>
+
+      {settings.showPostInfo && (
       <div className={styles.postStats}>
         <div className={styles.postScores}>
           <p><ChevronUp strokeWidth={3} /> {post.score}</p>
@@ -59,6 +62,7 @@ export function PostItem({ post }: { post: Post }) {
           <p>{formatDate(post.createdAt)}</p>
         </div>
       </div>
+      )}
 
     </div>
   );

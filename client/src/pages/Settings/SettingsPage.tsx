@@ -1,8 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import SettingSwitch from "./components/SettingsSwitcher/Switcher.tsx";
 import SettingRadioGroup from "./components/SettingsRadioGroup/Radio.tsx";
+import {defaultSettings} from "../../store/settingsStore.ts";
 
-import {ChevronLeft, Home3, Brush, Customize} from "clicons-react";
+import {ChevronLeft, Home3, Brush, Customize, Image} from "clicons-react";
 import styles from './SettingsPage.module.css'
 
 const SettingsPage = () => {
@@ -21,9 +22,7 @@ const SettingsPage = () => {
 
       <div className={styles.sectionList}>
         <section className={styles.settingsSection}>
-
           <h2><Home3/> Основне</h2>
-
           <div>
           <SettingRadioGroup
             settingKey="theme"
@@ -49,6 +48,12 @@ const SettingsPage = () => {
                 {label: 'Право', value: 'right'},
               ]}
             />
+          </div>
+        </section>
+        <section className={styles.settingsSection}>
+          <h2><Image/> Пости</h2>
+          <div>
+            <SettingSwitch checkedByDef={defaultSettings.showPostInfo} settingKey="showPostInfo" label="Показувати інформацію по постам" text="По-о-овне погруження"/>
           </div>
         </section>
         <section className={styles.settingsSection}>

@@ -3,10 +3,13 @@ import {persist} from "zustand/middleware";
 
 interface Settings {
   theme: 'dark' | 'light' | 'original';
-  kittyMode: boolean;
 
   paginationOnTop: boolean;
   paginationPos: 'left' | 'center' | 'right';
+
+  showPostInfo: boolean;
+
+  kittyMode: boolean;
 }
 
 interface SettingsState {
@@ -14,12 +17,15 @@ interface SettingsState {
   updateSettings: (patch: Partial<Settings>) => void;
 }
 
-const defaultSettings: Settings = {
+export const defaultSettings: Settings = {
   theme: "dark",
-  kittyMode: false,
 
   paginationOnTop: false,
   paginationPos: 'center',
+
+  showPostInfo: true,
+
+  kittyMode: false,
 }
 
 export const useSettingsStore = create<SettingsState>()(
