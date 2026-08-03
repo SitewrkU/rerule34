@@ -127,3 +127,15 @@
     margin-right: 10px;
   }
 }
+
+.loadingContainer{
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+
+  .loadingIcon{
+    width: 64px;
+    height: 64px;
+    color: var(--main-white);
+  }
+}

@@ -8,9 +8,10 @@ import {useSearchQuery} from "../../../../utils/useSearchQuery.ts";
 
 import { Pagination } from 'antd';
 
+import { motion, AnimatePresence } from "motion/react";
 import styles from './Posts.module.css'
 import clsx from 'clsx';
-import {FavouriteCircle, Search, ImageDownload2, Delete3} from "clicons-react";
+import {FavouriteCircle, Search, ImageDownload2, Delete3, Hourglass} from "clicons-react";
 
 const PAGE_SIZE = 30; // постів на одну стоірнку
 const PAGES_PER_BATCH = 3; // к-ть сторінок які тягнуться за запит
@@ -95,6 +96,7 @@ const Posts = () => {
     window.scrollTo({ top: 0, behavior: 'instant' });
   }
 
+  const totalPages = Math.ceil(allPosts.length / PAGE_SIZE);
   const viewedPostsCount = Math.min(maxPageReached * PAGE_SIZE, allPosts.length);
   const currentPagePosts = allPosts.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
@@ -118,7 +120,7 @@ const Posts = () => {
             <div className={styles.searchInputView}><p><Search/> {SearchBarParams.tags}</p></div>
           </div>
 
-          {settings.paginationOnTop ? (
+          {(settings.paginationOnTop && !loading) ? (
             <Pagination
               className={clsx(styles.pagination, paginationClassName)}
               align="center"
@@ -131,27 +133,63 @@ const Posts = () => {
             />
           ) : null}
 
+          {/* Іконка загрузки постів */}
+          <div className={styles.loadingContainer}>
+          {loading ? (
+            <AnimatePresence>
+              {loading && (
+                <motion.div
+                  animate={{ rotate: [0, 180, 180, 360] }}
+                  transition={{
+                    duration: 1.6,
+                    times: [0, 0.45, 0.55, 1],
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  style={{ display: "inline-flex" }}
+                >
+                  <Hourglass className={styles.loadingIcon}/>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          ): null}
+          </div>
 
+
+          {/* Пости */}
           <div className={styles.posts}>
             {currentPagePosts.map(post => <PostItem key={post.id} post={post} />)}
           </div>
 
-          {!hasMore && (
-            <p className={styles.endofpostsText}>Не видно потрібного поста? Спробуй переглянути свій блек-ліст, можливо, він вирізав якийсь пост. Або в пошук відправився не повний запит, перевір і його.</p>
+          {!hasMore && page === totalPages && (
+            <p className={styles.endofpostsText}>Не видно потрібного поста? Спробуй вимкнути свій <b>блек-ліст</b>, можливо, він вирізав пости. Або <b>в пошук відправився не повний запит</b>, перевір і його.</p>
           )}
 
-          <Pagination
-            className={clsx(styles.pagination, paginationClassName)}
-            align="center"
-            current={page}
-            pageSize={PAGE_SIZE}
-            total={estimatedTotal}
-            onChange={handlePageChange}
-            showSizeChanger={false}
-            disabled={loading}
-          />
+
+
+          {/* Пагінація */}
+          {!loading ? (
+            <Pagination
+              className={clsx(styles.pagination, paginationClassName)}
+              align="center"
+              current={page}
+              pageSize={PAGE_SIZE}
+              total={estimatedTotal}
+              onChange={handlePageChange}
+              showSizeChanger={false}
+              disabled={loading}
+            />
+          ): null}
+
         </div>
+
+
+
       ) : (
+
+
+
         <div className={styles.siteInfo}>
           <img src="/rer34.png" alt=""/>
           <h1># Re:Rule34</h1>
