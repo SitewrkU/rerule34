@@ -27,7 +27,7 @@ export const blackThemes: BlackThemeType[] = [
   },
   {
     title: 'Лезбі',
-    description: 'Може комусь і по нрав?',
+    description: '✂️✂️✂️',
     tags: ['lesbian']
   },
   {
@@ -85,6 +85,37 @@ export const blackThemes: BlackThemeType[] = [
     description: 'Специфічний вибір',
     tags: ['oviposition', 'parasite']
   },
+  {
+    title: 'Старий чоловік',
+    description: 'Пенсія все ще в силі',
+    tags: ['old_male']
+  },
+  {
+    title: 'Май-літл-поні',
+    description: 'По-няшки',
+    tags: ['my_little_pony']
+  },
+  {
+    title: 'Сонік',
+    description: 'Досить спорний тег',
+    tags: ['sonic_(series)']
+  },
+  {
+    title: 'Фнаф',
+    description: 'Фуррі + Хоррор',
+    tags: ['five_nights_at_freddy\'s']
+  },
+  {
+    title: 'Роблокс',
+    description: 'Думаю тут понятно',
+    tags: ['roblox']
+  },
+  {
+    title: 'Майнкрафт',
+    description: 'На тому ж рівні, що і роблокс',
+    tags: ['minecraft']
+  },
+
 ]
 
 
