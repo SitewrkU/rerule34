@@ -5,17 +5,26 @@ import axios from 'axios'
 export const BASE_URL = 'https://api.rule34.xxx/index.php';
 export const AUTOCOMPLETE_URL = 'https://api.rule34.xxx/autocomplete.php';
 
+
+const ALLOWED_PARAMS = ['tags', 'limit', 'pid', 'id'] as const;
+
+function sanitizeQuery(query: any) {
+  const clean: Record<string, any> = {};
+  for (const key of ALLOWED_PARAMS) {
+    if (query[key] !== undefined) clean[key] = query[key];
+  }
+  return clean;
+}
+
+
 export async function callApi(params: any) {
+  const safeParams = sanitizeQuery(params);
   try{
     const response = await axios.get<RawR34Post[]>(BASE_URL, {
       params: {
-        page: 'dapi',
-        s: 'post',
-        q: 'index',
-        json: 1,
-        api_key: R34_API_KEY,
-        user_id: R34_USER_ID,
-        ...params,
+        page: 'dapi', s: 'post', q: 'index', json: 1,
+        api_key: R34_API_KEY, user_id: R34_USER_ID,
+        ...safeParams,
       },
     });
     return response.data.map(mapRawPosts);

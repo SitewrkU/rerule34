@@ -1,12 +1,28 @@
 import express, {Request, Response, NextFunction} from 'express'
+import rateLimit from 'express-rate-limit';
 import { getDuration, durationCache, isVideoUrl } from '../utils/getPostDuration';
 import {autocompleteTags} from "../services/rule34";
 import {callApi} from "../services/rule34";
 const router = express.Router();
 
+// Лімітер для запитів на r34. Жорстко: 60
+const ApiLimiter = rateLimit({
+  windowMs: 60_000,
+  max: 60,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// Для отримання довжини відео
+const durationLimiter = rateLimit({
+  windowMs: 60_000,
+  max: 300,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', ApiLimiter ,async (req: Request, res: Response, next) => {
   try {
     const params = req.query;
     const data = await callApi(params);
@@ -18,13 +34,12 @@ router.get('/', async (req: Request, res: Response) => {
 
     res.status(200).json({ data: finalData });
   } catch (e) {
-    res.status(500).json({error: e});
-    console.log(e)
+    next(e);
   }
 })
 
 
-router.get('/:id/duration', async (req: Request, res: Response) => {
+router.get('/:id/duration', durationLimiter, async (req: Request, res: Response) => {
   const id = String(req.params.id);
   const { file_url } = req.query; // передаємо file_url з фронту, щоб не ходити повторно в rule34 api за постом
 
@@ -32,19 +47,18 @@ router.get('/:id/duration', async (req: Request, res: Response) => {
     return res.status(200).json({ duration: null });
   }
 
-  if (durationCache.has(id)) {
-    return res.status(200).json({ duration: durationCache.get(id) });
+  const cached = durationCache.get(id);
+  if (cached) {
+    return res.status(200).json({ duration: cached.duration });
   }
 
   const duration = await getDuration(file_url);
-  durationCache.set(id, duration);
-  const currentDate = new Date();
-  console.log(duration, currentDate);
+  durationCache.set(id, { duration });
   res.status(200).json({ duration });
 });
 
 
-router.get('/tags/autocomplete', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/tags/autocomplete', ApiLimiter, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { q } = req.query;
     if (typeof q !== 'string' || !q) {

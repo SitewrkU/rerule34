@@ -1,19 +1,29 @@
 import ffmpeg from 'fluent-ffmpeg';
 import ffprobeStatic from 'ffprobe-static';
+import { LRUCache } from 'lru-cache';
 
 ffmpeg.setFfprobePath(ffprobeStatic.path);
 
 const VIDEO_EXT = /\.(mp4|webm|mov|avi|mkv)$/i;
 
-export const durationCache = new Map<string | number, number | null>();
+
+type DurationEntry = { duration: number | null };
+
+export const durationCache = new LRUCache<string, DurationEntry>({
+  max: 5000,
+  ttl: 1000 * 60 * 60 * 24, // 24 год
+});
+
 
 export function isVideoUrl(url: string) {
   return VIDEO_EXT.test(url);
 }
 
-export function getDuration(fileUrl: string): Promise<number | null> {
+export function getDuration(fileUrl: string, timeoutMs = 10000): Promise<number | null> {
   return new Promise((resolve) => {
+    const timer = setTimeout(() => resolve(null), timeoutMs);
     ffmpeg.ffprobe(fileUrl, (err, metadata) => {
+      clearTimeout(timer);
       if (err) {
         console.error('ffprobe error:', fileUrl, err.message);
         return resolve(null);
@@ -23,7 +33,7 @@ export function getDuration(fileUrl: string): Promise<number | null> {
   });
 }
 
-// обмежує паралелізм
+// обмежує паралелізм воркерів
 export async function enrichWithDuration<T extends { id: string | number; file_url: string }>(
   posts: T[],
   concurrency = 4
@@ -36,15 +46,20 @@ export async function enrichWithDuration<T extends { id: string | number; file_u
       const i = index++;
       const post = posts[i];
 
-      if (!isVideoUrl(post.file_url)) continue;
+      if (!isVideoUrl(post.file_url)) {
+        results[i] = { ...post, duration: null };
+        continue;
+      }
 
-      if (durationCache.has(post.id)) {
-        results[i] = { ...post, duration: durationCache.get(post.id) };
+      const key = String(post.id);
+      const cached = durationCache.get(key);
+      if (cached) {
+        results[i] = { ...post, duration: cached.duration };
         continue;
       }
 
       const duration = await getDuration(post.file_url);
-      durationCache.set(post.id, duration);
+      durationCache.set(key, { duration });
       results[i] = { ...post, duration };
     }
   }
