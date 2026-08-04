@@ -1,6 +1,8 @@
 import type { Post } from "@rerule34/shared/types/post.ts";
 import { usePostDuration } from "../../../../utils/usePostDuration.ts";
 import {useSettingsStore} from "../../../../store/settingsStore.ts";
+import {useLongPressPreview} from "../../../../utils/useLongPressPreview.ts";
+import {ImagePreviewOverlay} from "./ImagePreviewOverlay.tsx";
 
 import { ChevronUp, PlayCircle2, Comment } from "clicons-react";
 import clsx from "clsx";
@@ -28,19 +30,25 @@ function formatDate(dateString) {
 
 export function PostItem({ post }: { post: Post }) {
   const { duration, ref } = usePostDuration(post);
-
   const settings = useSettingsStore(state => state.settings);
-
   const isVideo = /\.(mp4|webm|mov|avi|mkv)$/i.test(post.file_url);
 
+  const { isPreviewOpen, handlers } = useLongPressPreview();
+
   return (
-    <div ref={ref} className={styles.post}>
+    <div
+      ref={ref}
+      className={styles.post}
+      rel="noopener noreferrer"
+      {...handlers}
+    >
       <a href={post.file_url} target="_blank" rel="noopener noreferrer">
         <div className={styles.imgWrapper}>
         <img
           loading="lazy"
           src={post.sample_url}
           alt="post"
+          draggable={false}
           className={clsx(
             isVideo && styles.isVideo,
             (settings.kittyMode && post.rating === 'explicit') && styles.kittyMode,
@@ -64,6 +72,8 @@ export function PostItem({ post }: { post: Post }) {
         </div>
       </div>
       )}
+
+      <ImagePreviewOverlay src={post.sample_url} isOpen={isPreviewOpen} />
 
     </div>
   );

@@ -35,6 +35,7 @@
 
 .imgWrapper{
   overflow: hidden;
+  touch-action: none;
   border-radius: 5px;
 
   &:has(img.kittyMode)::after {
@@ -86,6 +87,25 @@
   border: 1px solid rgb(135 183 223 / 0.8);
 }
 
+
+.previewOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.85);
+  pointer-events: none;
+
+  .previewImage {
+    max-width: 92vw;
+    max-height: 92vh;
+    object-fit: contain;
+    border-radius: 8px;
+  }
+}
+
 @media (min-width: 768px) {
   .post {
     a {
@@ -95,6 +115,4 @@
       }
     }
   }
-
-
 }
