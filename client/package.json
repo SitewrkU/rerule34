@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@rerule34/shared": "*",
+    "@vidstack/react": "^1.15.6",
     "antd": "^6.5.0",
     "axios": "^1.18.1",
     "clicons-react": "^1.0.16",

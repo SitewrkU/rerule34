@@ -1,9 +1,13 @@
 import type {RawR34Post, Post} from "@rerule34/shared/types/post";
+import type {RawR34Comment, Comment} from "@rerule34/shared/types/comment";
 import { R34_USER_ID, R34_API_KEY } from '../config/env'
 import axios from 'axios'
+import {XMLParser} from "fast-xml-parser";
 
 export const BASE_URL = 'https://api.rule34.xxx/index.php';
 export const AUTOCOMPLETE_URL = 'https://api.rule34.xxx/autocomplete.php';
+
+const xmlParser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: '' });
 
 
 const ALLOWED_PARAMS = ['tags', 'limit', 'pid', 'id'] as const;
@@ -15,7 +19,6 @@ function sanitizeQuery(query: any) {
   }
   return clean;
 }
-
 
 export async function callApi(params: any) {
   const safeParams = sanitizeQuery(params);
@@ -51,6 +54,39 @@ function mapRawPosts(raw: RawR34Post): Post{
   }
 }
 
+
+function mapRawComment(raw: RawR34Comment): Comment {
+  return {
+    id: raw.id,
+    body: raw.body,
+    creator: raw.creator,
+    creatorId: raw.creator_id,
+    createdAt: raw.created_at,
+  };
+}
+
+export async function getComments(postId: string): Promise<Comment[]> {
+  try {
+    const response = await axios.get(BASE_URL, {
+      params: {
+        page: 'dapi', s: 'comment', q: 'index',
+        api_key: R34_API_KEY, user_id: R34_USER_ID,
+        post_id: postId,
+      },
+      responseType: 'text',
+      transformResponse: (data) => data, // не даємо axios одразу парсити як JSON
+    });
+
+    const parsed = xmlParser.parse(response.data as unknown as string);
+    const rawComments = parsed?.comments?.comment ?? [];
+    const list = Array.isArray(rawComments) ? rawComments : [rawComments];
+
+    return list.filter(Boolean).map(mapRawComment);
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+}
 
 
 export async function autocompleteTags(query: string): Promise<{ label: string; value: string }[]> {

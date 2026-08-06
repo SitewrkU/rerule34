@@ -15,6 +15,11 @@ export async function getPosts(params: any) {
   return data;
 }
 
+export async function getComments(id: number) {
+  const { data } = await api.get(`/posts/${id}/comments`);
+  return data.data;
+}
+
 export async function getTagAutocomplete(query: string): Promise<TagSuggestion[]> {
   const { data } = await api.get('/posts/tags/autocomplete', {
     params: { q: query },

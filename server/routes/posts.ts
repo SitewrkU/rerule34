@@ -2,7 +2,7 @@ import express, {Request, Response, NextFunction} from 'express'
 import rateLimit from 'express-rate-limit';
 import { getDuration, durationCache, isVideoUrl } from '../utils/getPostDuration';
 import {autocompleteTags} from "../services/rule34";
-import {callApi} from "../services/rule34";
+import {callApi, getComments} from "../services/rule34";
 const router = express.Router();
 
 // Лімітер для запитів на r34. Жорстко: 60
@@ -55,6 +55,18 @@ router.get('/:id/duration', durationLimiter, async (req: Request, res: Response)
   const duration = await getDuration(file_url);
   durationCache.set(id, { duration });
   res.status(200).json({ duration });
+});
+
+
+
+router.get('/:id/comments', ApiLimiter, async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = String(req.params.id);
+    const comments = await getComments(id);
+    res.status(200).json({ data: comments });
+  } catch (e) {
+    next(e);
+  }
 });
 
 

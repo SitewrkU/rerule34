@@ -1,8 +1,11 @@
+import {useState} from "react";
 import type { Post } from "@rerule34/shared/types/post.ts";
-import { usePostDuration } from "../../../../utils/usePostDuration.ts";
+import {usePostDuration} from "../../../../utils/usePostDuration.ts";
 import {useSettingsStore} from "../../../../store/settingsStore.ts";
 import {useLongPressPreview} from "../../../../utils/useLongPressPreview.ts";
 import {ImagePreviewOverlay} from "./ImagePreviewOverlay.tsx";
+import MediaViewerModal from "./MediaViewerModal.tsx";
+import {formatDate} from "../../../../lib/dateFormater.ts";
 
 import { ChevronUp, PlayCircle2, Comment } from "clicons-react";
 import clsx from "clsx";
@@ -18,15 +21,6 @@ function formatDuration(sec: number) {
   }
 }
 
-function formatDate(dateString) {
-  const date = new Date(dateString);
-
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const year = date.getFullYear();
-
-  return `${day}.${month}.${year}`;
-}
 
 export function PostItem({ post }: { post: Post }) {
   const { duration, ref } = usePostDuration(post);
@@ -34,15 +28,24 @@ export function PostItem({ post }: { post: Post }) {
   const isVideo = /\.(mp4|webm|mov|avi|mkv)$/i.test(post.file_url);
 
   const { isPreviewOpen, handlers } = useLongPressPreview();
+  const { onClick: onLongPressClick, ...pressHandlers } = handlers;
+  const [isViewerOpen, setViewerOpen] = useState(false);
 
   return (
     <div
       ref={ref}
       className={styles.post}
-      rel="noopener noreferrer"
-      {...handlers}
     >
-      <a href={post.file_url} target="_blank" rel="noopener noreferrer">
+      <a
+        href={post.file_url}
+        {...pressHandlers}
+        onClick={(e) => {
+          onLongPressClick(e);       // спершу перевіряємо/гасимо лонгпрес-клік
+          if (e.defaultPrevented) return; // якщо це був лонгпрес — виходимо, модалку не відкриваємо
+          e.preventDefault();
+          setViewerOpen(true);
+        }}
+      >
         <div className={styles.imgWrapper}>
         <img
           loading="lazy"
@@ -73,7 +76,16 @@ export function PostItem({ post }: { post: Post }) {
       </div>
       )}
 
+
+
       <ImagePreviewOverlay src={post.sample_url} isOpen={isPreviewOpen} />
+
+      <MediaViewerModal
+        isOpen={isViewerOpen}
+        onClose={() => setViewerOpen(false)}
+        post={post}
+        isVideo={isVideo}
+      />
 
     </div>
   );
