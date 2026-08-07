@@ -39,6 +39,12 @@ export function useLongPressPreview({
     startPos.current = { x: e.clientX, y: e.clientY };
     wasLongPress.current = false;
 
+    // КЛЮЧОВИЙ ФІКС: гарантуємо, що move/up/cancel прийдуть саме
+    // на цей елемент, навіть якщо зверху з'явиться preview-оверлей
+    try {
+      e.currentTarget.setPointerCapture(e.pointerId);
+    } catch { /* empty */ }
+
     clearTimer();
     timerRef.current = setTimeout(() => {
       wasLongPress.current = true;
@@ -64,10 +70,15 @@ export function useLongPressPreview({
   const endPress = useCallback((e: React.PointerEvent) => {
     if (activePointerId.current !== e.pointerId) return;
     clearTimer();
+
+    try {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    } catch { /* empty */ }
+
     if (isPreviewOpen) closePreview();
     else activePointerId.current = null;
   }, [isPreviewOpen, closePreview]);
-
+  
   const onContextMenu = useCallback((e: React.MouseEvent) => {
     // глушимо системне контекстне меню/callout при утриманні на мобілці
     if (wasLongPress.current || timerRef.current) e.preventDefault();
@@ -89,7 +100,6 @@ export function useLongPressPreview({
       onPointerDown,
       onPointerMove,
       onPointerUp: endPress,
-      onPointerLeave: endPress,
       onPointerCancel: endPress,
       onContextMenu,
       onClick,

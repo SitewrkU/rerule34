@@ -35,7 +35,7 @@
 
 .imgWrapper{
   overflow: hidden;
-  touch-action: none;
+  touch-action: pan-y;
   border-radius: 5px;
 
   &:has(img.kittyMode)::after {

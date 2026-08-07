@@ -38,10 +38,12 @@ export function PostItem({ post }: { post: Post }) {
     >
       <a
         href={post.file_url}
+        draggable={false}
+        onDragStart={(e) => e.preventDefault()}
         {...pressHandlers}
         onClick={(e) => {
-          onLongPressClick(e);       // спершу перевіряємо/гасимо лонгпрес-клік
-          if (e.defaultPrevented) return; // якщо це був лонгпрес — виходимо, модалку не відкриваємо
+          onLongPressClick(e);
+          if (e.defaultPrevented) return;
           e.preventDefault();
           setViewerOpen(true);
         }}
