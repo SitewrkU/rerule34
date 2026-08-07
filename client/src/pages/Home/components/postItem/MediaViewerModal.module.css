@@ -1,3 +1,7 @@
+/* ==========================================================================
+   MODAL SHELL (antd overrides)
+   ========================================================================== */
+
 .viewerModal.viewerModal :global(.ant-modal-container) {
   padding: 10px;
 }
@@ -26,6 +30,10 @@
 }
 
 
+/* ==========================================================================
+   MEDIA (image / video)
+   ========================================================================== */
+
 .viewerMedia {
   margin-top: 30px;
   display: flex;
@@ -46,22 +54,25 @@
   aspect-ratio: 16 / 9;
 }
 
-
-
-.viewerImage.viewerImageTall {
-  max-height: none;
-  width: 100%;
-  height: auto;
-  object-fit: unset;
-}
-
+/* Довгі webtoon-зображення (де висота велика)
+   дає розтягнутись на всю ширину,
+   а скрол дає .ant-modal-body вище */
 .viewerMedia.viewerMediaTall {
   overflow: visible;
   align-items: flex-start;
 }
 
+.viewerImage.viewerImageTall {
+  width: 100%;
+  height: auto;
+  max-height: none;
+  object-fit: unset;
+}
 
 
+/* ==========================================================================
+   INFO BAR
+   ========================================================================== */
 
 .viewerInfo {
   display: flex;
@@ -71,82 +82,83 @@
   margin-top: 10px;
   border-radius: 10px;
 
-  > div{
+  > div {
     position: relative;
     padding: 0 20px;
     display: flex;
     justify-content: center;
     flex-direction: column;
 
-
     &:not(:first-child):not(:last-child)::before {
       content: "";
       position: absolute;
-
       left: 0;
       top: 50%;
       transform: translateY(-50%);
-
       width: 1px;
       height: 42px;
-
       background: #3b3b3b;
     }
   }
 
-  .owner{
+  .owner {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     gap: 10px;
-    > img{
+
+    > img {
       width: 48px;
       border-radius: 50%;
       border: 1px solid var(--border-main-lighter);
     }
 
-    > div{
+    > div {
       display: flex;
       flex-direction: column;
-      > p:first-child{
+
+      > p:first-child {
         color: var(--main-color);
       }
     }
-
   }
 
-  .stats{
+  .stats {
     text-align: center;
-    svg{
+
+    svg {
       color: var(--main-color);
     }
   }
 
-
-  .download{
+  .download {
     margin-left: auto;
 
-    svg{
+    svg {
       width: 18px;
       vertical-align: -4px;
     }
   }
-
 }
 
-.comments{
+
+/* ==========================================================================
+   COMMENTS
+   ========================================================================== */
+
+.comments {
   gap: 20px;
   padding: 10px 15px;
   background-color: var(--background-tertiary);
   margin-top: 10px;
   border-radius: 10px;
 
-  > p{
+  > p {
     font-size: 1.4rem;
   }
 
-  .comment{
+  .comment {
     padding: 6px 12px;
     display: flex;
     flex-direction: column;
@@ -156,94 +168,110 @@
     &:not(:last-child)::before {
       content: "";
       position: absolute;
-
       left: 50%;
       transform: translateX(-50%);
       top: 100%;
-
       width: 98%;
       height: 1px;
-
       background: #3b3b3b;
     }
 
-    .commentInfo{
+    .commentInfo {
       display: flex;
       gap: 5px;
       align-items: center;
-      > p:first-child{
+
+      > p:first-child {
         font-size: 1.1rem;
         color: var(--main-color);
       }
     }
 
-    > p:last-child{
+    > p:last-child {
       font-size: 1rem;
       color: var(--main-white);
     }
   }
 }
 
+
+/* ==========================================================================
+   RESPONSIVE — MOBILE (<= 768px)
+   ========================================================================== */
+
 @media (max-width: 768px) {
+  /* 1. -зовнішні відступи */
+  .viewerModal.viewerModal :global(.ant-modal-container),
   .viewerModal.viewerModal :global(.ant-modal-wrap) {
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    overflow: hidden;
+    padding: 0 !important;
+    display: block !important;
   }
 
+  /* 2. жоский весь екран */
   .viewerModal.viewerModal :global(.ant-modal) {
-    top: 0;
-    margin: 0;
-    padding-bottom: 0;
+    top: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
     width: 100vw !important;
-    max-width: 100vw;
-    height: 100dvh;
+    max-width: 100vw !important;
+    height: 100dvh !important;
   }
 
+  /* 3. контент-бокс тоже */
   .viewerModal.viewerModal :global(.ant-modal-content) {
-    height: 100%;
-    border-radius: 0;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    border-radius: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
   }
 
+  /* 4. Єдине місце зі скролом  */
   .viewerModal.viewerModal :global(.ant-modal-body) {
-    display: flex;
-    flex-direction: column;
+    flex: 1 1 auto !important;
+    display: block !important;
+    height: auto !important;
+    padding: 10px !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
   }
 
-
+  /* 5. Медіа контейнер тож в block */
   .viewerMedia {
-    flex: 1;
-    min-height: 0;
+    display: block;
     width: 100%;
+    margin-top: 0;
+    margin-bottom: 15px;
   }
 
   .viewerImage,
   .viewerPlayer {
+    display: block;
     width: 100%;
-    height: 100%;
-    max-width: 100%;
-    max-height: 100%;
-    aspect-ratio: auto;
+    height: auto;
+    max-height: 60vh;
     object-fit: contain;
-  }
-
-  .viewerInfo {
-    flex-shrink: 0;
+    margin: 0 auto;
   }
 
   .viewerMediaTall {
-    flex: none;        /* прибираємо flex:1/min-height:0, які стискали контейнер */
-    height: auto;
+    max-height: none;
   }
 
   .viewerImageTall {
-    width: 100%;
     height: auto;
     max-height: none;
-    object-fit: unset;
+  }
+
+  .viewerInfo {
+    margin-top: 0;
   }
 }
+
+
+/* ==========================================================================
+   RESPONSIVE — SMALL MOBILE (<= 480px)
+   ========================================================================== */
 
 @media (max-width: 480px) {
   .viewerInfo {
