@@ -9,6 +9,8 @@ interface Settings {
 
   showPostInfo: boolean;
 
+  enableBlacklist: boolean;
+
   kittyMode: boolean;
   blackMode: boolean;
 }
@@ -25,6 +27,8 @@ export const defaultSettings: Settings = {
   paginationPos: 'center',
 
   showPostInfo: true,
+
+  enableBlacklist: true,
 
   kittyMode: false,
   blackMode: false,

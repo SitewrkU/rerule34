@@ -193,8 +193,11 @@
         }
       }
     }
-
   }
+}
+
+.blacklistTagDisabled{
+  text-decoration: line-through;
 }
 
 .dropdown.dropdown :global(.ant-collapse-header) {

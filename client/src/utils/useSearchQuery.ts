@@ -1,12 +1,17 @@
 import {useSearchStore} from "../store/searchStore.ts";
 import {blackThemes, useBlacklistStore} from "../store/blackListStore.ts";
+import {useSettingsStore} from "../store/settingsStore.ts";
 
 export function useSearchQuery(): string {
-  const maintags = useSearchStore((s) => s.params.tags);
+  const maintags = useSearchStore(s => s.params.tags);
+  const settings  = useSettingsStore(s => s.settings);
 
-  const transformedBLtags = titleToTags()
+  if(!settings.enableBlacklist){
+    return maintags || '';
+  }
 
-  const blacklistPart = transformedBLtags.map((tag) => `-${tag}`).join(' ');
+  const transformedBlackListTags = titleToTags()
+  const blacklistPart = transformedBlackListTags.map((tag) => `-${tag}`).join(' ');
 
   return [blacklistPart, maintags].filter(Boolean).join(' ');
 }

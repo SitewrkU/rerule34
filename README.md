@@ -12,6 +12,10 @@ The current version on GitHub is still in the testing phase and does not include
   (check: `npm -v`)
 - **Git** — [Download](https://git-scm.com/downloads)
 
+Additional:
+
+- **700MB** disk space (not counting main requirements)
+
 ## Setup
 So, once you've downloaded all the tools, run these commands:
 

@@ -3,9 +3,11 @@ import { Button, Dropdown, Collapse } from 'antd';
 import styles from './SearchTagsBlock.module.css'
 import {blackThemes, useBlacklistStore} from "../../store/blackListStore.ts";
 import clsx from "clsx";
+import {useSettingsStore} from "../../store/settingsStore.ts";
 
 const SearchTagsBlock = () => {
   const selected = useBlacklistStore((s) => s.selected)
+  const isBlackListEnabled = useSettingsStore(s => s.settings.enableBlacklist)
 
   const selectedThemes = blackThemes.filter(theme =>
     selected.includes(theme.title)
@@ -47,7 +49,7 @@ const SearchTagsBlock = () => {
                 ),
                 children: <p className={styles.tagstoremove}>
                   {filteredTags.map((tag, i) => (
-                    <span key={i}>{tag}</span>
+                    <span key={i} className={clsx(!isBlackListEnabled && styles.blacklistTagDisabled)}>{tag}</span>
                   ))}
                 </p>,
               },
