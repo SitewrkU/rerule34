@@ -1,0 +1,83 @@
+import express, { Request, Response, NextFunction } from 'express';
+import * as collectionsRepo from '../repositories/collections.repository'
+
+const router = express.Router();
+
+router.get('/', async (_req: Request, res: Response, next: NextFunction) => {
+  try {
+    const collections = await collectionsRepo.getCollections();
+    res.json({ data: collections });
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.post('/', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { name } = req.body;
+    if (!name || typeof name !== 'string') {
+      return res.status(400).json({ error: 'name is required' });
+    }
+    const collection = await collectionsRepo.createCollection(name);
+    res.status(201).json({ data: collection });
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.post('/:id/posts', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id, sample_url, file_url } = req.body;
+    if (!id || !sample_url || !file_url) {
+      return res.status(400).json({ error: 'id, sample_url and file_url are required' });
+    }
+
+    const collectionId = String(req.params.id);
+    const collection = await collectionsRepo.addPostToCollection(collectionId, { id, sample_url, file_url });
+    if (!collection) return res.status(404).json({ error: 'Collection not found' });
+    res.json({ data: collection });
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.post('/default/posts', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id, sample_url, file_url } = req.body;
+    if (!id || !sample_url || !file_url) {
+      return res.status(400).json({ error: 'id, sample_url and file_url are required' });
+    }
+
+    const def = await collectionsRepo.getDefaultCollection();
+    const updated = await collectionsRepo.addPostToCollection(def.id, { id, sample_url, file_url });
+    res.json({ data: updated });
+  } catch (e) {
+    next(e);
+  }
+});
+
+
+router.delete('/:id/posts/:postId', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = String(req.params.id);
+    const postId = String(req.params.postId);
+    const collection = await collectionsRepo.removePostFromCollection(id, postId);
+    if (!collection) return res.status(404).json({ error: 'Collection not found' });
+    res.json({ data: collection });
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = String(req.params.id);
+    const deleted = await collectionsRepo.deleteCollection(id);
+    if (!deleted) return res.status(404).json({ error: 'Collection not found' });
+    res.status(204).send();
+  } catch (e) {
+    next(e);
+  }
+});
+
+export default router;

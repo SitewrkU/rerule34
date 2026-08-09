@@ -1,8 +1,11 @@
-import express, {Request, Response} from 'express'
+import express, {NextFunction, Request, Response} from 'express'
 import cors from 'cors'
-import { PORT } from '../config/env'
 import { errorHandler } from '../middlewares/errorHandler'
+import { PORT } from '../config/env'
+import {initDb} from "../db/db";
+
 import postsRouter from '../routes/posts'
+import collectionsRouter from '../routes/collections'
 
 const app = express();
 
@@ -14,9 +17,16 @@ app.get('/', (req: Request, res: Response) => {
 })
 
 app.use('/posts', postsRouter);
+app.use('/collections', collectionsRouter);
 
 app.use(errorHandler)
 
-app.listen(PORT, () => {
-  console.log(`Server working at http://localhost:${PORT}`)
-});
+
+async function run() {
+  await initDb();
+  app.listen(PORT, () => {
+    console.log(`Server working at http://localhost:${PORT}`)
+  });
+}
+
+run()
