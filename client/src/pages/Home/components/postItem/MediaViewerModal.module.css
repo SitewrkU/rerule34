@@ -1,3 +1,4 @@
+/* Цей код редагував ШІ, бтв мене просто заєбало, що я нічого не розумію і путаюся в цих antd оверрайдах*/
 /* ==========================================================================
    MODAL SHELL (antd overrides)
    ========================================================================== */
@@ -264,7 +265,18 @@
   }
 
   .viewerInfo {
+    padding: 8px 5px;
+    gap: 5px;
     margin-top: 0;
+    flex-wrap: wrap;
+
+    .download {
+      flex-basis: 100%;
+      margin-left: 0;
+      margin-top: 10px;
+      display: flex;
+      justify-content: flex-end;
+    }
   }
 }
 
