@@ -1,6 +1,6 @@
 import type {Post} from "@rerule34/shared/types/post.ts";
 import {useCallback, useEffect, useState} from "react";
-import {getPosts} from "../../../../utils/api.ts";
+import {getPosts} from "../../../../utils/api/posts.ts";
 import {PostItem} from "../postItem/PostItem.tsx";
 import {useSearchStore} from "../../../../store/searchStore.ts";
 import {useSettingsStore} from "../../../../store/settingsStore.ts";
@@ -11,7 +11,7 @@ import { Pagination } from 'antd';
 import { motion, AnimatePresence } from "motion/react";
 import styles from './Posts.module.css'
 import clsx from 'clsx';
-import {FavouriteCircle, Search, ImageDownload2, Delete3, Hourglass} from "clicons-react";
+import {FavouriteCircle, Search, ImageDownload2, Delete3, Hourglass, ArrowLeft} from "clicons-react";
 
 const PAGE_SIZE = 30; // постів на одну стоірнку
 const PAGES_PER_BATCH = 3; // к-ть сторінок які тягнуться за запит
@@ -24,6 +24,7 @@ const Posts = () => {
   const [loadedBatches, setLoadedBatches] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const SearchBarParams = useSearchStore((state) => state.params);
   const query = useSearchQuery();
@@ -43,6 +44,7 @@ const Posts = () => {
   const loadBatch = useCallback(async (batchIndex: number) => {
     if(SearchBarParams.tags === '') return;
     setLoading(true);
+    setError(null);
 
     try{
       const data = await getPosts({
@@ -50,13 +52,13 @@ const Posts = () => {
         limit: BATCH_SIZE,
         pid: batchIndex
       });
-      const newPosts = data.data;
 
-      setAllPosts(prev => batchIndex === 0 ? newPosts : [...prev, ...newPosts]);
-      setHasMore(newPosts.length === BATCH_SIZE); // чек чи не прийшло менше, якщо прийшло то кінець
+      setAllPosts(prev => batchIndex === 0 ? data : [...prev, ...data]);
+      setHasMore(data.length === BATCH_SIZE); // чек чи не прийшло менше, якщо прийшло то кінець
       setLoadedBatches(batchIndex + 1)
     }catch (e) {
       console.error('Помилка при завантаженні постів:', e)
+      setError('Не вдалося завантажити пости. Спробуйте ще раз.');
     }finally {
       setLoading(false);
     }
@@ -69,6 +71,7 @@ const Posts = () => {
     setMaxPageReached(1);
     setLoadedBatches(0);
     setHasMore(true);
+    setError(null);
   }, []);
 
   useEffect(() => {
@@ -105,6 +108,8 @@ const Posts = () => {
     ? allPosts.length + PAGE_SIZE
     : allPosts.length;
 
+  const hasSearched = SearchBarParams.tags !== '';
+
   return (
     <div>
       {allPosts.length > 0 ? (
@@ -133,29 +138,6 @@ const Posts = () => {
             />
           ) : null}
 
-          {/* Іконка загрузки постів */}
-          <div className={styles.loadingContainer}>
-          {loading ? (
-            <AnimatePresence>
-              {loading && (
-                <motion.div
-                  animate={{ rotate: [0, 180, 180, 360] }}
-                  transition={{
-                    duration: 1.6,
-                    times: [0, 0.45, 0.55, 1],
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  style={{ display: "inline-flex" }}
-                >
-                  <Hourglass className={styles.loadingIcon}/>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          ): null}
-          </div>
-
 
           {/* Пости */}
           <div className={styles.posts}>
@@ -165,7 +147,6 @@ const Posts = () => {
           {!hasMore && page === totalPages && (
             <p className={styles.endofpostsText}>Не видно потрібного поста? Спробуй вимкнути свій <b>блек-ліст</b>, можливо, він вирізав пости. Або <b>в пошук відправився не повний запит</b>, перевір і його.</p>
           )}
-
 
 
           {/* Пагінація */}
@@ -181,15 +162,50 @@ const Posts = () => {
               disabled={loading}
             />
           ): null}
-
         </div>
 
 
+      ) : hasSearched ? (
+        error ? (
+            <div className={styles.errorState}>
+              <p>{error}</p>
+              <button onClick={() => loadBatch(0)}>Повторити</button>
+            </div>
+          ) : loading ? (
+          <div className={styles.loadingContainer}>
+            <AnimatePresence>
+              <motion.div
+                animate={{ rotate: [0, 180, 180, 360] }}
+                transition={{
+                  duration: 1.6,
+                  times: [0, 0.45, 0.55, 1],
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+                style={{ display: "inline-flex" }}
+              >
+                <Hourglass className={styles.loadingIcon}/>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        ) : (
+          <div className={styles.emptyState}>
+            <h2>Тут нікого, крім нас, курчат!</h2>
+            <p>Ми не змогли нічого знайти за запитом "{SearchBarParams.tags}"</p>
 
-      ) : (
-
-
-
+            <div className={styles.emptyStateInfo}>
+            <p>Це може означати кілька речей:</p>
+            <ol>
+              <li>Такого контенту, банально, не існує.</li>
+              <li>В пошук було відправлено неповний(обрізаний) тег, провір його, "{SearchBarParams.tags}" - це справді те, що ти шукаєш?</li>
+              <li>Запит надто важкий: таких комбо(з тегів) навіть в маку немає.</li>
+              <li>Якщо це рідкисний тег, або комбінація тегів, то блек-ліст міг обрізати дорогоцінні матеріали. Спробуй відключити блек-ліст, тимчасово: Налаштування =&gt; Блек-ліст =&gt; Включити блек-ліст під час пошуку </li>
+            </ol>
+            </div>
+            <ArrowLeft onClick={handleClearClick} className={styles.emptyStateBack}/>
+          </div>
+        )
+        ) : (
         <div className={styles.siteInfo}>
           <img src="/rer34.png" alt=""/>
           <h1># Re:Rule34</h1>

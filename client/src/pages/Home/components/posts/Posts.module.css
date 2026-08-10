@@ -139,3 +139,44 @@
     color: var(--main-white);
   }
 }
+
+.emptyState{
+  padding: 10px;
+  margin: 40px auto;
+  max-width: 600px;
+  display: flex;
+
+  flex-direction: column;
+  color: var(--main-white);
+
+  h2{
+    color: var(--main-color);
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+
+  ol{
+    li{
+      margin-left: 15px;
+      margin-bottom: 5px;
+    }
+  }
+
+  .emptyStateInfo{
+    padding: 10px;
+    background-color: rgb(255 255 255 / 0.03);
+    border: 2px dashed var(--border-main-lighter);
+    margin-top: 10px;
+    opacity: 0.7;
+  }
+
+  .emptyStateBack{
+    margin-top: 10px;
+    cursor: pointer;
+    &:hover{
+      scale: 1.1;
+    }
+  }
+
+
+}

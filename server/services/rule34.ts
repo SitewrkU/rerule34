@@ -30,6 +30,11 @@ export async function callApi(params: any) {
         ...safeParams,
       },
     });
+
+    if (!Array.isArray(response.data)) {
+      return [];
+    }
+
     return response.data.map(mapRawPosts);
   }catch(err){
     console.error(err);

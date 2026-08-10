@@ -2,7 +2,7 @@ import { useCallback, useState, useMemo } from 'react'
 import { AutoComplete, Input } from 'antd';
 import type { AutoCompleteProps } from 'antd';
 import {useSearchStore} from "../../store/searchStore.ts";
-import {getTagAutocomplete} from "../../utils/api.ts";
+import {getTagAutocomplete} from "../../utils/api/posts.ts";
 import styles from './Searchbar.module.css'
 
 const parseCount = (label: string): string | null => {

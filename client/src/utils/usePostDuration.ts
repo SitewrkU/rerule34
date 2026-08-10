@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { api } from "../utils/api.ts";
+import { api } from "./api/api.ts";
 import type { Post } from "@rerule34/shared/types/post.ts";
 
 export function usePostDuration(post: Post) {

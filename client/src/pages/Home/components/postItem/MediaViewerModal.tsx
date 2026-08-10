@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {getComments} from "../../../../utils/api.ts";
+import {getComments} from "../../../../utils/api/posts.ts";
 import type { Post } from "@rerule34/shared/types/post.ts";
 import {formatDate} from "../../../../lib/dateFormater.ts";
 import type {Comment as CommentType} from '@rerule34/shared/types/comment'

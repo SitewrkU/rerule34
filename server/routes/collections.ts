@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/', async (_req: Request, res: Response, next: NextFunction) => {
   try {
     const collections = await collectionsRepo.getCollections();
-    res.json({ data: collections });
+    res.json({ collections });
   } catch (e) {
     next(e);
   }
@@ -19,7 +19,7 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
       return res.status(400).json({ error: 'name is required' });
     }
     const collection = await collectionsRepo.createCollection(name);
-    res.status(201).json({ data: collection });
+    res.status(201).json({ collection });
   } catch (e) {
     next(e);
   }
@@ -35,7 +35,7 @@ router.post('/:id/posts', async (req: Request, res: Response, next: NextFunction
     const collectionId = String(req.params.id);
     const collection = await collectionsRepo.addPostToCollection(collectionId, { id, sample_url, file_url });
     if (!collection) return res.status(404).json({ error: 'Collection not found' });
-    res.json({ data: collection });
+    res.json({ collection });
   } catch (e) {
     next(e);
   }
@@ -50,7 +50,7 @@ router.post('/default/posts', async (req: Request, res: Response, next: NextFunc
 
     const def = await collectionsRepo.getDefaultCollection();
     const updated = await collectionsRepo.addPostToCollection(def.id, { id, sample_url, file_url });
-    res.json({ data: updated });
+    res.json({ updated });
   } catch (e) {
     next(e);
   }
@@ -63,7 +63,7 @@ router.delete('/:id/posts/:postId', async (req: Request, res: Response, next: Ne
     const postId = String(req.params.postId);
     const collection = await collectionsRepo.removePostFromCollection(id, postId);
     if (!collection) return res.status(404).json({ error: 'Collection not found' });
-    res.json({ data: collection });
+    res.json({ collection });
   } catch (e) {
     next(e);
   }

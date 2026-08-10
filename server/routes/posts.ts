@@ -32,7 +32,7 @@ router.get('/', ApiLimiter ,async (req: Request, res: Response, next) => {
       duration: isVideoUrl(post.file_url) ? (durationCache.get(post.id) ?? null) : null,
     }));
 
-    res.status(200).json({ data: finalData });
+    res.status(200).json(finalData);
   } catch (e) {
     next(e);
   }
@@ -63,7 +63,7 @@ router.get('/:id/comments', ApiLimiter, async (req: Request, res: Response, next
   try {
     const id = String(req.params.id);
     const comments = await getComments(id);
-    res.status(200).json({ data: comments });
+    res.status(200).json(comments);
   } catch (e) {
     next(e);
   }
