@@ -3,6 +3,7 @@ import * as collectionsRepo from '../repositories/collections.repository'
 
 const router = express.Router();
 
+//Отримати всі колекції --
 router.get('/', async (_req: Request, res: Response, next: NextFunction) => {
   try {
     const collections = await collectionsRepo.getCollections();
@@ -12,6 +13,7 @@ router.get('/', async (_req: Request, res: Response, next: NextFunction) => {
   }
 });
 
+//Створити колекцію
 router.post('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { name } = req.body;
@@ -25,6 +27,23 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
+//Відправити пост в дефолтну колекцію (Збережене) --
+router.post('/default/posts', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id, sample_url, file_url } = req.body;
+    if (!id || !sample_url || !file_url) {
+      return res.status(400).json({ error: 'id, sample_url and file_url are required' });
+    }
+
+    const def = await collectionsRepo.getDefaultCollection();
+    const updated = await collectionsRepo.addPostToCollection(def.id, { id, sample_url, file_url });
+    res.json({ updated });
+  } catch (e) {
+    next(e);
+  }
+});
+
+//Відправка поста в колекцію(за id, id саме колекції передається)
 router.post('/:id/posts', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id, sample_url, file_url } = req.body;
@@ -41,22 +60,8 @@ router.post('/:id/posts', async (req: Request, res: Response, next: NextFunction
   }
 });
 
-router.post('/default/posts', async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const { id, sample_url, file_url } = req.body;
-    if (!id || !sample_url || !file_url) {
-      return res.status(400).json({ error: 'id, sample_url and file_url are required' });
-    }
 
-    const def = await collectionsRepo.getDefaultCollection();
-    const updated = await collectionsRepo.addPostToCollection(def.id, { id, sample_url, file_url });
-    res.json({ updated });
-  } catch (e) {
-    next(e);
-  }
-});
-
-
+//Видалити з колекції(за id), пост (за postId) --
 router.delete('/:id/posts/:postId', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const id = String(req.params.id);
@@ -69,6 +74,7 @@ router.delete('/:id/posts/:postId', async (req: Request, res: Response, next: Ne
   }
 });
 
+// Видалити колекцію
 router.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const id = String(req.params.id);

@@ -26,7 +26,7 @@ const HomePage = () => {
         />
         <SearchTagsBlock/>
         <Searchbar/>
-        <CollectionsBookmark className={clsx(styles.navButton, styles.notAvaible)}/>
+        <CollectionsBookmark className={clsx(styles.navButton)} onClick={() => navigate('/collections')}/>
         <Settings className={styles.navButton} onClick={() => navigate('/settings')}/>
         <SearchSettings/>
       </header>

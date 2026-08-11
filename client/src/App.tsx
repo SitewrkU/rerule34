@@ -1,7 +1,10 @@
+import {useEffect} from "react";
 import { BrowserRouter, Route, Routes} from "react-router-dom";
+import {useCollectionsStore} from "./store/collectionStore.ts";
 import HomePage from "./pages/Home/HomePage.tsx";
 import SettingsPage from "./pages/Settings/SettingsPage.tsx";
 import SetupPage from "./pages/Setup/SetupPage.tsx";
+import CollectionsPage from "./pages/Collections/CollectionsPage.tsx";
 import {SetupGuard} from "./pages/Setup/SetupGuard.tsx";
 
 import AnimatedOutlet from "./ui/AnimatedOutlet.tsx";
@@ -21,6 +24,10 @@ const App = () => {
   const currentTheme = useSettingsStore((s) => s.settings.theme);
   const antdTheme = antdThemeMap[currentTheme];
 
+  useEffect(() => {
+    void useCollectionsStore.getState().fetchCollections();
+  }, []);
+
   return (
     <>
       <ConfigProvider
@@ -38,6 +45,7 @@ const App = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/setup" element={<SetupPage />} />
             <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/collections" element={<CollectionsPage />} />
           </Route>
         </Routes>
         </BrowserRouter>

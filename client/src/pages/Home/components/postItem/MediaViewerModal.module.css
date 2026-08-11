@@ -77,7 +77,7 @@
 
 .viewerInfo {
   display: flex;
-  gap: 20px;
+  gap: 10px;
   padding: 20px 10px;
   background-color: var(--background-tertiary);
   margin-top: 10px;
@@ -130,6 +130,40 @@
 
     svg {
       color: var(--main-color);
+    }
+  }
+
+  .save {
+    color: #ffffff90;
+
+    svg {
+      cursor: pointer;
+      transition: color 0.2s ease, transform 0.15s ease, fill 0.2s ease;
+
+      &:hover {
+        color: #ffffff;
+        transform: scale(1.1);
+      }
+
+      &:active {
+        transform: scale(0.9);
+      }
+
+      &.saved {
+        cursor: default;
+        color: #ffd166;
+        fill: #ffd166;
+
+        &:hover {
+          transform: none;
+        }
+      }
+
+      &.saving {
+        cursor: default;
+        pointer-events: none;
+        animation: pulse 0.9s ease-in-out infinite;
+      }
     }
   }
 
@@ -293,5 +327,21 @@
   .viewerInfo :global(.ant-tag) {
     margin-inline-end: 4px;
     font-size: 12px;
+  }
+}
+
+
+/* ==========================================================================
+   ANIMATIONS
+   ========================================================================== */
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.92);
   }
 }

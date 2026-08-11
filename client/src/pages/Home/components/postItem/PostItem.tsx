@@ -1,13 +1,17 @@
-import {useState} from "react";
 import type { Post } from "@rerule34/shared/types/post.ts";
-import {usePostDuration} from "../../../../utils/usePostDuration.ts";
+import {useState} from "react";
 import {useSettingsStore} from "../../../../store/settingsStore.ts";
+import { useCollectionsStore } from "../../../../store/collectionStore.ts";
+
+import {usePostDuration} from "../../../../utils/usePostDuration.ts";
 import {useLongPressPreview} from "../../../../utils/useLongPressPreview.ts";
+
 import {ImagePreviewOverlay} from "./ImagePreviewOverlay.tsx";
 import MediaViewerModal from "./MediaViewerModal.tsx";
+
 import {formatDate} from "../../../../lib/dateFormater.ts";
 
-import { ChevronUp, PlayCircle2, Comment } from "clicons-react";
+import { ChevronUp, PlayCircle2, Comment, Bookmark2} from "clicons-react";
 import clsx from "clsx";
 import styles from './PostItem.module.css';
 
@@ -30,6 +34,8 @@ export function PostItem({ post }: { post: Post }) {
   const { isPreviewOpen, handlers } = useLongPressPreview();
   const { onClick: onLongPressClick, ...pressHandlers } = handlers;
   const [isViewerOpen, setViewerOpen] = useState(false);
+
+  const isSaved = useCollectionsStore(state => state.defaultSavedIds.has(post.id));
 
   return (
     <div
@@ -60,6 +66,12 @@ export function PostItem({ post }: { post: Post }) {
             settings.blackMode && styles.blackMode
           )}
         />
+
+        {isSaved && (
+          <span className={styles.savedBadge}>
+            <Bookmark2 strokeWidth={3} />
+          </span>
+        )}
         </div>
         {(duration != null && isVideo) && (
           <span className={styles.duration}><PlayCircle2/> {formatDuration(duration)}</span>

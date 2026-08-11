@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import { useCollectionsStore } from "../../../../store/collectionStore";
 import {getComments} from "../../../../utils/api/posts.ts";
 import type { Post } from "@rerule34/shared/types/post.ts";
 import {formatDate} from "../../../../lib/dateFormater.ts";
@@ -18,7 +19,7 @@ import "@vidstack/react/player/styles/default/layouts/video.css";
 import clsx from "clsx";
 
 import styles from './MediaViewerModal.module.css'
-import {ChevronUp, Download} from "clicons-react";
+import {ChevronUp, Download, Bookmark2} from "clicons-react";
 
 
 interface Props {
@@ -38,6 +39,23 @@ export default function MediaViewerModal({ isOpen, onClose, post, isVideo }: Pro
     const img = e.currentTarget;
     const ratio = img.naturalHeight / img.naturalWidth;
     setIsTallImage(ratio >= 2);
+  }
+
+  const isSaved = useCollectionsStore(state => state.defaultSavedIds.has(post.id));
+  const saveToDefault = useCollectionsStore(state => state.saveToDefault);
+  const [isSaving, setIsSaving] = useState(false);
+
+  const handleSavePost = async () => {
+    if (isSaving || isSaved) return;
+    setIsSaving(true);
+
+    try {
+      await saveToDefault({ id: post.id, sample_url: post.sample_url, file_url: post.file_url });
+    } catch (e) {
+      console.error('Не вдалося зберегти пост:', e);
+    } finally {
+      setIsSaving(false);
+    }
   }
 
 
@@ -68,6 +86,7 @@ export default function MediaViewerModal({ isOpen, onClose, post, isVideo }: Pro
   }, [isOpen, post.id]);
 
 
+
   useEffect(() => {
     async function resetTall(){
       setIsTallImage(false);
@@ -75,6 +94,7 @@ export default function MediaViewerModal({ isOpen, onClose, post, isVideo }: Pro
 
     void resetTall();
   }, [post.id]);
+
 
   return (
     <Modal
@@ -120,6 +140,14 @@ export default function MediaViewerModal({ isOpen, onClose, post, isVideo }: Pro
         <div className={styles.stats}>
           <p><ChevronUp strokeWidth={3} /> {post.score}</p>
           <p>Оцінки</p>
+        </div>
+
+        <div className={styles.save}>
+          <Bookmark2
+            strokeWidth={3}
+            className={clsx(isSaved && styles.saved, isSaving && styles.saving)}
+            onClick={handleSavePost}
+          />
         </div>
 
         <div className={styles.download}>
