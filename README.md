@@ -11,6 +11,7 @@ The current version on GitHub is still in the testing phase and does not include
 - **npm** v.10+ (goes along with Node.js)
   (check: `npm -v`)
 - **Git** — [Download](https://git-scm.com/downloads)
+  (check: `git -v`)
 
 Additional:
 
@@ -49,6 +50,10 @@ npm run dev
 ```
 
 That’s all! Now you can open your client localhost link and use client.
+
+---
+
+Useful: faster way to start the application is using the `start.bat` file. Btw, it works only after main setup.
 
 ## ⚠️ Disclaimer
 

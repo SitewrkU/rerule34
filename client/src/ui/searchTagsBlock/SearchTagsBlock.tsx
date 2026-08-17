@@ -4,17 +4,19 @@ import styles from './SearchTagsBlock.module.css'
 import {blackThemes, useBlacklistStore} from "../../store/blackListStore.ts";
 import clsx from "clsx";
 import {useSettingsStore} from "../../store/settingsStore.ts";
+import {useSearchSettingsStore, buildSettingsTags} from "../../store/searchSettingsStore.ts";
 
 const SearchTagsBlock = () => {
   const selected = useBlacklistStore((s) => s.selected)
   const isBlackListEnabled = useSettingsStore(s => s.settings.enableBlacklist)
+  const SearchSettings = useSearchSettingsStore(s => s.settings)
 
   const selectedThemes = blackThemes.filter(theme =>
     selected.includes(theme.title)
   );
 
   const filteredTags = selectedThemes.flatMap(theme => theme.tags);
-
+  const addedTags = buildSettingsTags(SearchSettings);
 
   return (
     <Dropdown
@@ -59,10 +61,14 @@ const SearchTagsBlock = () => {
                   <div className={clsx(styles.collapseHeader, styles.chAdd)}>
                     <AddCircle/>
                     <p>Теги, які додаються</p>
-                    <p>+0</p>
+                    <p>+{addedTags.length}</p>
                   </div>
                 ),
-                children: <p>Тут будуть теги</p>,
+                children: <p className={styles.tagstoadd}>
+                  {addedTags.map((tag, i) => (
+                    <span key={i}>{tag}</span>
+                  ))}
+                </p>,
               },
             ]}
           />
@@ -74,7 +80,7 @@ const SearchTagsBlock = () => {
         <div>
           <Tag size={18} strokeWidth={3} className={styles.tagIcon}/>
           <p className={styles.removed}>-{filteredTags.length}</p>
-          <p className={styles.added}>+0</p>
+          <p className={styles.added}>+{addedTags.length}</p>
         </div>
       </Button>
     </Dropdown>

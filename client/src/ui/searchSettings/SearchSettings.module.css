@@ -2,9 +2,58 @@
   background-color: var(--background-secondary);
 }
 
+p{
+  margin-bottom: 5px;
+}
+
+.switcherArea{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  > p{
+    margin: 0;
+  }
+  .switcher.switcher{
+    margin: 10px 0;
+  }
+}
+
+
 .button{
   position: absolute;
   top: 65px;
   right: 10px;
   cursor: pointer;
+}
+
+.randomText {
+  background: linear-gradient(90deg,
+    #ffffff 0%,
+    #bfdbfe 25%,
+    #fbbf24 50%,
+    #a78bfa 75%,
+    #ffffff 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 3.5s linear infinite;
+}
+
+:global(.ant-radio-wrapper-disabled) .randomText {
+  background: none;
+  -webkit-text-fill-color: inherit;
+  -webkit-background-clip: initial;
+  background-clip: initial;
+  animation: none;
+  opacity: 0.45;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+@keyframes shimmer {
+  to {
+    background-position: 200% center;
+  }
 }

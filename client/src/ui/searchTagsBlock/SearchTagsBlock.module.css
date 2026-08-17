@@ -176,20 +176,16 @@
       }
 
       > .tagstoadd{
+        padding: 5px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
         > span{
-          color: color-mix(
-            in srgb,
-            color-mix(in srgb, var(--accent-green) 80%, grey) 50%,
-            transparent
-          );
-
-          &:nth-child(odd){
-            color: color-mix(
-              in srgb,
-              color-mix(in srgb, var(--accent-green) 80%, grey) 70%,
-              transparent
-            );
-          }
+          padding: 2px 5px;
+          border-radius: 5px;
+          background-color: color-mix(in srgb, var(--accent-green) 5%, transparent);
+          border: 1px solid color-mix(in srgb, var(--accent-green) 70%, transparent);
+          color: var(--accent-green);
         }
       }
     }
