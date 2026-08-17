@@ -6,7 +6,7 @@ export interface RawR34Comment {
   creator_id: string;
   created_at: string;
 }
-k
+
 export interface Comment {
   id: string;
   body: string;

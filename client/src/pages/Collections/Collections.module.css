@@ -1,0 +1,63 @@
+.page{
+  position: relative;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile{
+  display: flex;
+  gap: 10px;
+  color: var(--main-white);
+
+  .profilePic{
+    border-radius: 10px;
+    background-color: var(--background-secondary);
+    padding: 40px;
+
+    svg{
+      width: 48px;
+      height: 48px;
+    }
+  }
+
+  .profileInfo{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    .rank{
+      color: grey;
+    }
+
+    p{
+      font-size: 1.2rem;
+    }
+
+    > p:first-child{
+      font-size: 1.6rem;
+      color: var(--main-color);
+    }
+  }
+}
+
+
+.savedButton{
+  cursor: pointer;
+  color: #ffd166;
+  border: none;
+  border-radius: 10px;
+  background-color: var(--background-secondary);
+  padding: 40px;
+  margin-top: 20px;
+
+  transition: all .2s ease-in-out;
+  &:hover{
+    background-color: #453b29;
+  }
+
+  svg{
+    width: 48px;
+    height: 48px;
+  }
+}

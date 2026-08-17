@@ -17,3 +17,13 @@ export function formatDate(dateString, withTime = false) {
 
   return `${baseDate} ${hours}:${minutes}:${seconds}`;
 }
+
+export function formatDuration(sec: number) {
+  const m = Math.floor(sec / 60);
+  const s = Math.floor(sec % 60);
+  if (m > 0){
+    return `${m}хв`
+  }else{
+    return `${s}сек`
+  }
+}

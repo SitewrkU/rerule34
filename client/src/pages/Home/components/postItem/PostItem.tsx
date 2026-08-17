@@ -9,21 +9,13 @@ import {useLongPressPreview} from "../../../../utils/useLongPressPreview.ts";
 import {ImagePreviewOverlay} from "./ImagePreviewOverlay.tsx";
 import MediaViewerModal from "./MediaViewerModal.tsx";
 
-import {formatDate} from "../../../../lib/dateFormater.ts";
+import {formatDate, formatDuration} from "../../../../lib/timeFormater.ts";
 
 import { ChevronUp, PlayCircle2, Comment, Bookmark2} from "clicons-react";
 import clsx from "clsx";
 import styles from './PostItem.module.css';
 
-function formatDuration(sec: number) {
-  const m = Math.floor(sec / 60);
-  const s = Math.floor(sec % 60);
-  if (m > 0){
-    return `${m}хв`
-  }else{
-    return `${s}сек`
-  }
-}
+
 
 
 export function PostItem({ post }: { post: Post }) {
@@ -99,6 +91,7 @@ export function PostItem({ post }: { post: Post }) {
         onClose={() => setViewerOpen(false)}
         post={post}
         isVideo={isVideo}
+        duration={duration}
       />
 
     </div>

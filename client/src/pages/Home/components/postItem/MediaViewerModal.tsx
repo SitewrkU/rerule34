@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from "react";
 import { useCollectionsStore } from "../../../../store/collectionStore";
 import {getComments} from "../../../../utils/api/posts.ts";
-import type { Post } from "@rerule34/shared/types/post.ts";
-import {formatDate} from "../../../../lib/dateFormater.ts";
+import {formatDate} from "../../../../lib/timeFormater.ts";
 import type {Comment as CommentType} from '@rerule34/shared/types/comment'
 
 import { Modal, Button } from "antd";
@@ -21,15 +20,25 @@ import clsx from "clsx";
 import styles from './MediaViewerModal.module.css'
 import {ChevronUp, Download, Bookmark2} from "clicons-react";
 
+export interface MediaViewerPost {
+  id: number;
+  file_url: string;
+  sample_url?: string;
+  owner?: string;
+  createdAt?: string;
+  score?: number;
+}
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  post: Post;
+  post: MediaViewerPost;
   isVideo: boolean;
+  duration: number | null;
+  minimal?: boolean; // тільки плеєр/зображення, без інфи, коментів і кнопки збереження
 }
 
-export default function MediaViewerModal({ isOpen, onClose, post, isVideo }: Props) {
+export default function MediaViewerModal({ isOpen, onClose, post, isVideo, duration, minimal=false }: Props) {
   const [comments, setComments] = useState<CommentType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -50,7 +59,12 @@ export default function MediaViewerModal({ isOpen, onClose, post, isVideo }: Pro
     setIsSaving(true);
 
     try {
-      await saveToDefault({ id: post.id, sample_url: post.sample_url, file_url: post.file_url });
+      await saveToDefault({
+        id: post.id,
+        sample_url: post.sample_url,
+        file_url: post.file_url,
+        video_duration: duration,
+      });
     } catch (e) {
       console.error('Не вдалося зберегти пост:', e);
     } finally {
@@ -60,7 +74,7 @@ export default function MediaViewerModal({ isOpen, onClose, post, isVideo }: Pro
 
 
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen || minimal) return;
     let cancelled = false;
 
     async function fetchComments() {
@@ -83,7 +97,7 @@ export default function MediaViewerModal({ isOpen, onClose, post, isVideo }: Pro
     return () => {
       cancelled = true;
     };
-  }, [isOpen, post.id]);
+  }, [isOpen, post.id, minimal]);
 
 
 
@@ -127,61 +141,71 @@ export default function MediaViewerModal({ isOpen, onClose, post, isVideo }: Pro
         )}
       </div>
 
-      <div className={styles.viewerInfo}>
+      {!minimal && (
+        <>
+          <div className={styles.viewerInfo}>
 
-        <div className={styles.owner}>
-          <img src="/profileImgPlaceholder.png" alt="profile Image"/>
-          <div>
-          <p>{post.owner}</p>
-          <p className={styles.date}>{formatDate(post.createdAt, true)}</p>
-          </div>
-        </div>
-
-        <div className={styles.stats}>
-          <p><ChevronUp strokeWidth={3} /> {post.score}</p>
-          <p>Оцінки</p>
-        </div>
-
-        <div className={styles.save}>
-          <Bookmark2
-            strokeWidth={3}
-            className={clsx(isSaved && styles.saved, isSaving && styles.saving)}
-            onClick={handleSavePost}
-          />
-        </div>
-
-        <div className={styles.download}>
-          <Button
-            icon={<Download/>}
-            href={post.file_url}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Завантажити
-          </Button>
-        </div>
-
-      </div>
-
-      <div className={styles.comments}>
-        <p>Коментарі ({comments.length})</p>
-        {loading ? (
-          <p>Коменти грузяться...</p>
-        ) : (
-          comments.map((comment: CommentType) => (
-            <div key={comment.id} className={styles.comment}>
-              <div className={styles.commentInfo}>
-                <p>{comment.creator}</p>
+            {post.owner && (
+              <div className={styles.owner}>
+                <img src="/profileImgPlaceholder.png" alt="profile Image"/>
+                <div>
+                  <p>{post.owner}</p>
+                  {post.createdAt && (
+                    <p className={styles.date}>{formatDate(post.createdAt, true)}</p>
+                  )}
+                </div>
               </div>
+            )}
 
-              <div className={styles.commentBody}>
-                <p>{comment.body}</p>
+            {typeof post.score === 'number' && (
+              <div className={styles.stats}>
+                <p><ChevronUp strokeWidth={3} /> {post.score}</p>
+                <p>Оцінки</p>
               </div>
+            )}
 
+            <div className={styles.save}>
+              <Bookmark2
+                strokeWidth={3}
+                className={clsx(isSaved && styles.saved, isSaving && styles.saving)}
+                onClick={handleSavePost}
+              />
             </div>
-          ))
-        )}
-      </div>
+
+            <div className={styles.download}>
+              <Button
+                icon={<Download/>}
+                href={post.file_url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Завантажити
+              </Button>
+            </div>
+
+          </div>
+
+          <div className={styles.comments}>
+            <p>Коментарі ({comments.length})</p>
+            {loading ? (
+              <p>Коменти грузяться...</p>
+            ) : (
+              comments.map((comment: CommentType) => (
+                <div key={comment.id} className={styles.comment}>
+                  <div className={styles.commentInfo}>
+                    <p>{comment.creator}</p>
+                  </div>
+
+                  <div className={styles.commentBody}>
+                    <p>{comment.body}</p>
+                  </div>
+
+                </div>
+              ))
+            )}
+          </div>
+        </>
+      )}
 
     </Modal>
   );

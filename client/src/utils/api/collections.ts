@@ -1,21 +1,5 @@
 import {api} from "./api.ts";
-
-export interface CollectionPost{
-  id: string | number;
-  sample_url: string;
-  file_url: string;
-}
-
-
-export interface Collection {
-  id: string;
-  name: string;
-  posts: CollectionPost[];
-  isDefault: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
-
+import type { CollectionPost, Collection } from '@rerule34/shared/types/collection.ts'
 
 export async function getCollections(): Promise<Collection[]> {
   const { data } = await api.get('/collections');

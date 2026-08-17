@@ -30,13 +30,13 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
 //Відправити пост в дефолтну колекцію (Збережене) --
 router.post('/default/posts', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { id, sample_url, file_url } = req.body;
+    const { id, sample_url, file_url, video_duration } = req.body;
     if (!id || !sample_url || !file_url) {
       return res.status(400).json({ error: 'id, sample_url and file_url are required' });
     }
 
     const def = await collectionsRepo.getDefaultCollection();
-    const updated = await collectionsRepo.addPostToCollection(def.id, { id, sample_url, file_url });
+    const updated = await collectionsRepo.addPostToCollection(def.id, { id, sample_url, file_url, video_duration });
     res.json({ updated });
   } catch (e) {
     next(e);
@@ -46,13 +46,13 @@ router.post('/default/posts', async (req: Request, res: Response, next: NextFunc
 //Відправка поста в колекцію(за id, id саме колекції передається)
 router.post('/:id/posts', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { id, sample_url, file_url } = req.body;
+    const { id, sample_url, file_url, video_duration } = req.body;
     if (!id || !sample_url || !file_url) {
       return res.status(400).json({ error: 'id, sample_url and file_url are required' });
     }
 
     const collectionId = String(req.params.id);
-    const collection = await collectionsRepo.addPostToCollection(collectionId, { id, sample_url, file_url });
+    const collection = await collectionsRepo.addPostToCollection(collectionId, { id, sample_url, file_url, video_duration });
     if (!collection) return res.status(404).json({ error: 'Collection not found' });
     res.json({ collection });
   } catch (e) {

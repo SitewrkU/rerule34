@@ -1,6 +1,7 @@
 import { randomUUID } from 'crypto';
 import { db } from '../db/db';
-import { Collection, SavedPost } from '../db/types';
+import type { CollectionPost, Collection } from '@rerule34/shared/types/collection.ts'
+
 
 export async function getCollections(): Promise<Collection[]> {
   await db.read();
@@ -56,7 +57,7 @@ export async function deleteCollection(id: string): Promise<boolean> {
 
 export async function addPostToCollection(
   collectionId: string,
-  post: SavedPost
+  post: CollectionPost
 ): Promise<Collection | null> {
   await db.read();
   const collection = db.data.collections.find(c => c.id === collectionId);

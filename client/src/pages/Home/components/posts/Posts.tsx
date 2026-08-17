@@ -1,17 +1,19 @@
 import type {Post} from "@rerule34/shared/types/post.ts";
-import {useCallback, useEffect, useState} from "react";
+import {useCallback, useEffect, useState, useRef} from "react";
 import {getPosts} from "../../../../utils/api/posts.ts";
 import {PostItem} from "../postItem/PostItem.tsx";
 import {useSearchStore} from "../../../../store/searchStore.ts";
 import {useSettingsStore} from "../../../../store/settingsStore.ts";
+import {useAppStore} from "../../../../store/appStore.ts";
 import {useSearchQuery} from "../../../../utils/useSearchQuery.ts";
+
+import {LoadingSpinner} from "../../../../ui/LoadingSpinner/LoadingSpinner.tsx";
 
 import { Pagination } from 'antd';
 
-import { motion, AnimatePresence } from "motion/react";
 import styles from './Posts.module.css'
 import clsx from 'clsx';
-import {FavouriteCircle, Search, ImageDownload2, Delete3, Hourglass, ArrowLeft} from "clicons-react";
+import {FavouriteCircle, Search, ImageDownload2, Delete3, ArrowLeft} from "clicons-react";
 
 const PAGE_SIZE = 30; // постів на одну стоірнку
 const PAGES_PER_BATCH = 3; // к-ть сторінок які тягнуться за запит
@@ -30,6 +32,7 @@ const Posts = () => {
   const query = useSearchQuery();
   const resetParams = useSearchStore((state) => state.resetParams);
   const settings = useSettingsStore((state) => state.settings);
+  const addPostViewed = useAppStore(s => s.addPostViewed);
 
   const paginationClassName = clsx(
     styles.pagination,
@@ -64,6 +67,7 @@ const Posts = () => {
     }
   }, [SearchBarParams.tags, query]);
 
+  const prevViewedCountRef = useRef(0);
 
   const resetAndReload = useCallback(() => {
     setAllPosts([]);
@@ -99,9 +103,21 @@ const Posts = () => {
     window.scrollTo({ top: 0, behavior: 'instant' });
   }
 
+
+
   const totalPages = Math.ceil(allPosts.length / PAGE_SIZE);
   const viewedPostsCount = Math.min(maxPageReached * PAGE_SIZE, allPosts.length);
   const currentPagePosts = allPosts.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+  useEffect(() => {
+    const delta = viewedPostsCount - prevViewedCountRef.current;
+    if (delta > 0) {
+      addPostViewed(delta);
+      prevViewedCountRef.current = viewedPostsCount;
+    }
+  }, [viewedPostsCount, addPostViewed]);
+
+
 
   // приблизний total те, що вже точно є + запас якщо hasMore
   const estimatedTotal = hasMore
@@ -161,7 +177,9 @@ const Posts = () => {
               showSizeChanger={false}
               disabled={loading}
             />
-          ): null}
+          ) : (
+            <LoadingSpinner/>
+          )}
         </div>
 
 
@@ -172,22 +190,7 @@ const Posts = () => {
               <button onClick={() => loadBatch(0)}>Повторити</button>
             </div>
           ) : loading ? (
-          <div className={styles.loadingContainer}>
-            <AnimatePresence>
-              <motion.div
-                animate={{ rotate: [0, 180, 180, 360] }}
-                transition={{
-                  duration: 1.6,
-                  times: [0, 0.45, 0.55, 1],
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-                style={{ display: "inline-flex" }}
-              >
-                <Hourglass className={styles.loadingIcon}/>
-              </motion.div>
-            </AnimatePresence>
-          </div>
+            <LoadingSpinner/>
         ) : (
           <div className={styles.emptyState}>
             <h2>Тут нікого, крім нас, курчат!</h2>

@@ -1,7 +1,8 @@
 // store/collectionsStore.ts
 import { create } from 'zustand';
 import * as api from '../utils/api/collections';
-import type { Collection, CollectionPost } from '../utils/api/collections';
+import type { CollectionPost, Collection } from '@rerule34/shared/types/collection.ts'
+
 
 interface CollectionsState {
   collections: Collection[];

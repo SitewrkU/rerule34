@@ -1,20 +1,6 @@
-export interface SavedPost {
-  id: string | number;
-  sample_url: string;
-  file_url: string;
-}
+import type { Collection } from '@rerule34/shared/types/collection.ts'
 
-export interface Collection {
-  id: string;
-  name: string;
-  posts: SavedPost[];
-  isDefault: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
-
-
-//Розширювати ці, при наявності нових данних для збереження
+//Розширювати ці, при наявності нових данних(не колекцій) для збереження
 
 export interface DbSchema {
   collections: Collection[];
