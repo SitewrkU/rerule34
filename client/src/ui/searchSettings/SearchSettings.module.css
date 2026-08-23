@@ -2,8 +2,11 @@
   background-color: var(--background-secondary);
 }
 
-p{
-  margin-bottom: 5px;
+.searchSettings{
+  p{
+    margin-bottom: 5px;
+  }
+
 }
 
 .switcherArea{

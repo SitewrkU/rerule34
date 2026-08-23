@@ -1,5 +1,5 @@
 import type {Post} from "@rerule34/shared/types/post.ts";
-import {useCallback, useEffect, useState, useRef} from "react";
+import {useCallback, useEffect, useLayoutEffect, useState, useRef} from "react";
 import {getPosts} from "../../../../utils/api/posts.ts";
 import {PostItem} from "../postItem/PostItem.tsx";
 import {useSearchStore} from "../../../../store/searchStore.ts";
@@ -29,9 +29,12 @@ const Posts = () => {
   const [error, setError] = useState<string | null>(null);
 
   const SearchBarParams = useSearchStore((state) => state.params);
+  const searchTrigger = useSearchStore((state) => state.searchTrigger);
   const query = useSearchQuery();
+
   const resetParams = useSearchStore((state) => state.resetParams);
   const settings = useSettingsStore((state) => state.settings);
+
   const addPostViewed = useAppStore(s => s.addPostViewed);
 
   const paginationClassName = clsx(
@@ -45,7 +48,6 @@ const Posts = () => {
 
   // Основна функція загрузки постів (Працює на оновлення пошукових параметрів та на некст сторінку)
   const loadBatch = useCallback(async (batchIndex: number) => {
-    if(SearchBarParams.tags === '') return;
     setLoading(true);
     setError(null);
 
@@ -65,7 +67,7 @@ const Posts = () => {
     }finally {
       setLoading(false);
     }
-  }, [SearchBarParams.tags, query]);
+  }, [query]);
 
   const prevViewedCountRef = useRef(0);
 
@@ -78,13 +80,16 @@ const Posts = () => {
     setError(null);
   }, []);
 
-  useEffect(() => {
+  const hasSearched = useSearchStore((state) => state.hasSearched);
+
+  useLayoutEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     resetAndReload();
-    if (SearchBarParams.tags !== '') {
+    if (hasSearched) {
       void loadBatch(0);
     }
-  }, [SearchBarParams.tags]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  }, [searchTrigger]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleClearClick  = () => {
     resetParams();
@@ -123,8 +128,6 @@ const Posts = () => {
   const estimatedTotal = hasMore
     ? allPosts.length + PAGE_SIZE
     : allPosts.length;
-
-  const hasSearched = SearchBarParams.tags !== '';
 
   return (
     <div>
@@ -223,7 +226,8 @@ const Posts = () => {
             <li>Відсутність реклами</li>
             <li>Зручніший пошук по тегах</li>
             <li>Влаштований зручний переглядач медіа</li>
-            <li>Краще відображення інформації по постам, в тому числі унікальний пред-перегляд довжини відео</li>
+            <li>Краще відображення інформації по постам</li>
+            <li>+ Унікальний пред-перегляд довжини відео</li>
             <li>+ Пред-перегляд повної версії прев'ю поста (Зажати картинку)</li>
             <li>Розумна та зручна система пагінації сторінок постів</li>
             <li>Детальні налаштування клієнту</li>
@@ -233,7 +237,18 @@ const Posts = () => {
             <li>Проста система зберігання постів в колекції</li>
           </ul>
           <p>[ІНФО (update)]: Проект уже краще підтримується мобільними пристроями, хоча, на вузьких екранах можуть бути проблеми.</p>
-          <p>Варто зауважити, хоч цей клієнт і додає нові фішки, але також урізає деякі. Це пов'язано з тим, що rule34 API віддає в деяких випадках неповні/багнуті данні (Що місцями показує неправильну дату поста або комента). Додатково: в цьому клієнті жорстокий ліміт на 60запитів/хв(Звісно ви можете скорегувати це під себе, але більше запитів може спричинити бан акаунта, через ліміти сервіса.)</p>
+
+          <p>Варто зауважити, хоч цей клієнт і додає нові фішки, але також урізає деякі базові,
+            існуючі на оригінальному сайті. Чому? - Проблема не в "поганому", чи недоробленому клієнті,
+            просто розробники rule34.xxx банально не змогли зварганити адекватний API. <br/>
+            Він без конкретних пояснень віддає:
+            <br/> a) неповні дані - ті самі категорії тегів звичайно не отримуються простим способом, їх треба витягувати по одному, і кешувати самостійно, для стабільності апки. (По суті робити по одному запиту на кожен новий(не закешований) тег поста. І знаючи пости тут, вони мають і по 100+ тегів, а тепер глянь секцію нижче, де пише про ліміт запитів на API)
+            <br/> б) багнуті дані - хотів отримати час написання коментаря? Отримуй час, коли був відправлений запит (X_X).
+            <br/> І це далеко не всі приклади такого шлаку, зі сторони розробників..
+            <br/> Загалом, просто побажаю всього найкращого всім, хто старався над цим прекрасним API, і за те, що мені прийшлося з ним мати справу. (Не побажаю нікому такого щастя)
+          </p>
+
+          <p>Додатково: в цьому клієнті жорстокий ліміт на 60запитів/хв(Звісно ви можете скорегувати це під себе, але більше запитів може спричинити бан акаунта, через ліміти сервіса.)</p>
           <p>Робота над проектом триває, а кожне оновлення робить його ще кращим. Дякую за інтерес до нього!</p>
           <p className={styles.version}>Made with love, by BattWrku • v{__APP_VERSION__}</p>
         </div>

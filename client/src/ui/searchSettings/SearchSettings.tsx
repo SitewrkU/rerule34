@@ -33,7 +33,7 @@ const SearchSettings = () => {
   const [textareaTags, setTextareaTags] = useState<string[]>([]);
 
   return (
-    <>
+    <div className={styles.searchSettings}>
       <Filter className={styles.button} onClick={showDrawer} />
       <Drawer
         className={styles.drawer}
@@ -125,7 +125,7 @@ const SearchSettings = () => {
           <Radio disabled>Вебтуни (Coming soon)</Radio>
         </Radio.Group>
       </Drawer>
-    </>
+    </div>
   );
 };
 
