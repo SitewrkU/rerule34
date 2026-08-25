@@ -24,7 +24,7 @@ app.use(errorHandler)
 
 async function run() {
   await initDb();
-  app.listen(PORT, () => {
+  app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server working at http://localhost:${PORT}`)
   });
 }

@@ -1,4 +1,3 @@
 @echo off
-start "Backend" cmd /k "cd server && npm run dev"
-start "Frontend" cmd /k "cd client && npm run dev"
-exit
+chcp 65001 >nul
+powershell -NoLogo -ExecutionPolicy Bypass -File "%~dp0start.ps1"
