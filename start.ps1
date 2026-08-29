@@ -82,6 +82,22 @@ try {
 
     function Line($text) { Write-Host $text -ForegroundColor Green }
 
+    # ── QR-код для телефону (через npx qrcode-terminal, нічого руками ставити не треба) ──
+    function Show-QR($url) {
+        try {
+            $npxCmd = Get-Command npx -ErrorAction SilentlyContinue
+            if (-not $npxCmd) {
+                Line "  [!] npx не знайдено — пропускаю QR-код."
+                return
+            }
+            # --yes: не питати підтвердження на разове завантаження пакета
+            & npx --yes qrcode-terminal $url
+        }
+        catch {
+            Line "  [!] Не вдалося згенерувати QR-код: $($_.Exception.Message)"
+        }
+    }
+
     Line ""
     Line "  +==============================================+"
     Line "  |                    Re:R34                    |"
@@ -89,7 +105,13 @@ try {
     Line ""
     Line "  -- Клiєнт ---------------------------------------"
     Line "    ПК:       http://localhost:$FrontendPort"
-    if ($LocalIP) { Line "    Телефон:  http://${LocalIP}:$FrontendPort" }
+    if ($LocalIP) {
+        Line "    Телефон:  http://${LocalIP}:$FrontendPort"
+        Line ""
+        Line "    Скануй, щоб вiдкрити на телефонi:"
+        Line ""
+        Show-QR "http://${LocalIP}:$FrontendPort"
+    }
     Line ""
     Line "  -- Сервер ---------------------------------------"
     Line "    ПК:       http://localhost:$BackendPort"

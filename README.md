@@ -1,8 +1,7 @@
-# Re:Rule34 - BETA
+# Re:Rule34, pre-release
 Re:Rule34 - a custom, unofficial, fully open-source Rule34 client that runs on their API.
-(By the way, this repository contains a server as well as a client.)
 
-The current version on GitHub is still in the testing phase and does not include the project's full functionality. In any case, you can already install and run it.
+The current version on GitHub is still in the development and does not include the project's full functionality. In any case, you can already install and run it.
 
 ## Requirements
 
@@ -19,7 +18,7 @@ Additional:
 
 ## Setup
 So, once you've downloaded all the tools, run these commands:
-
+(in cmd, any folder)
 
 1. Clone this repo:
 ```bash
@@ -39,21 +38,13 @@ copy .env.example .env
 ```
 
 4. Open the `.env` file and configure it. 
-It is important to set your `R34_API_KEY` and `R34_USER_ID`.
+It is important to set your `R34_API_KEY` and `R34_USER_ID`. You cat get them from official r34 site, by basically creating account there & opening settings page.
 
-5. Then if you still in `server` folder, run: `npm run dev`
-
-6. Open new terminal:
-```bash
-cd client
-npm run dev 
-```
+5. Then you can easily just run `start.bat` file. 
 
 That’s all! Now you can open your client localhost link and use client.
 
 ---
-
-Useful: faster way to start the application is using the `start.bat` file. Btw, it works only after main setup.
 
 ## ⚠️ Disclaimer
 

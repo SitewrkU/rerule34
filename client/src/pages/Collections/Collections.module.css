@@ -7,13 +7,34 @@
 
 .profile{
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: fit-content;
+  margin: 0 auto;
   gap: 10px;
   color: var(--main-white);
+
+  .userName{
+    color: var(--main-color);
+    align-self: start;
+    text-align: left;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+  }
+
+  .mainInfo{
+    display: flex;
+    gap: 10px;
+  }
 
   .profilePic{
     border-radius: 10px;
     background-color: var(--background-secondary);
     padding: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     svg{
       width: 48px;
@@ -22,9 +43,24 @@
   }
 
   .profileInfo{
+    padding: 5px;
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 15px;
+
+    .stat{
+      span{
+        color: var(--main-color);
+        padding: 2px 4px;
+        border-radius: 10px;
+        background-color: color-mix(in oklab, var(--border-main), transparent 45%);
+        border: 2px solid var(--border-main);
+
+        svg{
+          margin-right: 5px;
+        }
+      }
+    }
 
     .rank{
       color: grey;
@@ -34,10 +70,6 @@
       font-size: 1.2rem;
     }
 
-    > p:first-child{
-      font-size: 1.6rem;
-      color: var(--main-color);
-    }
   }
 }
 
