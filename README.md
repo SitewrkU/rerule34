@@ -1,4 +1,7 @@
 # Re:Rule34, pre-release
+
+![Image preview](client/public/readmePreview.png)
+
 Re:Rule34 - a custom, unofficial, fully open-source Rule34 client that runs on their API.
 
 The current version on GitHub is still in the development and does not include the project's full functionality. In any case, you can already install and run it.
