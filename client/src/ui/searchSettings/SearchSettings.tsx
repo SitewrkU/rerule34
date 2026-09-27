@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {useSearchSettingsStore} from "../../store/searchSettingsStore.ts";
 
-import { Drawer, Divider, Input, Switch, Radio } from "antd";
+import { Drawer, Divider, Input, Switch, Radio, InputNumber } from "antd";
 const { TextArea } = Input;
 
 import styles from './SearchSettings.module.css'
@@ -155,6 +155,29 @@ const SearchSettings = () => {
           <Radio value="shorter_t10s">Коротше 10 секунд</Radio>
         </Radio.Group>
         <p className={styles.textinfo}>(Зауваж, ці теги виставляють самі аплоадери контенту, тому не всі пости фільтруються за цим)</p>
+
+
+        <Divider />
+        <div className={styles.switcherArea}>
+          <p>За кількістю ап-воутів</p>
+          <Switch
+            className={styles.switcher}
+            checked={settings.minVotesEnabled}
+            onChange={(checked) => updateSettings({ minVotesEnabled: checked })}
+          />
+        </div>
+        <InputNumber
+          min={1}
+          step={10}
+          mode={'spinner'}
+          defaultValue={settings.minVotes}
+          disabled={!settings.minVotesEnabled}
+          onChange={(value: number) => updateSettings({ minVotes: value ?? 1 })}
+          changeOnWheel
+          style={{ }}
+        />
+
+
       </Drawer>
     </div>
   );

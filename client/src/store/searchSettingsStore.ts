@@ -56,6 +56,9 @@ type SearchSettings = {
 
   videoLengthEnabled: boolean;
   videoOption: VideoLengthOption;
+
+  minVotesEnabled: boolean;
+  minVotes: number;
 };
 
 
@@ -81,6 +84,9 @@ export const useSearchSettingsStore = create<SearchSettingsStore>()(
 
         videoLengthEnabled: false,
         videoOption: "longer_t1m",
+
+        minVotesEnabled: false,
+        minVotes: 50,
       },
       updateSettings: (patch) =>
         set((state) => ({ settings: { ...state.settings, ...patch } })),
@@ -111,6 +117,10 @@ export function buildSettingsTags(settings: SearchSettings): string[] {
 
   if (settings.videoLengthEnabled) {
     tags.push(videoLengthMap[settings.videoOption]);
+  }
+
+  if (settings.minVotesEnabled) {
+    tags.push(`score:>${settings.minVotes}`);
   }
 
   return tags;
