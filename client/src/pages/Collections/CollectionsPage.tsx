@@ -5,6 +5,7 @@ import SavedPosts from "./components/SavedPosts/SavedPosts.tsx";
 import { AnimatePresence, motion } from 'motion/react';
 import styles from './Collections.module.css'
 import {User, Bookmark3, View, Calendar3, Crown3} from "clicons-react";
+import BackButton from "../../ui/BackButton/BackButton.tsx";
 
 const viewedRanks = {
   0: 'Ларпер',
@@ -63,7 +64,13 @@ const CollectionsPage = () => {
 
   return (
     <div className={styles.page}>
-      <AnimatePresence mode="wait" custom={direction}>
+      <BackButton
+        {...(view === 'saved'
+          ? { onBack: () => goTo('profile', -1) }
+          : { navigateTo: '/' })}
+      />
+
+      <AnimatePresence mode="wait" custom={direction} initial={false}>
         {view === 'profile' && (
           <motion.div
             key="profile"
@@ -93,9 +100,7 @@ const CollectionsPage = () => {
             exit="exit"
             transition={{ duration: 0.25, ease: "easeOut" }}
           >
-            <SavedPosts
-              onBack={() => goTo('profile', -1)}
-            />
+            <SavedPosts/>
           </motion.div>
         )}
       </AnimatePresence>

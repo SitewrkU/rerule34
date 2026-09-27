@@ -1,21 +1,16 @@
-import { useNavigate } from 'react-router-dom';
 import SettingSwitch from "./components/SettingsSwitcher/Switcher.tsx";
 import SettingRadioGroup from "./components/SettingsRadioGroup/Radio.tsx";
 import {defaultSettings} from "../../store/settingsStore.ts";
 
-import {ChevronLeft, Home3, Brush, Customize, Image, CancelCircleHalfDot} from "clicons-react";
+import BackButton from "../../ui/BackButton/BackButton.tsx";
+
+import { Home3, Brush, Customize, Image, CancelCircleHalfDot} from "clicons-react";
 import styles from './SettingsPage.module.css'
 
 const SettingsPage = () => {
-  const navigate = useNavigate();
-
   return (
     <div className={styles.settings}>
-      <ChevronLeft
-        size={32}
-        className={styles.back}
-        onClick={() => navigate("/")}
-      />
+      <BackButton navigateTo={'/'}/>
 
       <h1>Налаштування</h1>
       <p>Керуй виглядом та поведінкою додатка під себе</p>

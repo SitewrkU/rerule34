@@ -5,19 +5,8 @@
   margin-bottom: 20px;
 
   .savedTitle{
+    margin: 0 auto 0;
     font-size: 1.4rem;
-    margin-bottom: 0;
-  }
-
-  > button{
-    cursor: pointer;
-    border: none;
-    background: none;
-    color: var(--main-white);
-    svg{
-      width: 32px;
-      height: 32px;
-    }
   }
 }
 

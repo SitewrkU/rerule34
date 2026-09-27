@@ -1,10 +1,3 @@
-.back{
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  cursor: pointer;
-}
-
 .settings{
   padding: 30px;
   display: flex;

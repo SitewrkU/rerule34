@@ -5,12 +5,10 @@ import MediaViewerModal from "../../../Home/components/postItem/MediaViewerModal
 
 import {formatDuration} from "../../../../lib/timeFormater.ts";
 
-
 import clsx from "clsx";
 import styles from './SavedPosts.module.css'
-import {ChevronLeft} from "clicons-react";
 
-const SavedPosts = ({ onBack }: { onBack: () => void }) => {
+const SavedPosts = () => {
   const collections = useCollectionsStore(s => s.collections);
   const loading = useCollectionsStore(s => s.loading);
 
@@ -22,7 +20,6 @@ const SavedPosts = ({ onBack }: { onBack: () => void }) => {
   return (
     <div>
       <div className={styles.savedHeader}>
-        <button className={styles.backButton} onClick={onBack}><ChevronLeft/></button>
         <p className={styles.savedTitle}>Збережені пости</p>
       </div>
 

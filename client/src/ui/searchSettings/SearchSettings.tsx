@@ -47,8 +47,9 @@ const SearchSettings = () => {
           функціонал буде реалізовано як умога швидше, але повний доведеться
           зачекати.
         </p>
-        <Divider />
 
+
+        <Divider />
         <div className={styles.switcherArea}>
           <p>
             Якщо є якісь теги, які ти хочеш застосовувати до ВСІХ пошукових
@@ -70,8 +71,9 @@ const SearchSettings = () => {
           disabled={!settings.customTagsEnabled}
         />
         <p>{textareaTags.length}/{MAX_TAGS}</p>
-        <Divider />
 
+
+        <Divider />
         <div className={styles.switcherArea}>
           <p>Додаткові параметри відображення контенту</p>
           <Switch
@@ -91,6 +93,7 @@ const SearchSettings = () => {
           <Radio value="old">Спочатку старі</Radio>
           <Radio value="random"><span className={styles.randomText}>Рандомні</span></Radio>
         </Radio.Group>
+
 
         <Divider />
         <div className={styles.switcherArea}>
@@ -112,6 +115,7 @@ const SearchSettings = () => {
           <Radio value="safe">Безпечні</Radio>
         </Radio.Group>
 
+
         <Divider />
         <p>За типом контенту</p>
         <Radio.Group
@@ -124,6 +128,33 @@ const SearchSettings = () => {
           <Radio value="any">Без різниці</Radio>
           <Radio disabled>Вебтуни (Coming soon)</Radio>
         </Radio.Group>
+
+
+        <Divider />
+        <div className={styles.switcherArea}>
+          <p>За довжиною відео</p>
+          <Switch
+            className={styles.switcher}
+            checked={settings.videoLengthEnabled}
+            onChange={(checked) => updateSettings({ videoLengthEnabled: checked })}
+          />
+        </div>
+        <Radio.Group
+          value={settings.videoOption}
+          disabled={!settings.videoLengthEnabled}
+          onChange={(e) => updateSettings({ videoOption: e.target.value })}
+          className={styles.radioGroup}
+        >
+          <Radio value="longer_t30s">Довше 30 секунд</Radio>
+          <Radio value="longer_t1m">Довше 1 хвилини</Radio>
+          <Radio value="longer_t3m">Довше 3 хвилин</Radio>
+          <Radio value="longer_t5m">Довше 5 хвилин</Radio>
+          <Radio value="longer_t10m">Довше 10 хвилин</Radio>
+          <Radio value="shorter_t1m">Коротше 1 хвилини</Radio>
+          <Radio value="shorter_t30s">Коротше 30 секунд</Radio>
+          <Radio value="shorter_t10s">Коротше 10 секунд</Radio>
+        </Radio.Group>
+        <p className={styles.textinfo}>(Зауваж, ці теги виставляють самі аплоадери контенту, тому не всі пости фільтруються за цим)</p>
       </Drawer>
     </div>
   );
