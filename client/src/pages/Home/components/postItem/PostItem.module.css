@@ -22,7 +22,7 @@
       right: 5px;
       padding: 2px 5px;
       border-radius: 5px;
-      background-color: rgba(0, 0, 0, 0.4);
+      background-color: rgba(0, 0, 0, 0.7);
       backdrop-filter: blur(4px);
       color: #7e8bc6;
 
@@ -32,6 +32,29 @@
     }
   }
 }
+
+.durationSkeleton {
+  margin-left: 10px;
+  display: inline-block;
+  width: 28px;
+  height: 1em;
+  border-radius: 4px;
+  vertical-align: middle;
+  background: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.15) 25%,
+          rgba(255, 255, 255, 0.35) 50%,
+          rgba(255, 255, 255, 0.15) 75%
+  );
+  background-size: 200% 100%;
+  animation: durationShimmer 1.2s infinite linear;
+}
+
+@keyframes durationShimmer {
+  from { background-position: 200% 0; }
+  to   { background-position: -200% 0; }
+}
+
 
 .imgWrapper{
   overflow: hidden;

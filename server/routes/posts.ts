@@ -29,7 +29,9 @@ router.get('/', ApiLimiter ,async (req: Request, res: Response, next) => {
 
     const finalData = data.map((post: any) => ({
       ...post,
-      duration: isVideoUrl(post.file_url) ? (durationCache.get(post.id) ?? null) : null,
+      duration: isVideoUrl(post.file_url)
+        ? (durationCache.get(String(post.id))?.duration ?? null)
+        : null,
     }));
 
     res.status(200).json(finalData);
@@ -41,19 +43,13 @@ router.get('/', ApiLimiter ,async (req: Request, res: Response, next) => {
 
 router.get('/:id/duration', durationLimiter, async (req: Request, res: Response) => {
   const id = String(req.params.id);
-  const { file_url } = req.query; // передаємо file_url з фронту, щоб не ходити повторно в rule34 api за постом
+  const { file_url } = req.query;
 
   if (typeof file_url !== 'string' || !isVideoUrl(file_url)) {
     return res.status(200).json({ duration: null });
   }
 
-  const cached = durationCache.get(id);
-  if (cached) {
-    return res.status(200).json({ duration: cached.duration });
-  }
-
-  const duration = await getDuration(file_url);
-  durationCache.set(id, { duration });
+  const duration = await getDuration(id, file_url);
   res.status(200).json({ duration });
 });
 

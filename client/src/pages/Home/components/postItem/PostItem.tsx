@@ -65,8 +65,15 @@ export function PostItem({ post }: { post: Post }) {
           </span>
         )}
         </div>
-        {(duration != null && isVideo) && (
-          <span className={styles.duration}><PlayCircle2/> {formatDuration(duration)}</span>
+        {isVideo && (
+          <span className={styles.duration}>
+          <PlayCircle2 />
+            {settings.showVideoDuration && (
+              duration != null
+                ? <> {formatDuration(duration)}</>
+                : <span className={styles.durationSkeleton} />
+            )}
+          </span>
         )}
       </a>
 

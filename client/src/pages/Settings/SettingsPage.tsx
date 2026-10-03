@@ -21,7 +21,7 @@ const SettingsPage = () => {
           <div>
           <SettingRadioGroup
             settingKey="theme"
-            label="Тема оформлення" text="Які кольори тобі більше подобаються? (Тепер працює! Але стилі все ще храмають)"
+            label="Тема оформлення" text="Які кольори тобі більше подобаються? (Краще не міняти, стилі тестові!)"
             options={[
               {label: 'Темня', value: 'dark'},
               {label: 'Світла', value: 'light'},
@@ -49,6 +49,7 @@ const SettingsPage = () => {
           <h2><Image/> Пости</h2>
           <div>
             <SettingSwitch checkedByDef={defaultSettings.showPostInfo} settingKey="showPostInfo" label="Показувати інформацію по постам" text="По-о-овне погруження"/>
+            <SettingSwitch checkedByDef={defaultSettings.showVideoDuration} settingKey="showVideoDuration" label="Підтягувати довжину відео" text="Менше навантаження, але і менше інформації"/>
           </div>
         </section>
         <section className={styles.settingsSection}>
