@@ -3,6 +3,7 @@ import { persist } from 'zustand/middleware';
 
 interface AppState {
   isConfigured: boolean;
+  is18Confirmed: boolean;
   userName: string;
   postViewed: number;
 
@@ -12,6 +13,7 @@ interface AppState {
   addPostViewed: (count: number) => void;
   setConfigured: (value: boolean) => void;
   setUserName: (value: string) => void;
+  set18Confirmed: () => void;
 }
 
 const todayKey = () => new Date().toISOString().slice(0, 10);
@@ -31,6 +33,7 @@ export const useAppStore = create<AppState>()(
   persist(
     (set) => ({
       isConfigured: false,
+      is18Confirmed: false,
       userName: '',
       postViewed: 0,
       joinedAt: null,
@@ -57,6 +60,7 @@ export const useAppStore = create<AppState>()(
         })),
 
       setUserName: (value) => set({ userName: value }),
+      set18Confirmed: () => set({ is18Confirmed: true }),
     }),
     { name: 'app-configured-storage' }
   )

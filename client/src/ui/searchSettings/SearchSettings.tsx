@@ -174,7 +174,6 @@ const SearchSettings = () => {
           disabled={!settings.minVotesEnabled}
           onChange={(value: number) => updateSettings({ minVotes: value ?? 1 })}
           changeOnWheel
-          style={{ }}
         />
 
 

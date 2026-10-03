@@ -5,7 +5,7 @@ import HomePage from "./pages/Home/HomePage.tsx";
 import SettingsPage from "./pages/Settings/SettingsPage.tsx";
 import SetupPage from "./pages/Setup/SetupPage.tsx";
 import CollectionsPage from "./pages/Collections/CollectionsPage.tsx";
-import {SetupGuard} from "./pages/Setup/SetupGuard.tsx";
+import {SetupGuard} from "./SetupGuard.tsx";
 
 import AnimatedOutlet from "./ui/AnimatedOutlet.tsx";
 import { ConfigProvider, theme } from "antd";

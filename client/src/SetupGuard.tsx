@@ -1,5 +1,5 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import { useAppStore } from '../../store/appStore.ts';
+import { useAppStore } from './store/appStore.ts';
 
 export function SetupGuard({ children }) {
   const isConfigured = useAppStore((s) => s.isConfigured);

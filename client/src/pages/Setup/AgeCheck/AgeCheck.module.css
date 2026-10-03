@@ -1,0 +1,49 @@
+.container{
+  margin: 20px;
+  color: var(--main-white);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  text-align: center;
+
+  h1{
+    color: var(--accent-red);
+    font-size: 4rem;
+    margin: 50px 0;
+  }
+
+  .mainText{
+    font-size: 1.5rem;
+  }
+
+  .additionalText{
+    color: grey;
+  }
+}
+
+.buttons{
+  margin-top: 20px;
+  display: flex;
+  gap: 20px;
+
+  .primaryButton:nth-child(1){
+    background-color: color-mix(var(--accent-red), transparent 30%);
+  }
+
+  .primaryButton:nth-child(2){
+    background-color: color-mix(var(--main-white), transparent 30%);
+  }
+}
+
+.primaryButton{
+  box-shadow: none !important;
+  color: #1b1b1b;
+  &:hover{
+    color: black !important;
+  }
+  &:visited{
+    color: initial;
+  }
+}

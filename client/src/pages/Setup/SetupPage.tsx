@@ -5,6 +5,7 @@ import {useAppStore} from "../../store/appStore.ts";
 import UserStep from "./Steps/UserStep.tsx";
 import BlacklistStep from "./Steps/BlacklistStep.tsx";
 import FinishStep from "./Steps/FinishStep.tsx";
+import AgeCheck from "./AgeCheck/AgeCheck.tsx";
 
 import { Steps, Button } from 'antd';
 import styles from './SetupPage.module.css'
@@ -28,6 +29,7 @@ const SetupPage = () => {
   const [current, setCurrent] = useState(0)
   const setConfigured = useAppStore((s) => s.setConfigured)
   const userName = useAppStore((s) => s.userName)
+  const is18Confirmed = useAppStore((s) => s.is18Confirmed)
   const navigate = useNavigate()
 
   const next = () => setCurrent((c) => c + 1)
@@ -47,6 +49,8 @@ const SetupPage = () => {
   const isLastStep = current === steps.length - 1;
 
   return (
+    <>
+    {is18Confirmed ? (
     <div className={styles.setupPage}>
       <Steps
         className={styles.steps}
@@ -76,6 +80,10 @@ const SetupPage = () => {
         )}
       </div>
     </div>
+    ) : (
+      <AgeCheck/>
+    )}
+    </>
   );
 };
 
