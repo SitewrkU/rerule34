@@ -18,7 +18,7 @@ import "@vidstack/react/player/styles/default/layouts/video.css";
 import clsx from "clsx";
 
 import styles from './MediaViewerModal.module.css'
-import {ChevronUp, Download, Bookmark2} from "clicons-react";
+import {ChevronUp, Download, Bookmark2, BookmarkRemove2} from "clicons-react";
 
 export interface MediaViewerPost {
   id: number;
@@ -44,15 +44,29 @@ export default function MediaViewerModal({ isOpen, onClose, post, isVideo, durat
 
   const [isTallImage, setIsTallImage] = useState(false);
 
+  const collections = useCollectionsStore(s => s.collections);
+  const defaultCollection = collections.find(c => c.isDefault)
+
+  const isSaved = useCollectionsStore(state => state.defaultSavedIds.has(post.id));
+  const saveToDefault = useCollectionsStore(state => state.saveToDefault);
+  const [isSaving, setIsSaving] = useState(false);
+
+  const removeFromCollection = useCollectionsStore(s => s.removeFromCollection)
+
   function handleImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
     const img = e.currentTarget;
     const ratio = img.naturalHeight / img.naturalWidth;
     setIsTallImage(ratio >= 2);
   }
 
-  const isSaved = useCollectionsStore(state => state.defaultSavedIds.has(post.id));
-  const saveToDefault = useCollectionsStore(state => state.saveToDefault);
-  const [isSaving, setIsSaving] = useState(false);
+  const handleRemovePostFromSaved = async () => {
+    try {
+      await removeFromCollection(defaultCollection.id, post.id)
+      onClose()
+    } catch (error) {
+      console.error('Не вдалося видалити пост', error)
+    }
+  }
 
   const handleSavePost = async () => {
     if (isSaving || isSaved) return;
@@ -140,6 +154,17 @@ export default function MediaViewerModal({ isOpen, onClose, post, isVideo, durat
           />
         )}
       </div>
+
+      {(minimal && defaultCollection.posts.find(p => p.id === post.id)) && (
+        <div className={styles.onlyMinimalSection}>
+        <div className={styles.removeFromDef}>
+          <BookmarkRemove2
+            strokeWidth={2.5}
+            onClick={handleRemovePostFromSaved}
+          />
+        </div>
+        </div>
+      )}
 
       {!minimal && (
         <>

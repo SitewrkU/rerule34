@@ -49,11 +49,12 @@ export const useCollectionsStore = create<CollectionsState>((set, get) => ({
     try {
       await api.saveToDefaultCollection(post);
     } catch (e) {
-      set(state => ({
-        collections: state.collections.map(c =>
+      set(state => {
+        const collections = state.collections.map(c =>
           c.isDefault ? { ...c, posts: c.posts.filter(p => p.id !== post.id) } : c
-        ),
-      }));
+        );
+        return { collections, defaultSavedIds: computeSavedIds(collections) };
+      });
       throw e;
     }
   },
@@ -61,16 +62,22 @@ export const useCollectionsStore = create<CollectionsState>((set, get) => ({
   removeFromCollection: async (collectionId, postId) => {
     const prevCollections = get().collections;
 
-    set(state => ({
-      collections: state.collections.map(c =>
-        c.id === collectionId ? { ...c, posts: c.posts.filter(p => p.id !== postId) } : c
-      ),
-    }));
+    set(state => {
+      const collections = state.collections.map(c =>
+        c.id === collectionId
+          ? { ...c, posts: c.posts.filter(p => String(p.id) !== String(postId)) }
+          : c
+      );
+      return { collections, defaultSavedIds: computeSavedIds(collections) };
+    });
 
     try {
       await api.deleteFromCollection(collectionId, String(postId));
     } catch (e) {
-      set({ collections: prevCollections }); // повний роллбек
+      set({
+        collections: prevCollections,
+        defaultSavedIds: computeSavedIds(prevCollections),
+      });
       throw e;
     }
   },

@@ -81,7 +81,7 @@ export async function removePostFromCollection(
   if (!collection) return null;
 
   const before = collection.posts.length;
-  collection.posts = collection.posts.filter(p => p.id !== postId);
+  collection.posts = collection.posts.filter(p => String(p.id) !== String(postId));
 
   if (collection.posts.length !== before) {
     collection.updatedAt = new Date().toISOString();

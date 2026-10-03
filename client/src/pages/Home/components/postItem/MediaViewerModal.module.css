@@ -177,6 +177,30 @@
   }
 }
 
+/* ==========================================================================
+   STYLES FOR MINIMAL MODE COMPONENTS
+   ========================================================================== */
+
+.onlyMinimalSection{
+  padding: 20px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.removeFromDef{
+  cursor: pointer;
+  display: inline-block;
+  width: min-content;
+  color: var(--accent-red);
+
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+}
+
 
 /* ==========================================================================
    COMMENTS
