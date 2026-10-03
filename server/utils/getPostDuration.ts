@@ -23,7 +23,7 @@ const failedCache = new LRUCache<string, true>({
 // Один і той самий пост не рахуємо двічі паралельно
 const inflight = new Map<string, Promise<number | null>>();
 
-const MAX_CONCURRENT = 6;
+const MAX_CONCURRENT = 16;
 let active = 0;
 const queue: Array<() => void> = [];
 
