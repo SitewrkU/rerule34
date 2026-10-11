@@ -120,6 +120,7 @@
       flex-direction: column;
 
       > p:first-child {
+        font-size: 1.2rem;
         color: var(--main-color);
       }
     }

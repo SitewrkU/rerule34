@@ -155,6 +155,7 @@ export default function MediaViewerModal({ isOpen, onClose, post, isVideo, durat
         )}
       </div>
 
+      {/*Якщо мінімалізований мод + знайдено в збережених*/}
       {(minimal && defaultCollection.posts.find(p => p.id === post.id)) && (
         <div className={styles.onlyMinimalSection}>
         <div className={styles.removeFromDef}>
@@ -166,13 +167,13 @@ export default function MediaViewerModal({ isOpen, onClose, post, isVideo, durat
         </div>
       )}
 
+
       {!minimal && (
         <>
           <div className={styles.viewerInfo}>
 
             {post.owner && (
               <div className={styles.owner}>
-                <img src="/profileImgPlaceholder.png" alt="profile Image"/>
                 <div>
                   <p>{post.owner}</p>
                   {post.createdAt && (

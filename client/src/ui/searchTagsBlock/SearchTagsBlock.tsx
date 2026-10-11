@@ -50,11 +50,20 @@ const SearchTagsBlock = () => {
 
                 ),
                 children: <p className={styles.tagstoremove}>
-                  {filteredTags.map((tag, i) => (
-                    <span key={i} className={clsx(!isBlackListEnabled && styles.blacklistTagDisabled)}>{tag}</span>
-                  ))}
+                  {filteredTags.length !== 0 ?
+                    (
+                      filteredTags.map((tag, i) => (
+                          <span key={i} className={clsx(!isBlackListEnabled && styles.blacklistTagDisabled)}>{tag}</span>
+                      ))
+                    ) :
+                    (
+                      <p>Блек-ліст пустий</p>
+                    )
+                  }
                 </p>,
               },
+
+
               {
                 key: '2',
                 label: (
@@ -65,9 +74,17 @@ const SearchTagsBlock = () => {
                   </div>
                 ),
                 children: <p className={styles.tagstoadd}>
-                  {addedTags.map((tag, i) => (
-                    <span key={i}>{tag}</span>
-                  ))}
+                  {addedTags.length !== 0 ?
+                    (
+                      addedTags.map((tag, i) => (
+                        <span key={i}>{tag}</span>
+                      ))
+                    ) :
+                    (
+                      <p>Загляни в налаштування пошуку, щоб добавити</p>
+                    )
+                  }
+
                 </p>,
               },
             ]}
