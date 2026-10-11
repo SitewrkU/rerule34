@@ -109,10 +109,9 @@
     align-items: center;
     gap: 10px;
 
-    > img {
-      width: 48px;
-      border-radius: 50%;
-      border: 1px solid var(--border-main-lighter);
+    .ownerSpan{
+      cursor: pointer;
+      text-decoration: underline;
     }
 
     > div {

@@ -1,10 +1,12 @@
+import type {Comment as CommentType} from '@rerule34/shared/types/comment'
 import React, {useEffect, useState} from "react";
 import { useCollectionsStore } from "../../../../store/collectionStore";
+import { useSearchStore } from "../../../../store/searchStore.ts";
+
 import {getComments} from "../../../../utils/api/posts.ts";
 import {formatDate} from "../../../../lib/timeFormater.ts";
-import type {Comment as CommentType} from '@rerule34/shared/types/comment'
 
-import { Modal, Button } from "antd";
+import { Modal, Button, Tooltip } from "antd";
 
 import { MediaPlayer, MediaProvider } from "@vidstack/react";
 import {
@@ -53,6 +55,14 @@ export default function MediaViewerModal({ isOpen, onClose, post, isVideo, durat
 
   const removeFromCollection = useCollectionsStore(s => s.removeFromCollection)
 
+  const setParams = useSearchStore(s => s.setParams);
+
+  const handleSearchByOwner = () => {
+    if (!post.owner) return;
+    setParams({ tags: `user:${post.owner}` }); // див. примітку нижче
+    onClose();
+  };
+
   function handleImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
     const img = e.currentTarget;
     const ratio = img.naturalHeight / img.naturalWidth;
@@ -60,11 +70,12 @@ export default function MediaViewerModal({ isOpen, onClose, post, isVideo, durat
   }
 
   const handleRemovePostFromSaved = async () => {
+    if (!defaultCollection) return;
     try {
-      await removeFromCollection(defaultCollection.id, post.id)
-      onClose()
+      await removeFromCollection(defaultCollection.id, post.id);
+      onClose();
     } catch (error) {
-      console.error('Не вдалося видалити пост', error)
+      console.error('Не вдалося видалити пост', error);
     }
   }
 
@@ -75,7 +86,7 @@ export default function MediaViewerModal({ isOpen, onClose, post, isVideo, durat
     try {
       await saveToDefault({
         id: post.id,
-        sample_url: post.sample_url,
+        sample_url: post.sample_url ?? post.file_url,
         file_url: post.file_url,
         video_duration: duration,
       });
@@ -156,7 +167,7 @@ export default function MediaViewerModal({ isOpen, onClose, post, isVideo, durat
       </div>
 
       {/*Якщо мінімалізований мод + знайдено в збережених*/}
-      {(minimal && defaultCollection.posts.find(p => p.id === post.id)) && (
+      {(minimal && defaultCollection?.posts.some(p => p.id === post.id)) && (
         <div className={styles.onlyMinimalSection}>
         <div className={styles.removeFromDef}>
           <BookmarkRemove2
@@ -175,7 +186,9 @@ export default function MediaViewerModal({ isOpen, onClose, post, isVideo, durat
             {post.owner && (
               <div className={styles.owner}>
                 <div>
-                  <p>{post.owner}</p>
+                  <Tooltip title="Шукати за автором" onClick={handleSearchByOwner}>
+                  <p className={styles.ownerSpan}>{post.owner}</p>
+                  </Tooltip>
                   {post.createdAt && (
                     <p className={styles.date}>{formatDate(post.createdAt, true)}</p>
                   )}

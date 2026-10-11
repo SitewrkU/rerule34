@@ -24,6 +24,14 @@ const Searchbar = () => {
   const [value, setValue] = useState('');
   const setParams = useSearchStore((state) => state.setParams);
 
+  const tags = useSearchStore((s) => s.params.tags);
+  const searchTrigger = useSearchStore((s) => s.searchTrigger);
+
+  const [prevTrigger, setPrevTrigger] = useState(searchTrigger);
+  if (searchTrigger !== prevTrigger) {
+    setPrevTrigger(searchTrigger);
+    setValue(tags);
+  }
 
   const fetchOptions = useCallback(async (query: string) => {
     if (!query) {
