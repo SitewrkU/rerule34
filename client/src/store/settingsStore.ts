@@ -8,6 +8,7 @@ interface Settings {
   paginationPos: 'left' | 'center' | 'right';
 
   showPostInfo: boolean;
+  showColoredScore: boolean;
   showVideoDuration: boolean;
 
   enableBlacklist: boolean;
@@ -28,6 +29,7 @@ export const defaultSettings: Settings = {
   paginationPos: 'center',
 
   showPostInfo: true,
+  showColoredScore: false,
   showVideoDuration: true,
 
   enableBlacklist: true,

@@ -7,7 +7,7 @@ import styles from './Collections.module.css'
 import {User, Bookmark3, View, Calendar3, Crown3} from "clicons-react";
 import BackButton from "../../ui/BackButton/BackButton.tsx";
 
-const viewedRanks = {
+const viewedRanks: Record<number, string> = {
   0: 'Ларпер',
   250: 'Новачок',
   500: 'Учень-початківець',
@@ -53,6 +53,7 @@ const CollectionsPage = () => {
   const userName = useAppStore(s => s.userName);
   const postViewed = useAppStore(s => s.postViewed);
   const joinedAt = useAppStore(s => s.joinedAt)
+
 
   const [view, setView] = useState<ViewMode>('profile');
   const [direction, setDirection] = useState(1); // Для анімацій, 1 = вперед, -1 = назад
@@ -116,7 +117,7 @@ const ProfileView =
   ({userName, postViewed, joinedAt, onOpenSaved}: {
     userName: string;
     postViewed: number;
-    joinedAt: number;
+    joinedAt: number | null;
     onOpenSaved: () => void;
   }) => (
   <>
@@ -131,7 +132,7 @@ const ProfileView =
 
         <p className={styles.rank}><Crown3/> {getRank(postViewed)} </p>
         <p className={styles.stat}><span><View/>{postViewed}</span> прогорнуто постів</p>
-        <p className={styles.stat}><span><Calendar3/>{formatDate(joinedAt)}</span> ми побачили тебе вперше</p>
+        <p className={styles.stat}><span><Calendar3 />{joinedAt !== null ? formatDate(joinedAt) : "—"}</span> ми побачили тебе вперше</p>
       </div>
       </div>
     </div>

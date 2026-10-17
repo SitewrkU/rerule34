@@ -118,6 +118,30 @@
     display: flex;
     gap: 10px;
     color: var(--main-white);
+
+
+    .postScore{
+      position: relative;
+      &.scoreSize1{
+        color: color-mix(var(--main-white), #22C55E 40%); font-size: 1.1rem;
+      }
+      &.scoreSize2{
+        color: color-mix(var(--main-white), #3B82F6 40%); font-size: 1.2rem;
+      }
+      &.scoreSize3{
+        color: color-mix(var(--main-white), #A855F7 40%); font-size: 1.25rem;
+        > svg{ transform: scale(1.1); vertical-align: -5px; }
+      }
+      &.scoreSize4{
+        color: color-mix(var(--main-white), #F59E0B 40%); font-size: 1.3rem;
+        > svg{ transform: scale(1.15) }
+      }
+      &.scoreSize5{
+        color: color-mix(var(--main-white), #EF4444 40%); font-size: 1.4rem;
+        > svg{ transform: scale(1.2) }
+      }
+    }
+
   }
   .postDate{
     display: flex;

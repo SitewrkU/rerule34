@@ -4,10 +4,23 @@ import {defaultSettings} from "../../store/settingsStore.ts";
 
 import BackButton from "../../ui/BackButton/BackButton.tsx";
 
-import { Home3, Brush, Customize, Image, CancelCircleHalfDot} from "clicons-react";
+import { Home3, Brush, Customize, Image, CancelCircleHalfDot, Danger} from "clicons-react";
 import styles from './SettingsPage.module.css'
 
 const SettingsPage = () => {
+
+  const handleReset = () => {
+    if (!window.confirm("Скинути всі налаштування та локальні дані? Цю дію не можна скасувати.")) {
+      return;
+    }
+
+    try {
+      localStorage.clear();
+    } finally {
+      window.location.reload();
+    }
+  };
+
   return (
     <div className={styles.settings}>
       <BackButton navigateTo={'/'}/>
@@ -49,6 +62,7 @@ const SettingsPage = () => {
           <h2><Image/> Пости</h2>
           <div>
             <SettingSwitch checkedByDef={defaultSettings.showPostInfo} settingKey="showPostInfo" label="Показувати інформацію по постам" text="По-о-овне погруження"/>
+            <SettingSwitch checkedByDef={defaultSettings.showColoredScore} settingKey="showColoredScore" label="Фарбувати рейтинг поста в залежності від популярності" text="Так легше замітити популярні пости"/>
             <SettingSwitch checkedByDef={defaultSettings.showVideoDuration} settingKey="showVideoDuration" label="Підтягувати довжину відео" text="Менше навантаження, але і менше інформації"/>
           </div>
         </section>
@@ -63,6 +77,20 @@ const SettingsPage = () => {
           <div>
           <SettingSwitch settingKey="kittyMode" label="Kitty Mode" text="Сховаємо цю неподобщину.. мяу~"/>
           <SettingSwitch settingKey="blackMode" label="Black Mode" text="Просто тикни в любий із них, і дивись, що попалося :)"/>
+          </div>
+        </section>
+        <section className={`${styles.settingsSection} ${styles.dangerZone}`}>
+          <h2><Danger/> Небезпечна зона</h2>
+          <div>
+            <div className={styles.dangerRow}>
+              <div className={styles.dangerInfo}>
+                <span className={styles.dangerTitle}>Скинути всі налаштування</span>
+                <span className={styles.dangerText}>Очистить локальне сховище (налаштування, блек-ліст, профіль), але збережені пости залишаться</span>
+              </div>
+              <button type="button" className={styles.dangerButton} onClick={handleReset}>
+                Скинути
+              </button>
+            </div>
           </div>
         </section>
 

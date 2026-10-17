@@ -80,7 +80,25 @@ export function PostItem({ post }: { post: Post }) {
       {settings.showPostInfo && (
       <div className={styles.postStats}>
         <div className={styles.postScores}>
-          <p><ChevronUp strokeWidth={3} /> {post.score}</p>
+
+          {settings.showColoredScore ? (
+            <p className={clsx(
+              styles.postScore,
+              (post.score >= 50) && styles.scoreSize1,
+              (post.score >= 100) && styles.scoreSize2,
+              (post.score >= 200) && styles.scoreSize3,
+              (post.score >= 500) && styles.scoreSize4,
+              (post.score >= 1000) && styles.scoreSize5,
+            )}>
+              <ChevronUp strokeWidth={3} /> {post.score}
+            </p>
+          ) : (
+            <p className={clsx(styles.postScore)}>
+              <ChevronUp strokeWidth={3} /> {post.score}
+            </p>
+          )}
+
+
           <p><Comment size={20} strokeWidth={2.5} /> {post.comment_count}</p>
         </div>
         <div className={styles.postDate}>
