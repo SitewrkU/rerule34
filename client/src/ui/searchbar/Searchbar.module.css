@@ -1,14 +1,14 @@
-.searchbar{
+.searchbar {
   width: 100%;
 
-  button{
+  button {
     padding: 0;
-    color: black;
-    &:hover{
-      svg{
-        fill: black;
-      }
+    color: var(--color-on-accent);
 
+    &:hover {
+      svg {
+        fill: var(--color-on-accent);
+      }
     }
   }
 }

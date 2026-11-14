@@ -1,24 +1,26 @@
-.setupPage{
+.setupPage {
   margin: 0 auto;
-  max-width: 800px;
+  max-width: var(--content-wide);
   display: flex;
   justify-content: center;
   flex-direction: column;
 }
 
-.steps{
-  margin: 20px 0 40px;
+.steps {
+  margin: var(--space-5) 0 var(--space-10);
 }
 
-.buttons{
-  margin: 20px 10px;
+.buttons {
+  margin: var(--space-5) var(--space-2-5);
   display: flex;
   justify-content: space-between;
+  gap: var(--space-2-5);
 
-  .primaryButton{
-    color: #1b1b1b;
-    &:hover{
-      color: black !important;
+  .primaryButton {
+    color: var(--color-on-accent);
+
+    &:hover {
+      color: var(--color-on-accent) !important;
     }
   }
 }

@@ -1,9 +1,9 @@
 .back {
-  color: var(--main-color);
+  color: var(--color-accent);
 
   position: fixed;
-  top: 20px;
-  left: 20px;
+  top: var(--space-5);
+  left: var(--space-5);
   cursor: pointer;
 
   border: none;
@@ -15,4 +15,9 @@
   align-items: center;
   justify-content: center;
 
+  transition: color var(--transition-fast);
+
+  &:hover {
+    color: var(--color-accent-hover);
+  }
 }

@@ -1,111 +1,108 @@
-.settings{
-  padding: 30px;
+.settings {
+  padding: var(--space-8);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  color: var(--main-white);
+  gap: var(--space-2-5);
+  color: var(--color-text);
 }
 
-.sectionList{
-  --danger: #e5484d;
-
-  margin: 20px;
+.sectionList {
+  margin: var(--space-5);
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: var(--space-5);
 
-  .settingsSection{
+  .settingsSection {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    padding: 20px;
-    border-radius: 15px;
-    border: 2px solid var(--border-main);
-    background-color: var(--background-secondary);
+    gap: var(--space-5);
+    padding: var(--space-5);
+    border-radius: var(--radius-2xl);
+    border: 2px solid var(--color-border);
+    background-color: var(--color-surface);
 
-    h2{
+    h2 {
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 4px;
+      gap: var(--space-2-5);
+      padding: var(--space-1);
 
-      svg{
-        width: 32px;
-        height: 32px;
-        padding: 6px;
+      svg {
+        width: var(--space-8);
+        height: var(--space-8);
+        padding: var(--space-1-5);
         vertical-align: top;
-        border-radius: 6px;
-        background: color-mix(in srgb, var(--main-color) 15%, transparent);
-        color: var(--main-color);
+        border-radius: var(--radius-md);
+        background: var(--color-accent-subtle);
+        color: var(--color-accent);
       }
     }
 
-
-    > div{
+    > div {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: var(--space-5);
     }
 
+    /* Небезпечна зона */
+    &.dangerZone {
+      border-color: color-mix(in srgb, var(--color-danger) 55%, var(--color-border));
 
-    /*Додатковий клас*/
-    &.dangerZone{
-      border-color: color-mix(in srgb, var(--danger) 55%, var(--border-main));
+      h2 {
+        color: var(--color-danger);
 
-      h2{
-        color: var(--danger);
-
-        svg{
-          background: color-mix(in srgb, var(--danger) 15%, transparent);
-          color: var(--danger);
+        svg {
+          background: var(--color-danger-subtle);
+          color: var(--color-danger);
         }
       }
     }
 
-    .dangerRow{
+    .dangerRow {
       display: flex;
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
-      gap: 20px;
+      gap: var(--space-5);
     }
 
-    .dangerInfo{
-      max-width: 400px;
+    .dangerInfo {
+      max-width: var(--content-narrow);
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: var(--space-0-5);
       min-width: 0;
     }
 
-    .dangerTitle{
-      font-size: 1.3rem;
+    .dangerTitle {
+      font-size: var(--text-lg);
     }
 
-    .dangerText{
+    .dangerText {
       opacity: 0.8;
     }
 
-    .dangerButton{
+    .dangerButton {
       flex-shrink: 0;
-      padding: 10px 20px;
-      border: 2px solid color-mix(in srgb, var(--danger) 60%, transparent);
-      border-radius: 10px;
-      background: color-mix(in srgb, var(--danger) 12%, transparent);
-      color: var(--danger);
+      padding: var(--space-2-5) var(--space-5);
+      border: 2px solid color-mix(in srgb, var(--color-danger) 60%, transparent);
+      border-radius: var(--radius-xl);
+      background: var(--color-danger-subtle);
+      color: var(--color-danger);
       font: inherit;
-      font-weight: 600;
+      font-weight: var(--weight-semibold);
       cursor: pointer;
-      transition: background 0.2s, color 0.2s, border-color 0.2s;
+      transition: background var(--transition-base), color var(--transition-base),
+        border-color var(--transition-base);
 
-      &:hover{
-        background: var(--danger);
-        border-color: var(--danger);
-        color: #fff;
+      &:hover {
+        background: var(--color-danger);
+        border-color: var(--color-danger);
+        color: var(--color-text-inverse);
       }
 
-      &:active{
+      &:active {
         transform: scale(0.97);
       }
     }
@@ -113,7 +110,7 @@
 }
 
 @media (max-width: 768px) {
-  .settings{
-    padding: 30px 5px 20px;
+  .settings {
+    padding: var(--space-8) var(--space-1) var(--space-5);
   }
 }

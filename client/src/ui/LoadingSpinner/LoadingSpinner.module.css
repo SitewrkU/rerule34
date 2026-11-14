@@ -1,11 +1,11 @@
-.loadingContainer{
+.loadingContainer {
   display: flex;
   justify-content: center;
-  margin: 40px 0;
+  margin: var(--space-10) 0;
 
-  .loadingIcon{
-    width: 64px;
-    height: 64px;
-    color: var(--main-white);
+  .loadingIcon {
+    width: var(--space-16);
+    height: var(--space-16);
+    color: var(--color-accent);
   }
 }

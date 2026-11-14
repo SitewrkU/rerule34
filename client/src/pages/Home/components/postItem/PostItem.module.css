@@ -1,32 +1,32 @@
-.post{
+.post {
   position: relative;
-  a{
+
+  a {
     position: relative;
     color: inherit;
 
-
-
-    img{
-      border-radius: 5px;
+    img {
+      border-radius: var(--radius-sm);
       width: 156px;
       height: 156px;
       object-fit: cover;
 
-      &.kittyMode{
+      &.kittyMode {
         filter: grayscale(1) blur(8px) brightness(50%);
       }
     }
-    .duration{
-      position: absolute;
-      bottom: 10px;
-      right: 5px;
-      padding: 2px 5px;
-      border-radius: 5px;
-      background-color: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(4px);
-      color: #7e8bc6;
 
-      svg{
+    .duration {
+      position: absolute;
+      bottom: var(--space-2-5);
+      right: var(--space-1);
+      padding: var(--space-0-5) var(--space-1);
+      border-radius: var(--radius-sm);
+      background-color: var(--overlay-strong);
+      backdrop-filter: blur(var(--blur-sm));
+      color: var(--color-video-muted);
+
+      svg {
         width: 16px;
       }
     }
@@ -34,17 +34,17 @@
 }
 
 .durationSkeleton {
-  margin-left: 10px;
+  margin-left: var(--space-2-5);
   display: inline-block;
   width: 28px;
   height: 1em;
-  border-radius: 4px;
+  border-radius: var(--radius-xs);
   vertical-align: middle;
   background: linear-gradient(
           90deg,
-          rgba(255, 255, 255, 0.15) 25%,
-          rgba(255, 255, 255, 0.35) 50%,
-          rgba(255, 255, 255, 0.15) 75%
+          color-mix(in srgb, var(--color-text) 15%, transparent) 25%,
+          color-mix(in srgb, var(--color-text) 35%, transparent) 50%,
+          color-mix(in srgb, var(--color-text) 15%, transparent) 75%
   );
   background-size: 200% 100%;
   animation: durationShimmer 1.2s infinite linear;
@@ -56,10 +56,10 @@
 }
 
 
-.imgWrapper{
+.imgWrapper {
   overflow: hidden;
   touch-action: pan-y;
-  border-radius: 5px;
+  border-radius: var(--radius-sm);
 
   &:has(img.kittyMode)::after {
     content: '>⩊<';
@@ -67,12 +67,12 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) rotate(25deg);
-    color: var(--main-white);
-    font-weight: bold;
-    font-size: 3rem;
+    color: var(--color-text);
+    font-weight: var(--weight-bold);
+    font-size: var(--text-3xl);
   }
 
-  &:has(img.blackMode) img{
+  &:has(img.blackMode) img {
     filter: brightness(0%);
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -84,16 +84,16 @@
 
 .savedBadge {
   position: absolute;
-  top: 6px;
-  right: 6px;
+  top: var(--space-1-5);
+  right: var(--space-1-5);
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
-  background: rgba(0, 0, 0, 0.55);
-  border-radius: 50%;
-  color: #ffd166;
+  width: var(--space-6);
+  height: var(--space-6);
+  background: var(--overlay-medium);
+  border-radius: var(--radius-pill);
+  color: var(--color-star);
   pointer-events: none;
 
   svg {
@@ -103,56 +103,65 @@
 }
 
 
-.postStats{
+.postStats {
   max-width: inherit;
   position: relative;
   display: flex;
   flex-direction: column;
-  background-color: var(--background-secondary);
-  padding: 10px 5px 5px;
+  background-color: var(--color-surface);
+  padding: var(--space-2-5) var(--space-1) var(--space-1);
   top: -10px;
   z-index: -1;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
-  .postScores{
+  border-bottom-left-radius: var(--radius-sm);
+  border-bottom-right-radius: var(--radius-sm);
+
+  .postScores {
     display: flex;
-    gap: 10px;
-    color: var(--main-white);
+    gap: var(--space-2-5);
+    color: var(--color-text);
 
-
-    .postScore{
+    .postScore {
       position: relative;
-      &.scoreSize1{
-        color: color-mix(var(--main-white), #22C55E 40%); font-size: 1.1rem;
+
+      &.scoreSize1 {
+        color: color-mix(in srgb, var(--color-text), var(--color-score-1) 40%);
+        font-size: var(--text-md);
       }
-      &.scoreSize2{
-        color: color-mix(var(--main-white), #3B82F6 40%); font-size: 1.2rem;
+      &.scoreSize2 {
+        color: color-mix(in srgb, var(--color-text), var(--color-score-2) 40%);
+        font-size: var(--text-lg);
       }
-      &.scoreSize3{
-        color: color-mix(var(--main-white), #A855F7 40%); font-size: 1.25rem;
-        > svg{ transform: scale(1.1); vertical-align: -5px; }
+      &.scoreSize3 {
+        color: color-mix(in srgb, var(--color-text), var(--color-score-3) 40%);
+        font-size: var(--text-lg);
+
+        > svg { transform: scale(1.1); vertical-align: -5px; }
       }
-      &.scoreSize4{
-        color: color-mix(var(--main-white), #F59E0B 40%); font-size: 1.3rem;
-        > svg{ transform: scale(1.15) }
+      &.scoreSize4 {
+        color: color-mix(in srgb, var(--color-text), var(--color-score-4) 40%);
+        font-size: var(--text-lg);
+
+        > svg { transform: scale(1.15); }
       }
-      &.scoreSize5{
-        color: color-mix(var(--main-white), #EF4444 40%); font-size: 1.4rem;
-        > svg{ transform: scale(1.2) }
+      &.scoreSize5 {
+        color: color-mix(in srgb, var(--color-text), var(--color-score-5) 40%);
+        font-size: var(--text-xl);
+
+        > svg { transform: scale(1.2); }
       }
     }
-
   }
-  .postDate{
+
+  .postDate {
     display: flex;
     justify-content: end;
-    font-size: 0.9em;
-    color: grey;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
   }
 }
 
-.isVideo{
-  border: 1px solid rgb(135 183 223 / 0.8);
+.isVideo {
+  border: 1px solid var(--color-video);
 }
 
 
@@ -163,14 +172,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.85);
+  background: var(--overlay-strong);
   pointer-events: none;
 
   .previewImage {
     max-width: 92vw;
     max-height: 92vh;
     object-fit: contain;
-    border-radius: 8px;
+    border-radius: var(--radius-lg);
   }
 }
 

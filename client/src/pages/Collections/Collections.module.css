@@ -1,95 +1,95 @@
-.page{
+.page {
   position: relative;
-  padding: 20px;
+  padding: var(--space-5);
   display: flex;
   flex-direction: column;
 }
 
-.profile{
+.profile {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   max-width: fit-content;
   margin: 0 auto;
-  gap: 10px;
-  color: var(--main-white);
+  gap: var(--space-2-5);
+  color: var(--color-text);
 
-  .userName{
-    color: var(--main-color);
+  .userName {
+    color: var(--color-heading);
     align-self: start;
     text-align: left;
-    font-size: 1.8rem;
-    margin-bottom: 10px;
+    font-size: var(--text-2xl);
+    margin-bottom: var(--space-2-5);
   }
 
-  .mainInfo{
+  .mainInfo {
     display: flex;
-    gap: 10px;
+    gap: var(--space-2-5);
   }
 
-  .profilePic{
-    border-radius: 10px;
-    background-color: var(--background-secondary);
-    padding: 40px;
+  .profilePic {
+    border-radius: var(--radius-xl);
+    background-color: var(--color-surface);
+    padding: var(--space-10);
     display: flex;
     align-items: center;
     justify-content: center;
 
-    svg{
-      width: 48px;
-      height: 48px;
+    svg {
+      width: var(--space-12);
+      height: var(--space-12);
     }
   }
 
-  .profileInfo{
-    padding: 5px;
+  .profileInfo {
+    padding: var(--space-1);
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: var(--space-4);
 
-    .stat{
-      span{
-        color: var(--main-color);
-        padding: 2px 4px;
-        border-radius: 10px;
-        background-color: color-mix(in oklab, var(--border-main), transparent 45%);
-        border: 2px solid var(--border-main);
+    .stat {
+      span {
+        color: var(--color-accent);
+        padding: var(--space-0-5) var(--space-1);
+        border-radius: var(--radius-xl);
+        background-color: var(--color-accent-subtle);
+        border: 2px solid var(--color-border);
 
-        svg{
-          margin-right: 5px;
+        svg {
+          margin-right: var(--space-1);
         }
       }
     }
 
-    .rank{
-      color: grey;
+    .rank {
+      color: var(--color-text-muted);
     }
 
-    p{
-      font-size: 1.2rem;
+    p {
+      font-size: var(--text-md);
     }
-
   }
 }
 
 
-.savedButton{
+.savedButton {
   cursor: pointer;
-  color: #ffd166;
+  color: var(--color-star);
   border: none;
-  border-radius: 10px;
-  background-color: var(--background-secondary);
-  padding: 40px;
-  margin-top: 20px;
+  border-radius: var(--radius-xl);
+  background-color: var(--color-surface);
+  padding: var(--space-10);
+  margin-top: var(--space-5);
 
-  transition: all .2s ease-in-out;
-  &:hover{
-    background-color: #453b29;
+  transition: var(--transition-base);
+
+  &:hover {
+    background-color: var(--color-warning-subtle);
   }
 
-  svg{
-    width: 48px;
-    height: 48px;
+  svg {
+    width: var(--space-12);
+    height: var(--space-12);
   }
 }

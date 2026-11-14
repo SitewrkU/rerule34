@@ -15,8 +15,8 @@ import {useThemeSync} from "./utils/useThemeSync.ts";
 
 const antdThemeMap = {
   dark: { algorithm: theme.darkAlgorithm, colorPrimary: '#aae5a4' },
-  light: { algorithm: theme.defaultAlgorithm, colorPrimary: '#4f9c47' },
-  original: { algorithm: theme.defaultAlgorithm, colorPrimary: '#207a16' },
+  light: { algorithm: theme.defaultAlgorithm, colorPrimary: '#3f7d39' },
+  original: { algorithm: theme.defaultAlgorithm, colorPrimary: '#1d431d' },
 };
 
 const App = () => {

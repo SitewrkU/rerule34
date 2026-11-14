@@ -1,49 +1,49 @@
 /* увага: нижче жесткий хардкод */
-.button{
+.button {
   position: relative;
   margin: 0;
   padding: 0;
-  height: 40px;
-  border-radius: 6px;
-  font-size: 16px;
+  height: var(--space-10);
+  border-radius: var(--radius-md);
+  font-size: var(--text-base);
 
-  > div{
+  > div {
     position: relative;
     display: flex;
-    padding-left: 20px;
-    font-weight: 600;
-    gap: 5px;
+    padding-left: var(--space-5);
+    font-weight: var(--weight-semibold);
+    gap: var(--space-1);
 
-    .tagIcon{
+    .tagIcon {
       position: absolute;
       top: 50%;
-      left: 5px;
-      padding-left: 10px;
+      left: var(--space-1);
+      padding-left: var(--space-2-5);
       transform: translate(-50%, -50%);
-      color: var(--main-color);
-      filter: drop-shadow(0 0 4px #87f08a80)
-              drop-shadow(0 0 6px #87f08a50);
+      color: var(--color-accent);
+      filter: drop-shadow(0 0 4px color-mix(in srgb, var(--color-accent) 50%, transparent))
+              drop-shadow(0 0 6px color-mix(in srgb, var(--color-accent) 30%, transparent));
     }
 
-    > p{
+    > p {
       width: 36px;
       margin-bottom: 0;
     }
 
-    .removed{
+    .removed {
       text-align: right;
-      color: var(--accent-red);
+      color: var(--color-danger);
     }
 
-    .added{
+    .added {
       text-align: left;
-      margin-right: 10px;
-      color: var(--accent-green);
+      margin-right: var(--space-2-5);
+      color: var(--color-success);
     }
   }
 
-  .dropIcon{
-    width: 20px;
+  .dropIcon {
+    width: var(--space-5);
     position: absolute;
     top: 50%;
     right: -7px;
@@ -52,156 +52,157 @@
   }
 }
 
-.dropdown{
-  max-width: 400px;
-  background-color: var(--background-secondary);
-  border: 1px solid var(--border-main-lighter);
-  border-radius: 10px;
-  margin-top: 10px;
-  margin-right: 10px;
+.dropdown {
+  max-width: var(--content-narrow);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-xl);
+  margin-top: var(--space-2-5);
+  margin-right: var(--space-2-5);
 
   > *:not(:last-child) {
-    border-bottom: 1px solid var(--border-main-lighter);
+    border-bottom: 1px solid var(--color-border-subtle);
   }
 
-  /*Загаловок дропдауна*/
-  .ddHeader{
-    padding: 8px;
+  /* Заголовок випадаючого списку */
+  .ddHeader {
+    padding: var(--space-2);
     display: flex;
-    gap: 10px;
+    gap: var(--space-2-5);
 
-    .headerIcon{
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
+    .headerIcon {
+      width: var(--space-10);
+      height: var(--space-10);
+      border-radius: var(--radius-pill);
       display: inline-block;
-      padding: 10px;
-      background-color: var(--background-tertiary);
-      svg{
+      padding: var(--space-2-5);
+      background-color: var(--color-surface-raised);
+
+      svg {
         vertical-align: -4px;
-        color: var(--main-color);
+        color: var(--color-accent);
       }
     }
 
-    .headerText{
-      > p:first-child{
-        font-size: 1.05rem;
-        color: var(--main-color);
+    .headerText {
+      > p:first-child {
+        font-size: var(--text-base);
+        color: var(--color-text);
       }
 
-      > p:last-child{
-        color: var(--main-white);
-        opacity: 0.7;
+      > p:last-child {
+        color: var(--color-text-muted);
       }
     }
   }
 
-  .collapse{
+  .collapse {
     > *:not(:last-child) {
-      border-bottom: 1px solid var(--border-main-lighter);
+      border-bottom: 1px solid var(--color-border-subtle);
     }
 
-    :global(.ant-collapse-title){
-      .collapseHeader{
+    :global(.ant-collapse-title) {
+      .collapseHeader {
         display: flex;
-        gap: 10px;
+        gap: var(--space-2-5);
         align-items: center;
-        padding: 5px;
+        padding: var(--space-1);
 
-        > svg{
-          width: 20px;
+        > svg {
+          width: var(--space-5);
         }
 
-        &.chRemove{
-          > svg{
-            color: var(--accent-red);
-            filter: drop-shadow(0 0 2px color-mix(in srgb, var(--accent-red) 30%, transparent))
-                    drop-shadow(0 0 4px color-mix(in srgb, var(--accent-red) 30%, transparent));
+        &.chRemove {
+          > svg {
+            color: var(--color-danger);
+            filter: drop-shadow(0 0 2px color-mix(in srgb, var(--color-danger) 30%, transparent))
+                    drop-shadow(0 0 4px color-mix(in srgb, var(--color-danger) 30%, transparent));
           }
 
-          > p:last-child{
-            border-radius: 5px;
-            padding: 0 6px;
-            color: var(--accent-red);
-            background-color: color-mix(in srgb, var(--accent-red) 20%, transparent);
+          > p:last-child {
+            border-radius: var(--radius-sm);
+            padding: 0 var(--space-1-5);
+            color: var(--color-danger);
+            background-color: var(--color-danger-subtle);
           }
         }
 
-        &.chAdd{
-          > svg{
-            color: var(--accent-green);
-            filter: drop-shadow(0 0 2px color-mix(in srgb, var(--accent-green) 30%, transparent))
-                    drop-shadow(0 0 4px color-mix(in srgb, var(--accent-green) 30%, transparent));
+        &.chAdd {
+          > svg {
+            color: var(--color-success);
+            filter: drop-shadow(0 0 2px color-mix(in srgb, var(--color-success) 30%, transparent))
+                    drop-shadow(0 0 4px color-mix(in srgb, var(--color-success) 30%, transparent));
           }
 
-          > p:last-child{
-            border-radius: 5px;
-            padding: 0 6px;
-            color: var(--accent-green);
-            background-color: color-mix(in srgb, var(--accent-green) 20%, transparent);
+          > p:last-child {
+            border-radius: var(--radius-sm);
+            padding: 0 var(--space-1-5);
+            color: var(--color-success);
+            background-color: var(--color-success-subtle);
           }
         }
       }
 
-
-      > p{
-        > svg{
-          color: grey;
+      > p {
+        > svg {
+          color: var(--color-text-muted);
           width: 18px;
         }
 
-        > .iconRemove{
-          color: var(--accent-red);
+        > .iconRemove {
+          color: var(--color-danger);
         }
 
-        > .iconAdd{
-          color: var(--accent-green);
+        > .iconAdd {
+          color: var(--color-success);
         }
       }
     }
 
-    :global(.ant-collapse-body){
-      > .tagstoremove{
+    :global(.ant-collapse-body) {
+      > .tagstoremove {
         cursor: default;
-        padding: 5px;
+        padding: var(--space-1);
         display: flex;
         flex-wrap: wrap;
-        gap: 5px;
-        > span{
-          padding: 2px 5px;
-          border-radius: 5px;
-          background-color: color-mix(in srgb, var(--accent-red) 5%, transparent);
-          border: 1px solid color-mix(in srgb, var(--accent-red) 70%, transparent);
-          color: var(--accent-red);
+        gap: var(--space-1);
+
+        > span {
+          padding: var(--space-0-5) var(--space-1);
+          border-radius: var(--radius-sm);
+          background-color: color-mix(in srgb, var(--color-danger) 8%, transparent);
+          border: 1px solid color-mix(in srgb, var(--color-danger) 70%, transparent);
+          color: var(--color-danger);
         }
       }
 
-      > .tagstoadd{
+      > .tagstoadd {
         cursor: default;
-        padding: 5px;
+        padding: var(--space-1);
         display: flex;
         flex-wrap: wrap;
-        gap: 5px;
-        > span{
-          padding: 2px 5px;
-          border-radius: 5px;
-          background-color: color-mix(in srgb, var(--accent-green) 5%, transparent);
-          border: 1px solid color-mix(in srgb, var(--accent-green) 70%, transparent);
-          color: var(--accent-green);
+        gap: var(--space-1);
+
+        > span {
+          padding: var(--space-0-5) var(--space-1);
+          border-radius: var(--radius-sm);
+          background-color: color-mix(in srgb, var(--color-success) 8%, transparent);
+          border: 1px solid color-mix(in srgb, var(--color-success) 70%, transparent);
+          color: var(--color-success);
         }
       }
     }
   }
 }
 
-.blacklistTagDisabled{
+.blacklistTagDisabled {
   text-decoration: line-through;
   opacity: 0.7;
   filter: blur(1px);
 
-  transition: all .2s ease-in-out;
+  transition: var(--transition-base);
 
-  &:hover{
+  &:hover {
     filter: blur(0px);
     opacity: 1;
   }
@@ -210,6 +211,7 @@
 .dropdown.dropdown :global(.ant-collapse-header) {
   padding: 0;
 }
+
 .dropdown :global(.ant-collapse-body) {
-  padding: 4px !important;
+  padding: var(--space-1) !important;
 }

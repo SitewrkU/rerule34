@@ -1,21 +1,22 @@
-.radio{
+.radio {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-2-5);
 }
 
-.radioGroup{
+.radioGroup {
   display: flex;
   flex-wrap: nowrap;
   flex-shrink: 0;
   white-space: nowrap;
   max-width: 100%;
   overflow-x: auto;
-  > label{
-    padding: 8px 16px;
+
+  > label {
+    padding: var(--space-2) var(--space-4);
     height: auto;
-    background-color: var(--background-tertiary);
+    background-color: var(--color-surface-raised);
     flex-shrink: 0;
   }
 }
@@ -30,10 +31,10 @@
 
 @media (max-width: 768px) {
   .radio {
-    gap: 6px;
+    gap: var(--space-1-5);
   }
 
   .radioGroup {
-    margin-top: 10px;
+    margin-top: var(--space-2-5);
   }
 }

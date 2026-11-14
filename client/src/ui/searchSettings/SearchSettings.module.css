@@ -1,42 +1,43 @@
-.drawer.drawer{
-  background-color: var(--background-secondary);
+.drawer.drawer {
+  background-color: var(--color-surface);
 }
 
-.searchSettings{
-  p{
-    margin-bottom: 5px;
+.searchSettings {
+  p {
+    margin-bottom: var(--space-1);
   }
-
 }
 
-.switcherArea{
+.switcherArea {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
-  > p{
+  gap: var(--space-2-5);
+
+  > p {
     margin: 0;
   }
-  .switcher.switcher{
-    margin: 10px 0;
+
+  .switcher.switcher {
+    margin: var(--space-2-5) 0;
   }
 }
 
 
-.button{
+.button {
   position: absolute;
   top: 65px;
-  right: 10px;
+  right: var(--space-2-5);
   cursor: pointer;
 }
 
 .randomText {
   background: linear-gradient(90deg,
-    #ffffff 0%,
-    #bfdbfe 25%,
-    #fbbf24 50%,
-    #a78bfa 75%,
-    #ffffff 100%
+    var(--color-text) 0%,
+    var(--color-info) 25%,
+    var(--color-warning) 50%,
+    var(--color-accent) 75%,
+    var(--color-text) 100%
   );
   background-size: 200% auto;
   -webkit-background-clip: text;
@@ -52,7 +53,7 @@
   background-clip: initial;
   animation: none;
   opacity: 0.45;
-  color: rgba(255, 255, 255, 0.3);
+  color: var(--color-text-muted);
 }
 
 @keyframes shimmer {
@@ -62,7 +63,7 @@
 }
 
 
-.textinfo{
-  margin-top: 5px;
-  color: #aaaaaa;
+.textinfo {
+  margin-top: var(--space-1);
+  color: var(--color-text-muted);
 }

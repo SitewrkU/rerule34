@@ -1,33 +1,33 @@
-.savedHeader{
+.savedHeader {
   display: flex;
-  gap: 10px;
+  gap: var(--space-2-5);
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: var(--space-5);
 
-  .savedTitle{
+  .savedTitle {
     margin: 0 auto 0;
-    font-size: 1.4rem;
+    font-size: var(--text-xl);
   }
 }
 
 
-
-.posts{
-  padding: 10px;
+.posts {
+  padding: var(--space-2-5);
   display: flex;
   justify-content: center;
-  gap: 10px 20px;
+  gap: var(--space-2-5) var(--space-5);
   flex-wrap: wrap;
 }
 
-.post{
+.post {
   position: relative;
 
-  a{
+  a {
     position: relative;
     color: inherit;
-    img{
-      border-radius: 5px;
+
+    img {
+      border-radius: var(--radius-sm);
       width: 156px;
       height: 156px;
       object-fit: cover;
@@ -35,24 +35,24 @@
   }
 }
 
-.duration{
+.duration {
   position: absolute;
-  bottom: 10px;
-  right: 5px;
-  padding: 2px 5px;
-  border-radius: 5px;
-  background-color: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(4px);
-  color: #7e8bc6;
+  bottom: var(--space-2-5);
+  right: var(--space-1);
+  padding: var(--space-0-5) var(--space-1);
+  border-radius: var(--radius-sm);
+  background-color: var(--overlay-soft);
+  backdrop-filter: blur(var(--blur-sm));
+  color: var(--color-video-muted);
 
-  svg{
+  svg {
     width: 16px;
   }
 }
 
 
-.isVideo{
-  border: 1px solid rgb(135 183 223 / 0.8);
+.isVideo {
+  border: 1px solid var(--color-video);
 }
 
 @media (min-width: 768px) {

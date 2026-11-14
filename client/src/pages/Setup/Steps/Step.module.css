@@ -1,85 +1,80 @@
-.stepContainer{
+.stepContainer {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 20px;
-  padding: 10px 20px;
+  gap: var(--space-5);
+  padding: var(--space-2-5) var(--space-5);
 }
 
-.infoP{
+.infoP {
   text-align: center;
-  max-width: 400px;
-  font-size: 1.2rem;
-  color: var(--main-white);
+  max-width: var(--content-narrow);
+  font-size: var(--text-md);
+  color: var(--color-text);
 }
 
-.infoLongP{
+.infoLongP {
   text-align: center;
   max-width: 500px;
-  font-size: 1.2rem;
-  color: var(--main-white);
+  font-size: var(--text-md);
+  color: var(--color-text);
 }
 
-.motionP{
-  color: var(--main-white);
+.motionP {
+  color: var(--color-text);
   position: absolute;
   bottom: -5px;
 }
 
-.input{
-  margin: 20px 0;
-  padding: 10px;
-  font-size: 1.2rem;
-  max-width: 400px;
+.input {
+  margin: var(--space-5) 0;
+  padding: var(--space-2-5);
+  font-size: var(--text-md);
+  max-width: var(--content-narrow);
 }
 
-.blacklist{
-  margin-top: 20px;
+.blacklist {
+  margin-top: var(--space-5);
   display: flex;
   justify-content: center;
-  gap: 20px;
+  gap: var(--space-5);
   flex-wrap: wrap;
-  color: var(--main-white);
+  color: var(--color-text);
 
-
-
-  .blacklistCheckbox{
+  .blacklistCheckbox {
     opacity: 0.8;
-    background-color: var(--background-secondary);
-    padding: 10px;
-    border: 2px solid var(--border-main);
-    border-radius: 10px;
+    background-color: var(--color-surface);
+    padding: var(--space-2-5);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-xl);
     max-width: 300px;
     display: flex;
-    gap: 10px;
+    gap: var(--space-2-5);
     align-items: flex-start;
     cursor: pointer;
 
-    transition: border-color 0.15s ease, opacity 0.15s ease;
+    transition: border-color var(--transition-fast), opacity var(--transition-fast);
 
-    &:hover{
+    &:hover {
       opacity: 1;
     }
 
     &:has(.checkboxInput:checked) {
-      border-color: var(--main-color, #4a90e2);
+      border-color: var(--color-accent);
     }
 
     .title {
-      font-weight: bold;
+      font-weight: var(--weight-bold);
       margin: 0;
     }
 
     .description {
-      font-size: 0.9em;
+      font-size: var(--text-sm);
       opacity: 0.7;
-      margin: 4px 0 0;
+      margin: var(--space-1) 0 0;
     }
-
-
-
 
     .checkboxInput {
       position: absolute;
@@ -93,11 +88,11 @@
       flex-shrink: 0;
       width: 22px;
       height: 22px;
-      border: 2px solid var(--border-main);
-      border-radius: 4px;
-      background-color: var(--background);
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-xs);
+      background-color: var(--color-bg);
       position: relative;
-      transition: background-color 0.15s ease, border-color 0.15s ease;
+      transition: background-color var(--transition-fast), border-color var(--transition-fast);
 
       &::before,
       &::after {
@@ -107,19 +102,23 @@
         left: 50%;
         width: 2px;
         height: 14px;
-        background-color: var(--main-dark);
+        background-color: var(--color-on-accent);
         opacity: 0;
-        transition: opacity 0.15s ease;
+        transition: opacity var(--transition-fast);
       }
     }
+
     .checkboxBox::before {
-      transform: translate(-50%, -50%) rotate(45deg);}
+      transform: translate(-50%, -50%) rotate(45deg);
+    }
+
     .checkboxBox::after {
-      transform: translate(-50%, -50%) rotate(-45deg);}
+      transform: translate(-50%, -50%) rotate(-45deg);
+    }
 
     .checkboxInput:checked + .checkboxBox {
-      background-color: var(--main-color, #4a90e2);
-      border-color: var(--main-color, #4a90e2);
+      background-color: var(--color-accent);
+      border-color: var(--color-accent);
     }
 
     .checkboxInput:checked + .checkboxBox::before,
@@ -128,32 +127,30 @@
     }
 
     .checkboxInput:focus-visible + .checkboxBox {
-      outline: 2px solid var(--main-color, #4a90e2);
+      outline: 2px solid var(--color-accent);
       outline-offset: 2px;
     }
-
   }
 }
 
 
 @media (max-width: 550px) {
-  .blacklist{
-    .blacklistCheckbox{
+  .blacklist {
+    .blacklistCheckbox {
       max-width: 100%;
       width: 100%;
 
       .title {
-        font-weight: bold;
+        font-weight: var(--weight-bold);
         margin: 0;
-        font-size: 1.2em;
+        font-size: var(--text-lg);
       }
 
       .description {
-        font-size: 1em;
+        font-size: var(--text-base);
         opacity: 0.7;
-        margin: 4px 0 0;
+        margin: var(--space-1) 0 0;
       }
-
     }
   }
 }
