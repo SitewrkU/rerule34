@@ -2,7 +2,7 @@ import {create} from "zustand";
 import {persist} from "zustand/middleware";
 
 interface Settings {
-  theme: 'dark' | 'light' | 'original';
+  theme: 'dark' | 'void' | 'light' | 'original';
 
   paginationOnTop: boolean;
   paginationPos: 'left' | 'center' | 'right';

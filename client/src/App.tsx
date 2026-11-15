@@ -14,9 +14,10 @@ import {useSettingsStore} from "./store/settingsStore.ts";
 import {useThemeSync} from "./utils/useThemeSync.ts";
 
 const antdThemeMap = {
-  dark: { algorithm: theme.darkAlgorithm, colorPrimary: '#aae5a4' },
-  light: { algorithm: theme.defaultAlgorithm, colorPrimary: '#3f7d39' },
-  original: { algorithm: theme.defaultAlgorithm, colorPrimary: '#1d431d' },
+  dark: { algorithm: theme.darkAlgorithm, colorPrimary: '#aae5a4', colorTextLightSolid: '#101210' },
+  void: { algorithm: theme.darkAlgorithm, colorPrimary: '#b9adff', colorTextLightSolid: '#08070f' },
+  light: { algorithm: theme.defaultAlgorithm, colorPrimary: '#3f7d39', colorTextLightSolid: '#ffffff' },
+  original: { algorithm: theme.defaultAlgorithm, colorPrimary: '#1d431d', colorTextLightSolid: '#ffffff' },
 };
 
 const App = () => {
@@ -35,6 +36,7 @@ const App = () => {
         algorithm: antdTheme.algorithm,
         token: {
           colorPrimary: antdTheme.colorPrimary,
+          colorTextLightSolid: antdTheme.colorTextLightSolid,
           fontFamily: 'SN Pro, sans-serif'
         }
       }}

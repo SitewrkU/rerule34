@@ -179,6 +179,116 @@
 
 
 /* ==========================================================================
+   DARK VOID
+   ========================================================================== */
+
+[data-theme="void"] {
+  color-scheme: dark;
+
+  /* Primary */
+  --primary-100: #f0edff;
+  --primary-200: #ddd7ff;
+  --primary-300: #b9adff;
+  --primary-400: #9c8bff;
+  --primary-500: #7c67ed;
+  --primary-600: #6350c9;
+  --primary-700: #4d3da0;
+  --primary-800: #3a2f78;
+  --primary-900: #2a2355;
+
+  /* Grey */
+  --grey-50: #f2f5f8;
+  --grey-100: #dde3ea;
+  --grey-200: #c3ccd6;
+  --grey-300: #9aa5b1;
+  --grey-400: #727d89;
+  --grey-500: #525c67;
+  --grey-600: #363d46;
+  --grey-700: #23282f;
+  --grey-750: #1a1e24;
+  --grey-800: #111419;
+  --grey-850: #0b0d11;
+  --grey-900: #06080b;
+  --grey-950: #020304;
+
+  /* Danger */
+  --danger-100: #2a0f13;
+  --danger-300: #ff9b9b;
+  --danger-500: #f05252;
+  --danger-700: #c62828;
+
+  /* Success */
+  --success-100: #082419;
+  --success-300: #7ef0b0;
+  --success-500: #34d399;
+  --success-700: #1f9d68;
+
+  /* Semantic */
+  --color-bg: var(--grey-950);
+  --color-bg-image: radial-gradient(
+    60% 55% at 50% 0%,
+    rgb(124 103 237 / 0.16),
+    transparent 70%
+  );
+  --color-surface: var(--grey-900);
+  --color-surface-raised: var(--grey-800);
+  --color-surface-hover: var(--grey-750);
+  --color-surface-tint: rgb(255 255 255 / 0.025);
+
+  --color-text: var(--grey-200);
+  --color-text-muted: var(--grey-400);
+  --color-text-subtle: var(--grey-500);
+  --color-text-inverse: var(--grey-950);
+  --color-heading: var(--primary-300);
+
+  --color-border: var(--grey-850);
+  --color-border-subtle: var(--grey-750);
+  --color-border-strong: var(--grey-600);
+
+  --color-accent: var(--primary-300);
+  --color-accent-hover: var(--primary-200);
+  --color-accent-active: var(--primary-400);
+  --color-accent-subtle: color-mix(in srgb, var(--color-accent) 14%, transparent);
+  --color-accent-soft: var(--primary-400);
+  --color-on-accent: #08070f;
+
+  --color-link: #9ec1ff;
+  --color-link-visited: #7e8cb8;
+
+  --color-danger: var(--danger-300);
+  --color-danger-strong: var(--danger-500);
+  --color-danger-subtle: color-mix(in srgb, var(--color-danger) 14%, transparent);
+
+  --color-success: var(--success-300);
+  --color-success-strong: var(--success-500);
+  --color-success-subtle: color-mix(in srgb, var(--color-success) 14%, transparent);
+
+  --color-warning: #ffd166;
+  --color-warning-subtle: color-mix(in srgb, var(--color-warning) 18%, transparent);
+  --color-star: #ffd166;
+  --color-info: #82c7ff;
+
+  --color-video: #82c7ff;
+  --color-video-muted: #8fa7c9;
+
+  --color-score-1: #34d399;
+  --color-score-2: #60a5fa;
+  --color-score-3: #c084fc;
+  --color-score-4: #fbbf24;
+  --color-score-5: #f87171;
+
+  --overlay-soft: rgb(0 0 0 / 0.55);
+  --overlay-medium: rgb(0 0 0 / 0.7);
+  --overlay-strong: rgb(0 0 0 / 0.92);
+
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.7),
+    0 2px 8px rgb(0 0 0 / 0.6);
+  --shadow-md: 0 2px 4px rgb(0 0 0 / 0.75),
+    0 8px 32px rgb(0 0 0 / 0.7);
+}
+
+
+/* ==========================================================================
    LIGHT
    ========================================================================== */
 

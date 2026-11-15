@@ -38,6 +38,7 @@ const SettingsPage = () => {
             label="Тема оформлення" text="Які кольори тобі більше подобаються? (Краще не міняти, стилі тестові!)"
             options={[
               {label: 'Темня', value: 'dark'},
+              {label: 'Dark Void', value: 'void'},
               {label: 'Світла', value: 'light'},
               {label: 'Оригінальна', value: 'original'},
             ]}
