@@ -1,5 +1,6 @@
 import SettingSwitch from "./components/SettingsSwitcher/Switcher.tsx";
 import SettingRadioGroup from "./components/SettingsRadioGroup/Radio.tsx";
+import BlacklistSettings from "./components/BlacklistSettings/BlacklistSettings.tsx";
 import {defaultSettings} from "../../store/settingsStore.ts";
 
 import BackButton from "../../ui/BackButton/BackButton.tsx";
@@ -70,6 +71,7 @@ const SettingsPage = () => {
           <h2><CancelCircleHalfDot/> Блек-ліст</h2>
           <div>
             <SettingSwitch checkedByDef={defaultSettings.enableBlacklist} settingKey="enableBlacklist" label="Включити блек-ліст під час пошуку" text="Фільтрація неприємних тем."/>
+            <BlacklistSettings />
           </div>
         </section>
         <section className={styles.settingsSection}>

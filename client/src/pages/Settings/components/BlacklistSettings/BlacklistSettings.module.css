@@ -1,0 +1,126 @@
+.blacklistSettings {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.header {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.title {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text);
+}
+
+.hint {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.counter {
+  margin-left: auto;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  color: var(--color-accent);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--space-1-5);
+}
+
+.theme {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1-5);
+  min-height: 32px;
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-raised);
+  cursor: pointer;
+  font-size: var(--text-sm);
+  line-height: var(--leading-tight);
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+
+  &:hover {
+    border-color: var(--color-border-strong);
+  }
+
+  &.checked {
+    border-color: var(--color-accent);
+    background: var(--color-accent-subtle);
+
+    .checkbox {
+      border-color: var(--color-accent);
+      background: var(--color-accent);
+    }
+
+    .checkbox::before {
+      transform: translate(-50%, -60%) rotate(-45deg) scale(1);
+    }
+  }
+}
+
+.input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+
+  &:focus-visible + .checkbox {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+}
+
+.checkbox {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  position: relative;
+  border: 2px solid var(--color-border-strong);
+  border-radius: var(--radius-xs);
+  background: var(--color-bg);
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 8px;
+    height: 4px;
+    border-left: 2px solid var(--color-on-accent);
+    border-bottom: 2px solid var(--color-on-accent);
+    transform: translate(-50%, -60%) rotate(-45deg) scale(0);
+    transform-origin: center;
+    transition: transform var(--transition-fast);
+  }
+}
+
+.themeTitle {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--color-text);
+}
+
+.inactive {
+  .counter {
+    color: var(--color-text-muted);
+  }
+
+  .grid {
+    opacity: 0.7;
+  }
+}
