@@ -1,95 +1,253 @@
 .page {
   position: relative;
-  padding: var(--space-5);
+  min-height: 100dvh;
+  padding: var(--space-16) var(--space-5) var(--space-8);
   display: flex;
   flex-direction: column;
 }
 
 .profile {
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-sm);
+}
+
+.profileHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.profilePic {
+  flex: 0 0 auto;
+  width: 88px;
+  height: 88px;
+  display: flex;
   align-items: center;
   justify-content: center;
-  max-width: fit-content;
-  margin: 0 auto;
-  gap: var(--space-2-5);
-  color: var(--color-text);
+  border-radius: 50%;
+  background-color: var(--color-surface-raised);
+  border: 1px solid var(--color-border-subtle);
+  box-shadow: inset 0 0 0 4px var(--color-surface);
+  color: var(--color-accent);
 
-  .userName {
-    color: var(--color-heading);
-    align-self: start;
-    text-align: left;
-    font-size: var(--text-2xl);
-    margin-bottom: var(--space-2-5);
-  }
-
-  .mainInfo {
-    display: flex;
-    gap: var(--space-2-5);
-  }
-
-  .profilePic {
-    border-radius: var(--radius-xl);
-    background-color: var(--color-surface);
-    padding: var(--space-10);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    svg {
-      width: var(--space-12);
-      height: var(--space-12);
-    }
-  }
-
-  .profileInfo {
-    padding: var(--space-1);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-
-    .stat {
-      span {
-        color: var(--color-accent);
-        padding: var(--space-0-5) var(--space-1);
-        border-radius: var(--radius-xl);
-        background-color: var(--color-accent-subtle);
-        border: 2px solid var(--color-border);
-
-        svg {
-          margin-right: var(--space-1);
-        }
-      }
-    }
-
-    .rank {
-      color: var(--color-text-muted);
-    }
-
-    p {
-      font-size: var(--text-md);
-    }
+  svg {
+    width: 40px;
+    height: 40px;
   }
 }
 
+.identity {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
 
-.savedButton {
-  cursor: pointer;
+.userName {
+  color: var(--color-heading);
+  font-size: var(--text-2xl);
+  line-height: var(--leading-tight);
+  overflow-wrap: anywhere;
+}
+
+.rank {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1-5);
+  padding: var(--space-0-5) var(--space-2-5) var(--space-0-5) var(--space-2);
+  border-radius: var(--radius-md);
+  background-color: var(--color-warning-subtle);
   color: var(--color-star);
-  border: none;
-  border-radius: var(--radius-xl);
-  background-color: var(--color-surface);
-  padding: var(--space-10);
-  margin-top: var(--space-5);
-
-  transition: var(--transition-base);
-
-  &:hover {
-    background-color: var(--color-warning-subtle);
-  }
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-relaxed);
 
   svg {
-    width: var(--space-12);
-    height: var(--space-12);
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+  padding: var(--space-3) var(--space-3-5);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface-tint);
+}
+
+.statIcon {
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-md);
+  background-color: var(--color-accent-subtle);
+  color: var(--color-accent);
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.statBody {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.statValue {
+  color: var(--color-text);
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-tight);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.statLabel {
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal);
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-4);
+}
+
+.savedButton {
+  width: 100%;
+  max-width: 560px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3-5);
+  padding: var(--space-3-5) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl);
+  background-color: transparent;
+  color: var(--color-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    transform var(--transition-fast);
+
+  &:hover {
+    border-color: var(--color-border-strong);
+    transform: translateY(-1px);
+
+    .savedChevron {
+      color: var(--color-accent);
+      transform: translateX(2px);
+    }
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+}
+
+.savedIcon {
+  flex: 0 0 auto;
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-lg);
+  background-color: var(--color-warning-subtle);
+  color: var(--color-star);
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.savedText {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-0-5);
+  min-width: 0;
+
+  strong {
+    font-size: var(--text-md);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-tight);
+  }
+
+  small {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+}
+
+.savedChevron {
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  color: var(--color-text-subtle);
+  transition:
+    color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+@media (max-width: 520px) {
+  .page {
+    padding: var(--space-16) var(--space-4) var(--space-6);
+  }
+
+  .profile {
+    gap: var(--space-5);
+    padding: var(--space-4);
+  }
+
+  .profilePic {
+    width: 72px;
+    height: 72px;
+
+    svg {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  .userName {
+    font-size: var(--text-xl);
+  }
+
+  .stats {
+    grid-template-columns: 1fr;
   }
 }

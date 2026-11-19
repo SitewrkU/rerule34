@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import {useAppStore} from "../../store/appStore.ts";
+import {useCollectionsStore} from "../../store/collectionStore.ts";
+import {pluralizePosts} from "../../lib/pluralizePosts.ts";
 import SavedPosts from "./components/SavedPosts/SavedPosts.tsx";
 
 import { AnimatePresence, motion } from 'motion/react';
 import styles from './Collections.module.css'
-import {User, Bookmark3, View, Calendar3, Crown3} from "clicons-react";
+import {User, Bookmark3, View, Calendar3, Crown3, ChevronRight} from "clicons-react";
 import BackButton from "../../ui/BackButton/BackButton.tsx";
 
 const viewedRanks: Record<number, string> = {
@@ -53,6 +55,10 @@ const CollectionsPage = () => {
   const userName = useAppStore(s => s.userName);
   const postViewed = useAppStore(s => s.postViewed);
   const joinedAt = useAppStore(s => s.joinedAt)
+  const savedCount = useCollectionsStore(
+    s => s.collections.find(c => c.isDefault)?.posts.length ?? 0
+  );
+  const collectionsLoaded = useCollectionsStore(s => s.fetched);
 
 
   const [view, setView] = useState<ViewMode>('profile');
@@ -86,6 +92,8 @@ const CollectionsPage = () => {
               userName={userName}
               postViewed={postViewed}
               joinedAt={joinedAt}
+              savedCount={savedCount}
+              collectionsLoaded={collectionsLoaded}
               onOpenSaved={() => goTo('saved', 1)}
             />
           </motion.div>
@@ -114,32 +122,60 @@ const formatDate = (date: number) => {
 }
 
 const ProfileView =
-  ({userName, postViewed, joinedAt, onOpenSaved}: {
+  ({userName, postViewed, joinedAt, savedCount, collectionsLoaded, onOpenSaved}: {
     userName: string;
     postViewed: number;
     joinedAt: number | null;
+    savedCount: number;
+    collectionsLoaded: boolean;
     onOpenSaved: () => void;
   }) => (
   <>
     <div className={styles.profile}>
-      <div className={styles.userName}>
-        <p>@{userName}</p>
+      <div className={styles.profileHeader}>
+        <div className={styles.profilePic}><User /></div>
+
+        <div className={styles.identity}>
+          <p className={styles.userName}>@{userName}</p>
+          <p className={styles.rank}><Crown3/> {getRank(postViewed)}</p>
+        </div>
       </div>
 
-      <div className={styles.mainInfo}>
-      <div className={styles.profilePic}><User /></div>
-      <div className={styles.profileInfo}>
+      <div className={styles.stats}>
+        <div className={styles.stat}>
+          <span className={styles.statIcon}><View/></span>
+          <span className={styles.statBody}>
+            <strong className={styles.statValue}>{postViewed.toLocaleString('uk-UA')}</strong>
+            <small className={styles.statLabel}>прогорнуто постів</small>
+          </span>
+        </div>
 
-        <p className={styles.rank}><Crown3/> {getRank(postViewed)} </p>
-        <p className={styles.stat}><span><View/>{postViewed}</span> прогорнуто постів</p>
-        <p className={styles.stat}><span><Calendar3 />{joinedAt !== null ? formatDate(joinedAt) : "—"}</span> ми побачили тебе вперше</p>
-      </div>
+        <div className={styles.stat}>
+          <span className={styles.statIcon}><Calendar3/></span>
+          <span className={styles.statBody}>
+            <strong className={styles.statValue}>
+              {joinedAt !== null ? formatDate(joinedAt) : "—"}
+            </strong>
+            <small className={styles.statLabel}>ми побачили тебе вперше</small>
+          </span>
+        </div>
       </div>
     </div>
 
     <div className={styles.actions}>
-      <button className={styles.savedButton} onClick={onOpenSaved}>
-        <Bookmark3/>
+      <button type="button" className={styles.savedButton} onClick={onOpenSaved}>
+        <span className={styles.savedIcon}><Bookmark3/></span>
+
+        <span className={styles.savedText}>
+          <strong>Збережені пости</strong>
+          <small>
+            {collectionsLoaded
+              ? `${savedCount} ${pluralizePosts(savedCount)}`
+              : 'Твоя колекція'}
+          </small>
+        </span>
+
+        <ChevronRight className={styles.savedChevron}/>
       </button>
     </div>
   </>

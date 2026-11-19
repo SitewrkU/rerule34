@@ -3,7 +3,6 @@ import type { CollectionPost, Collection } from '@rerule34/shared/types/collecti
 
 export async function getCollections(): Promise<Collection[]> {
   const { data } = await api.get('/collections');
-  console.log(data);
   return data.collections;
 }
 

@@ -26,7 +26,7 @@ const App = () => {
   const antdTheme = antdThemeMap[currentTheme];
 
   useEffect(() => {
-    void useCollectionsStore.getState().fetchCollections();
+    void useCollectionsStore.getState().fetchCollections().catch(() => {});
   }, []);
 
   return (
