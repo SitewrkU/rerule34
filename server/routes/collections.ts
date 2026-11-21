@@ -13,6 +13,27 @@ router.get('/', async (_req: Request, res: Response, next: NextFunction) => {
   }
 });
 
+//Резервна копія збережень --
+router.get('/export', async (_req: Request, res: Response, next: NextFunction) => {
+  try {
+    const collections = await collectionsRepo.getCollections();
+    res.json({ collections });
+  } catch (e) {
+    next(e);
+  }
+});
+
+//Імпорт резервної копії (повністю замінює колекції) --
+router.put('/import', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const collections = collectionsRepo.normalizeImportedCollections(req.body?.collections);
+    const saved = await collectionsRepo.replaceCollections(collections);
+    res.json({ collections: saved });
+  } catch (e) {
+    next(e);
+  }
+});
+
 //Створити колекцію
 router.post('/', async (req: Request, res: Response, next: NextFunction) => {
   try {

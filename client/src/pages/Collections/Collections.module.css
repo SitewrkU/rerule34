@@ -14,9 +14,7 @@
   flex-direction: column;
   gap: var(--space-6);
   padding: var(--space-6);
-  border: 1px solid var(--color-border);
   border-radius: var(--radius-2xl);
-  box-shadow: var(--shadow-sm);
 }
 
 .profileHeader {

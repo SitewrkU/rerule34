@@ -124,6 +124,7 @@ type BlacklistStore = {
   selected: string[];
   toggle: (title: string) => void;
   isSelected: (title: string) => boolean;
+  setSelected: (titles: string[]) => void;
 };
 
 
@@ -140,6 +141,8 @@ export const useBlacklistStore = create<BlacklistStore>()(
         })),
 
       isSelected: (title) => get().selected.includes(title),
+
+      setSelected: (titles) => set({ selected: [...new Set(titles)] }),
     }),
     {
       name: "blacklist-storage",

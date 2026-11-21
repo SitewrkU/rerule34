@@ -42,7 +42,7 @@ export const videoLengthMap: Record<VideoLengthOption, string> = {
 };
 
 
-type SearchSettings = {
+export type SearchSettings = {
   customTagsEnabled: boolean;
   customTags: string;
 
@@ -61,6 +61,25 @@ type SearchSettings = {
   minVotes: number;
 };
 
+export const defaultSearchSettings: SearchSettings = {
+  customTagsEnabled: false,
+  customTags: "",
+
+  sortEnabled: false,
+  sortOption: "popularity",
+
+  ratingEnabled: false,
+  ratingOption: "safe",
+
+  contentType: "any",
+
+  videoLengthEnabled: false,
+  videoOption: "longer_t1m",
+
+  minVotesEnabled: false,
+  minVotes: 50,
+};
+
 
 type SearchSettingsStore = {
   settings: SearchSettings;
@@ -70,24 +89,7 @@ type SearchSettingsStore = {
 export const useSearchSettingsStore = create<SearchSettingsStore>()(
   persist(
     (set) => ({
-      settings: {
-        customTagsEnabled: false,
-        customTags: "",
-
-        sortEnabled: false,
-        sortOption: "popularity",
-
-        ratingEnabled: false,
-        ratingOption: "safe",
-
-        contentType: "any",
-
-        videoLengthEnabled: false,
-        videoOption: "longer_t1m",
-
-        minVotesEnabled: false,
-        minVotes: 50,
-      },
+      settings: { ...defaultSearchSettings },
       updateSettings: (patch) =>
         set((state) => ({ settings: { ...state.settings, ...patch } })),
     }),

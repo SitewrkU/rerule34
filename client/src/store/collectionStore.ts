@@ -33,6 +33,7 @@ interface CollectionsState {
   error: string | null;
 
   fetchCollections: () => Promise<void>;
+  replaceCollections: (collections: Collection[]) => void;
   saveToDefault: (post: CollectionPost) => Promise<void>;
   removeFromCollection: (collectionId: string, postId: string | number) => Promise<void>;
 }
@@ -95,6 +96,16 @@ export const useCollectionsStore = create<CollectionsState>((set, get) => ({
     });
 
     return fetchInFlight;
+  },
+
+  replaceCollections: (collections) => {
+    set({
+      collections,
+      defaultSavedIds: computeSavedIds(collections),
+      fetched: true,
+      loading: false,
+      error: null,
+    });
   },
 
   saveToDefault: async (post) => {

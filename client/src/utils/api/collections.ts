@@ -6,6 +6,16 @@ export async function getCollections(): Promise<Collection[]> {
   return data.collections;
 }
 
+export async function exportCollections(): Promise<Collection[]> {
+  const { data } = await api.get('/collections/export');
+  return data.collections;
+}
+
+export async function importCollections(collections: Collection[]): Promise<Collection[]> {
+  const { data } = await api.put('/collections/import', { collections });
+  return data.collections;
+}
+
 export async function saveToDefaultCollection(post: CollectionPost){
   const { data } = await api.post(
     '/collections/default/posts',
