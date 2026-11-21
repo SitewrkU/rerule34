@@ -4,11 +4,30 @@
   max-width: var(--content-narrow);
   margin-right: auto;
 
+  p {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
   p:first-child {
     font-size: var(--text-lg);
   }
 
   p:last-child {
     opacity: 0.8;
+  }
+}
+
+@media (max-width: 560px) {
+  .info {
+    max-width: none;
+
+    p:first-child {
+      font-size: var(--text-md);
+    }
+
+    p:last-child {
+      font-size: var(--text-sm);
+    }
   }
 }

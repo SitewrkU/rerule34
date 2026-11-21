@@ -20,6 +20,8 @@ const booleanSettingKeys: BooleanSettingKey[] = [
   'showColoredScore',
   'showVideoDuration',
   'enableBlacklist',
+  'authorSearchWithoutFilters',
+  'authorSearchUseBlacklist',
   'kittyMode',
   'blackMode',
 ];

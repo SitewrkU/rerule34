@@ -5,6 +5,7 @@
 }
 
 .bigSwitch.bigSwitch {
+  flex-shrink: 0;
   min-width: 60px;
   height: var(--space-8);
   line-height: var(--space-8);
@@ -22,4 +23,11 @@
 
 .bigSwitch.bigSwitch:global(.ant-switch-checked) :global(.ant-switch-handle) {
   inset-inline-start: calc(100% - 30px);
+}
+
+@media (max-width: 560px) {
+  .switcher {
+    gap: var(--space-2);
+    align-items: flex-start;
+  }
 }

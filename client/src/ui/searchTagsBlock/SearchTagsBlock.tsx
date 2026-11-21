@@ -4,19 +4,31 @@ import styles from './SearchTagsBlock.module.css'
 import {blackThemes, useBlacklistStore} from "../../store/blackListStore.ts";
 import clsx from "clsx";
 import {useSettingsStore} from "../../store/settingsStore.ts";
-import {useSearchSettingsStore, buildSettingsTags} from "../../store/searchSettingsStore.ts";
+import {useSearchStore} from "../../store/searchStore.ts";
+import {useSearchSettingsStore, buildSettingsTags, sortTagMap} from "../../store/searchSettingsStore.ts";
 
 const SearchTagsBlock = () => {
   const selected = useBlacklistStore((s) => s.selected)
   const isBlackListEnabled = useSettingsStore(s => s.settings.enableBlacklist)
+  const authorSearchWithoutFilters = useSettingsStore(s => s.settings.authorSearchWithoutFilters)
+  const authorSearchUseBlacklist = useSettingsStore(s => s.settings.authorSearchUseBlacklist)
+  const mainTags = useSearchStore(s => s.params.tags)
   const SearchSettings = useSearchSettingsStore(s => s.settings)
 
   const selectedThemes = blackThemes.filter(theme =>
     selected.includes(theme.title)
   );
 
-  const filteredTags = selectedThemes.flatMap(theme => theme.tags);
-  const addedTags = buildSettingsTags(SearchSettings);
+  const isAuthorSearch = /^user:\S+$/.test(mainTags.trim());
+  const isCleanAuthorSearch = isAuthorSearch && authorSearchWithoutFilters;
+
+  const filteredTags = isCleanAuthorSearch && !authorSearchUseBlacklist
+    ? []
+    : selectedThemes.flatMap(theme => theme.tags);
+
+  const addedTags = isCleanAuthorSearch
+    ? [sortTagMap.popularity]
+    : buildSettingsTags(SearchSettings);
 
   return (
     <Dropdown

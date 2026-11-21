@@ -13,6 +13,9 @@ export interface Settings {
 
   enableBlacklist: boolean;
 
+  authorSearchWithoutFilters: boolean;
+  authorSearchUseBlacklist: boolean;
+
   kittyMode: boolean;
   blackMode: boolean;
 }
@@ -33,6 +36,9 @@ export const defaultSettings: Settings = {
   showVideoDuration: true,
 
   enableBlacklist: true,
+
+  authorSearchWithoutFilters: true,
+  authorSearchUseBlacklist: false,
 
   kittyMode: false,
   blackMode: false,
@@ -77,6 +83,20 @@ export const useSettingsStore = create<SettingsState>()(
           return { settings: next };
         }),
     }),
-    { name: 'settings-storage' }
+    {
+      name: 'settings-storage',
+      merge: (persistedState, currentState) => {
+        const persisted = persistedState as Partial<SettingsState> | undefined;
+
+        return {
+          ...currentState,
+          ...persisted,
+          settings: {
+            ...defaultSettings,
+            ...(persisted?.settings ?? {}),
+          },
+        };
+      },
+    }
   )
 );

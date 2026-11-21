@@ -1,5 +1,8 @@
 .settings {
-  padding: var(--space-8);
+  width: 100%;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-6) var(--space-10);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -7,13 +10,31 @@
   color: var(--color-text);
 }
 
+.title {
+  margin: 0;
+  font-size: var(--text-2xl);
+  line-height: var(--leading-tight);
+  text-align: center;
+}
+
+.subtitle {
+  margin: 0;
+  max-width: var(--content-default);
+  color: var(--color-text-muted);
+  text-align: center;
+  text-wrap: balance;
+}
+
 .sectionList {
-  margin: var(--space-5);
+  width: 100%;
+  max-width: 760px;
+  margin: var(--space-5) 0 0;
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
 
   .settingsSection {
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: var(--space-5);
@@ -27,6 +48,7 @@
       align-items: center;
       gap: var(--space-2-5);
       padding: var(--space-1);
+      font-size: var(--text-xl);
 
       svg {
         width: var(--space-8);
@@ -36,6 +58,7 @@
         border-radius: var(--radius-md);
         background: var(--color-accent-subtle);
         color: var(--color-accent);
+        flex-shrink: 0;
       }
     }
 
@@ -81,6 +104,7 @@
 
     .dangerText {
       opacity: 0.8;
+      overflow-wrap: anywhere;
     }
 
     .dangerButton {
@@ -106,101 +130,78 @@
         transform: scale(0.97);
       }
     }
-
-    /* Резервні копії */
-    .backupRow {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: var(--space-4);
-      padding-bottom: var(--space-4);
-
-      &:last-of-type {
-        padding-bottom: 0;
-      }
-    }
-
-    .backupInfo {
-      flex: 1 1 260px;
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-0-5);
-      min-width: 0;
-      max-width: var(--content-narrow);
-    }
-
-    .backupTitle {
-      font-size: var(--text-lg);
-    }
-
-    .backupText {
-      opacity: 0.8;
-    }
-
-    .backupActions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--space-2);
-      flex: 0 1 auto;
-    }
-
-    .backupButton {
-      padding: var(--space-2) var(--space-4);
-      border: 1px solid var(--color-border-strong);
-      border-radius: var(--radius-lg);
-      background: var(--color-surface-raised);
-      color: var(--color-text);
-      font: inherit;
-      font-weight: var(--weight-semibold);
-      cursor: pointer;
-      transition: background var(--transition-base), color var(--transition-base),
-        border-color var(--transition-base);
-
-      &:hover:not(:disabled) {
-        border-color: var(--color-accent);
-        background: var(--color-accent-subtle);
-        color: var(--color-accent);
-      }
-
-      &:active:not(:disabled) {
-        transform: scale(0.97);
-      }
-
-      &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-      }
-    }
-
-    .fileInput {
-      display: none;
-    }
-
-    .backupNotice {
-      padding: var(--space-2-5) var(--space-3-5);
-      border: 1px solid transparent;
-      border-radius: var(--radius-lg);
-      font-size: var(--text-sm);
-      overflow-wrap: anywhere;
-    }
-
-    .backupNoticeSuccess {
-      color: var(--color-success);
-      background: var(--color-success-subtle);
-      border-color: color-mix(in srgb, var(--color-success) 35%, transparent);
-    }
-
-    .backupNoticeError {
-      color: var(--color-danger);
-      background: var(--color-danger-subtle);
-      border-color: color-mix(in srgb, var(--color-danger) 35%, transparent);
-    }
   }
 }
 
 @media (max-width: 768px) {
   .settings {
-    padding: var(--space-8) var(--space-1) var(--space-5);
+    padding: var(--space-6) var(--space-3) var(--space-8);
+    gap: var(--space-2);
+  }
+
+  .title {
+    font-size: var(--text-xl);
+  }
+
+  .subtitle {
+    font-size: var(--text-base);
+  }
+
+  .sectionList {
+    margin-top: var(--space-4);
+    gap: var(--space-4);
+
+    .settingsSection {
+      gap: var(--space-4);
+      padding: var(--space-4);
+      border-width: 1.5px;
+      border-radius: var(--radius-xl);
+
+      h2 {
+        gap: var(--space-2);
+        font-size: var(--text-lg);
+
+        svg {
+          width: var(--space-7);
+          height: var(--space-7);
+        }
+      }
+
+      > div {
+        gap: var(--space-4);
+      }
+    }
+  }
+}
+
+@media (max-width: 560px) {
+  .settings {
+    padding: var(--space-5) var(--space-2-5) var(--space-7);
+  }
+
+  .sectionList {
+    .settingsSection {
+      padding: var(--space-3-5);
+      border-radius: var(--radius-lg);
+
+      .dangerRow {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--space-3);
+      }
+
+      .dangerInfo {
+        max-width: none;
+      }
+
+      .dangerTitle {
+        font-size: var(--text-md);
+      }
+
+      .dangerButton {
+        width: 100%;
+        padding: var(--space-2-5) var(--space-4);
+      }
+    }
   }
 }
