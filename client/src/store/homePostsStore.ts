@@ -6,9 +6,11 @@ export const PAGE_SIZE = 30; // постів на одну сторінку
 export const PAGES_PER_BATCH = 3; // к-ть сторінок які тягнуться за запит
 export const BATCH_SIZE = PAGE_SIZE * PAGES_PER_BATCH; // для апі, скільки всього треба повернути
 
-interface HomePostsState {
+export const EMPTY_POSTS: Post[] = [];
+
+export interface HomePostsCache {
   query: string;
-  handledSearchTrigger: number;
+  handledNonce: number;
   requestId: number;
 
   allPosts: Post[];
@@ -18,65 +20,72 @@ interface HomePostsState {
   page: number;
   maxPageReached: number;
   scrollY: number;
-
-  /**
-   * Повертає true, якщо для поточного запиту треба завантажити першу партію.
-   * Якщо це той самий пошук, який уже має закешовані пости, нічого не скидає.
-   */
-  beginSearch: (query: string, searchTrigger: number, hasSearched: boolean) => boolean;
-
-  loadBatch: (query: string, batchIndex: number) => Promise<void>;
-  setPage: (page: number) => void;
-  resetPage: () => void;
-  setScrollY: (y: number) => void;
 }
 
-const initialState = {
-  query: "",
-  handledSearchTrigger: -1,
-  requestId: 0,
+interface HomePostsState {
+  /** Кеш постів окремо для кожної вкладки. */
+  caches: Record<string, HomePostsCache>;
 
-  allPosts: [] as Post[],
-  loadedBatches: 0,
-  hasMore: true,
+  /** true — треба вантажити першу партію; той самий пошук не скидається. */
+  beginSearch: (
+    tabId: string,
+    query: string,
+    searchNonce: number,
+    hasSearched: boolean
+  ) => boolean;
 
-  page: 1,
-  maxPageReached: 1,
-  scrollY: 0,
-};
+  loadBatch: (tabId: string, query: string, batchIndex: number) => Promise<void>;
+  setPage: (tabId: string, page: number) => void;
+  setScrollY: (tabId: string, y: number) => void;
+  dropCache: (tabId: string) => void;
+}
+
+function createCache(): HomePostsCache {
+  return {
+    query: "",
+    handledNonce: -1,
+    requestId: 0,
+
+    allPosts: [],
+    loadedBatches: 0,
+    hasMore: true,
+
+    page: 1,
+    maxPageReached: 1,
+    scrollY: 0,
+  };
+}
 
 export const useHomePostsStore = create<HomePostsState>()((set, get) => ({
-  ...initialState,
+  caches: {},
 
-  beginSearch: (query, searchTrigger, hasSearched) => {
-    const state = get();
+  beginSearch: (tabId, query, searchNonce, hasSearched) => {
+    const cache = get().caches[tabId] ?? createCache();
     const sameSearch =
-      state.query === query && state.handledSearchTrigger === searchTrigger;
+      cache.query === query && cache.handledNonce === searchNonce;
 
     if (sameSearch) {
-      // Пости вже є — нічого не перезавантажуємо (повернення з іншої сторінки).
-      return hasSearched && state.allPosts.length === 0;
+      // Пости вже є — не перезавантажуємо при поверненні на вкладку.
+      return hasSearched && cache.allPosts.length === 0;
     }
 
-    set({
-      query,
-      handledSearchTrigger: searchTrigger,
-      requestId: state.requestId + 1,
-
-      allPosts: [],
-      loadedBatches: 0,
-      hasMore: true,
-
-      page: 1,
-      maxPageReached: 1,
-      scrollY: 0,
-    });
+    set((state) => ({
+      caches: {
+        ...state.caches,
+        [tabId]: {
+          ...createCache(),
+          query,
+          handledNonce: searchNonce,
+          requestId: cache.requestId + 1,
+        },
+      },
+    }));
 
     return hasSearched;
   },
 
-  loadBatch: async (query, batchIndex) => {
-    const requestId = get().requestId;
+  loadBatch: async (tabId, query, batchIndex) => {
+    const requestId = get().caches[tabId]?.requestId ?? 0;
 
     const data = await getPosts({
       tags: query,
@@ -85,25 +94,61 @@ export const useHomePostsStore = create<HomePostsState>()((set, get) => ({
     });
 
     const state = get();
+    const cache = state.caches[tabId];
 
-    // Поки курсор був у польоті, користувач міг почати новий пошук.
-    if (state.requestId !== requestId || state.query !== query) return;
+    // Вкладку закрили або в ній уже новий пошук — ігноруємо відповідь.
+    if (!cache || cache.requestId !== requestId || cache.query !== query) return;
 
     set({
-      allPosts: batchIndex === 0 ? data : [...state.allPosts, ...data],
-      loadedBatches: batchIndex + 1,
-      hasMore: data.length === BATCH_SIZE,
+      caches: {
+        ...state.caches,
+        [tabId]: {
+          ...cache,
+          allPosts: batchIndex === 0 ? data : [...cache.allPosts, ...data],
+          loadedBatches: Math.max(cache.loadedBatches, batchIndex + 1),
+          hasMore: data.length === BATCH_SIZE,
+        },
+      },
     });
   },
 
-  setPage: (page) =>
-    set((state) => ({
-      page,
-      maxPageReached: Math.max(state.maxPageReached, page),
-      scrollY: 0,
-    })),
+  setPage: (tabId, page) =>
+    set((state) => {
+      const cache = state.caches[tabId];
+      if (!cache) return state;
 
-  resetPage: () => set({ page: 1, maxPageReached: 1 }),
+      return {
+        caches: {
+          ...state.caches,
+          [tabId]: {
+            ...cache,
+            page,
+            maxPageReached: Math.max(cache.maxPageReached, page),
+            scrollY: 0,
+          },
+        },
+      };
+    }),
 
-  setScrollY: (y) => set({ scrollY: y }),
+  setScrollY: (tabId, y) =>
+    set((state) => {
+      const cache = state.caches[tabId];
+      if (!cache || cache.scrollY === y) return state;
+
+      return {
+        caches: {
+          ...state.caches,
+          [tabId]: { ...cache, scrollY: y },
+        },
+      };
+    }),
+
+  dropCache: (tabId) =>
+    set((state) => {
+      if (!state.caches[tabId]) return state;
+
+      const caches = { ...state.caches };
+      delete caches[tabId];
+      return { caches };
+    }),
 }));

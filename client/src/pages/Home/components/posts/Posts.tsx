@@ -1,5 +1,5 @@
 import {useLayoutEffect} from "react";
-import {useSearchStore} from "../../../../store/searchStore.ts";
+import {useTabsStore, selectActiveTab} from "../../../../store/tabsStore.ts";
 import {useSettingsStore} from "../../../../store/settingsStore.ts";
 import {useHomePostsStore} from "../../../../store/homePostsStore.ts";
 import {useSearchQuery} from "../../../../utils/useSearchQuery.ts";
@@ -21,23 +21,29 @@ import {LoadingSpinner} from "../../../../ui/LoadingSpinner/LoadingSpinner.tsx";
 import styles from './Posts.module.css';
 
 const Posts = () => {
-  const SearchBarParams = useSearchStore((state) => state.params);
-  const searchTrigger = useSearchStore((state) => state.searchTrigger);
-  const hasSearched = useSearchStore((state) => state.hasSearched);
-  const resetParams = useSearchStore((state) => state.resetParams);
+  const activeTab = useTabsStore(selectActiveTab);
+  const tabId = activeTab?.id ?? "";
+  const tags = activeTab?.tags ?? "";
+  const searchNonce = activeTab?.searchNonce ?? 0;
+  const hasSearched = activeTab?.hasSearched ?? false;
+  const resetActiveSearch = useTabsStore((state) => state.resetActiveSearch);
+
   const settings = useSettingsStore((state) => state.settings);
   const query = useSearchQuery();
 
-  // Чи повернулися ми на Home з уже завантаженими постами
-  const wasRestored = useHomePostsStore(
-    (state) =>
-      state.query === query &&
-      state.handledSearchTrigger === searchTrigger &&
-      state.allPosts.length > 0
-  );
+  // Чи повернулися ми на вкладку з уже завантаженими постами
+  const wasRestored = useHomePostsStore((state) => {
+    const cache = state.caches[tabId];
+    return (
+      !!cache &&
+      cache.query === query &&
+      cache.handledNonce === searchNonce &&
+      cache.allPosts.length > 0
+    );
+  });
 
   const {allPosts, loadedBatches, hasMore, loading, error, loadBatch} =
-    usePostsPagination(query);
+    usePostsPagination(tabId, query);
 
   const {
     page,
@@ -46,7 +52,7 @@ const Posts = () => {
     currentPagePosts,
     viewedPostsCount,
     estimatedTotal
-  } = usePagePagination(allPosts, loadedBatches, hasMore, loadBatch);
+  } = usePagePagination(tabId, allPosts, loadedBatches, hasMore, loadBatch);
 
   const {reset: resetViewedTracker} = useViewedPostsTracker(viewedPostsCount, wasRestored);
 
@@ -54,7 +60,7 @@ const Posts = () => {
   useLayoutEffect(() => {
     const shouldLoad = useHomePostsStore
       .getState()
-      .beginSearch(query, searchTrigger, hasSearched);
+      .beginSearch(tabId, query, searchNonce, hasSearched);
 
     if (!wasRestored) {
       resetViewedTracker();
@@ -65,25 +71,21 @@ const Posts = () => {
       void loadBatch(0);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchTrigger]);
+  }, [tabId, query, searchNonce, hasSearched]);
 
-  // Повертаємо користувача на те місце, де він зупинився
+  // Відновлюємо позицію скролу.
   useLayoutEffect(() => {
     if (!wasRestored) return;
 
-    const y = useHomePostsStore.getState().scrollY;
-    if (y > 0) {
-      window.scrollTo({top: y, behavior: 'instant'});
-    }
+    const y = useHomePostsStore.getState().caches[tabId]?.scrollY ?? 0;
+    window.scrollTo({top: y, behavior: 'instant'});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Запам'ятовуємо позицію скролу для наступного повернення.
-  // Саме layout-ефект: його cleanup виконується до видалення DOM, тому scrollY
-  // не встигає скинутись через коротшу сторінку, на яку ми переходимо.
+  // Зберігаємо скрол через layout-ефект: cleanup до видалення DOM.
   useLayoutEffect(() => {
     const handleScroll = () => {
-      useHomePostsStore.getState().setScrollY(window.scrollY);
+      useHomePostsStore.getState().setScrollY(tabId, window.scrollY);
     };
 
     window.addEventListener('scroll', handleScroll, {passive: true});
@@ -92,10 +94,10 @@ const Posts = () => {
       handleScroll();
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [tabId]);
 
   const handleClearClick = () => {
-    resetParams();
+    resetActiveSearch();
   };
 
   // Якщо немає активного пошуку, то інфо по сайту
@@ -111,7 +113,7 @@ const Posts = () => {
     if (loading) {
       return <LoadingSpinner/>;
     }
-    return <PostsEmptyState searchTags={SearchBarParams.tags} onClear={handleClearClick}/>;
+    return <PostsEmptyState searchTags={tags} onClear={handleClearClick}/>;
   }
 
   // ПОСТИ
@@ -119,7 +121,7 @@ const Posts = () => {
     <div>
       <PostsHeader
         viewedPostsCount={viewedPostsCount}
-        searchTags={SearchBarParams.tags}
+        searchTags={tags}
         onClear={handleClearClick}
       />
 

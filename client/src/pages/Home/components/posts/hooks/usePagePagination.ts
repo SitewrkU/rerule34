@@ -3,15 +3,17 @@ import { useHomePostsStore } from "../../../../../store/homePostsStore.ts";
 import { PAGE_SIZE, PAGES_PER_BATCH } from "./usePostsPagination.ts";
 
 export function usePagePagination(
+  tabId: string,
   allPosts: Post[],
   loadedBatches: number,
   hasMore: boolean,
   loadBatch: (batchIndex: number) => void
 ) {
-  const page = useHomePostsStore((s) => s.page);
-  const maxPageReached = useHomePostsStore((s) => s.maxPageReached);
+  const page = useHomePostsStore((s) => s.caches[tabId]?.page ?? 1);
+  const maxPageReached = useHomePostsStore(
+    (s) => s.caches[tabId]?.maxPageReached ?? 1
+  );
   const setPage = useHomePostsStore((s) => s.setPage);
-  const reset = useHomePostsStore((s) => s.resetPage);
 
   const handlePageChange = (newPage: number) => {
     const requiredBatch = Math.floor((newPage - 1) / PAGES_PER_BATCH);
@@ -19,7 +21,7 @@ export function usePagePagination(
       loadBatch(requiredBatch);
     }
 
-    setPage(newPage);
+    setPage(tabId, newPage);
     window.scrollTo({ top: 0, behavior: "instant" });
   };
 
@@ -34,7 +36,6 @@ export function usePagePagination(
     page,
     maxPageReached,
     handlePageChange,
-    reset,
     totalPages,
     currentPagePosts,
     viewedPostsCount,

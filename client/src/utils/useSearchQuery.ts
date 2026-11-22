@@ -1,4 +1,4 @@
-import {useSearchStore} from "../store/searchStore.ts";
+import {useTabsStore, selectActiveTab} from "../store/tabsStore.ts";
 import {blackThemes, useBlacklistStore} from "../store/blackListStore.ts";
 import {useSettingsStore} from "../store/settingsStore.ts";
 import { useSearchSettingsStore, buildSettingsTags, sortTagMap } from "../store/searchSettingsStore.ts";
@@ -6,7 +6,7 @@ import { useSearchSettingsStore, buildSettingsTags, sortTagMap } from "../store/
 
 /* Це ГОЛОВНИЙ збирач фінального результату в пошук*/
 export function useSearchQuery(): string {
-  const maintags = useSearchStore(s => s.params.tags);
+  const maintags = useTabsStore(s => selectActiveTab(s)?.tags ?? '');
   const settings  = useSettingsStore(s => s.settings);
   const searchsettings  = useSearchSettingsStore(s => s.settings);
 

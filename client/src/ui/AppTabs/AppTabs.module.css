@@ -1,0 +1,245 @@
+/* Компактна смуга вкладок. Кольори — з токенів теми. */
+.tabsBar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1-5) var(--space-2-5);
+  background-color: var(--color-bg);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.tabsList {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+}
+
+.tabsList::-webkit-scrollbar {
+  display: none;
+}
+
+/* Стрілки з'являються лише тоді, коли вкладки не вміщаються. */
+.scrollButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 22px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--transition-fast),
+    color var(--transition-fast),
+    background-color var(--transition-fast);
+}
+
+.scrollVisible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.scrollButton:hover {
+  color: var(--color-accent);
+  background-color: var(--color-surface-tint);
+}
+
+.scrollButton svg {
+  width: 14px;
+  height: 14px;
+}
+
+.tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  max-width: 190px;
+  height: 30px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background-color: transparent;
+  color: var(--color-text-muted);
+  cursor: grab;
+  user-select: none;
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    opacity var(--transition-fast);
+}
+
+.tab:active {
+  cursor: grabbing;
+}
+
+.tab.dragging {
+  opacity: 0.4;
+  cursor: grabbing;
+}
+
+/* Індикатор місця вставки під час перетягування */
+.tab.dropBefore::before,
+.tab.dropAfter::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  width: 2px;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-accent);
+}
+
+.tab.dropBefore::before {
+  left: -3px;
+}
+
+.tab.dropAfter::after {
+  right: -3px;
+}
+
+.tab:hover {
+  background-color: var(--color-surface-tint);
+  color: var(--color-text);
+}
+
+.tab.active {
+  background-color: var(--color-surface-raised);
+  border-color: var(--color-border);
+  color: var(--color-text);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.22);
+}
+
+.tab.active .tabIcon {
+  color: var(--color-accent);
+}
+
+.tabMain {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1-5);
+  min-width: 0;
+  height: 100%;
+  padding: 0 var(--space-1) 0 var(--space-3);
+  background: none;
+  border: none;
+  color: inherit;
+  font: inherit;
+  font-size: var(--text-sm);
+  line-height: 1;
+  cursor: inherit;
+}
+
+.tabIcon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+}
+
+.tabIcon svg {
+  width: 14px;
+  height: 14px;
+}
+
+.tabTitle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.closeButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-right: var(--space-1);
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  opacity: 0;
+  transition:
+    opacity var(--transition-fast),
+    background-color var(--transition-fast);
+}
+
+.closeButton svg {
+  width: 12px;
+  height: 12px;
+}
+
+.tab:hover .closeButton,
+.tab.active .closeButton {
+  opacity: 0.55;
+}
+
+.closeButton:hover {
+  opacity: 1;
+  background-color: var(--color-surface-hover);
+}
+
+.addButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background-color: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition:
+    color var(--transition-fast),
+    border-color var(--transition-fast),
+    background-color var(--transition-fast);
+}
+
+.addButton svg {
+  width: 15px;
+  height: 15px;
+}
+
+.addButton:hover:not(:disabled) {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+  background-color: var(--color-accent-subtle);
+}
+
+.addButton:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .scrollButton {
+    display: none;
+  }
+
+  .tab {
+    max-width: 140px;
+  }
+
+  .closeButton {
+    opacity: 0.55;
+  }
+}

@@ -1,7 +1,8 @@
 import type {Comment as CommentType} from '@rerule34/shared/types/comment'
 import React, {useEffect, useState} from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useCollectionsStore } from "../../../../store/collectionStore";
-import { useSearchStore } from "../../../../store/searchStore.ts";
+import { useTabsStore } from "../../../../store/tabsStore.ts";
 
 import {getComments} from "../../../../utils/api/posts.ts";
 import {formatDate} from "../../../../lib/timeFormater.ts";
@@ -55,12 +56,23 @@ export default function MediaViewerModal({ isOpen, onClose, post, isVideo, durat
 
   const removeFromCollection = useCollectionsStore(s => s.removeFromCollection)
 
-  const setParams = useSearchStore(s => s.setParams);
+  const openSearchTab = useTabsStore(s => s.openSearchTab);
+  const submitSearch = useTabsStore(s => s.submitSearch);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSearchByOwner = () => {
     if (!post.owner) return;
-    setParams({ tags: `user:${post.owner}` }); // див. примітку нижче
+
+    const tags = `user:${post.owner}`;
+
+    // Нова вкладка; на ліміті — перезаписуємо поточну.
+    if (!openSearchTab(tags)) submitSearch(tags);
+
     onClose();
+
+    // З колекцій переходимо на головну, де видно результати.
+    if (location.pathname !== "/") navigate("/");
   };
 
   function handleImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {

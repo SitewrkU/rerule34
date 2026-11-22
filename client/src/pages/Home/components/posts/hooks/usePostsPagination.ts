@@ -1,5 +1,8 @@
 import { useCallback, useState } from "react";
-import { useHomePostsStore } from "../../../../../store/homePostsStore.ts";
+import {
+  EMPTY_POSTS,
+  useHomePostsStore,
+} from "../../../../../store/homePostsStore.ts";
 
 export {
   PAGE_SIZE,
@@ -7,10 +10,16 @@ export {
   BATCH_SIZE,
 } from "../../../../../store/homePostsStore.ts";
 
-export function usePostsPagination(query: string) {
-  const allPosts = useHomePostsStore((s) => s.allPosts);
-  const loadedBatches = useHomePostsStore((s) => s.loadedBatches);
-  const hasMore = useHomePostsStore((s) => s.hasMore);
+export function usePostsPagination(tabId: string, query: string) {
+  const allPosts = useHomePostsStore(
+    (s) => s.caches[tabId]?.allPosts ?? EMPTY_POSTS
+  );
+  const loadedBatches = useHomePostsStore(
+    (s) => s.caches[tabId]?.loadedBatches ?? 0
+  );
+  const hasMore = useHomePostsStore(
+    (s) => s.caches[tabId]?.hasMore ?? true
+  );
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -21,7 +30,9 @@ export function usePostsPagination(query: string) {
       setError(null);
 
       try {
-        await useHomePostsStore.getState().loadBatch(query, batchIndex);
+        await useHomePostsStore
+          .getState()
+          .loadBatch(tabId, query, batchIndex);
       } catch (e) {
         console.error("Помилка при завантаженні постів:", e);
         setError("Не вдалося завантажити пости. Спробуйте ще раз.");
@@ -29,7 +40,7 @@ export function usePostsPagination(query: string) {
         setLoading(false);
       }
     },
-    [query]
+    [tabId, query]
   );
 
   return { allPosts, loadedBatches, hasMore, loading, error, loadBatch };

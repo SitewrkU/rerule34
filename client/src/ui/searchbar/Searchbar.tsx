@@ -1,7 +1,7 @@
 import { useCallback, useState, useMemo } from 'react'
 import { AutoComplete, Input } from 'antd';
 import type { AutoCompleteProps } from 'antd';
-import {useSearchStore} from "../../store/searchStore.ts";
+import {useTabsStore, selectActiveTab} from "../../store/tabsStore.ts";
 import {getTagAutocomplete} from "../../utils/api/posts.ts";
 import styles from './Searchbar.module.css'
 
@@ -21,17 +21,21 @@ const debounce = <Args extends unknown[]>(fn: (...args: Args) => void, delay: nu
 
 const Searchbar = () => {
   const [options, setOptions] = useState<AutoCompleteProps['options']>([]);
-  const setParams = useSearchStore((state) => state.setParams);
+  const activeTab = useTabsStore(selectActiveTab);
+  const activeTabId = activeTab?.id ?? "";
+  const tags = activeTab?.tags ?? "";
+  const submitSearch = useTabsStore((state) => state.submitSearch);
 
-  const tags = useSearchStore((s) => s.params.tags);
-  // При поверненні на Home поле має показувати поточний запит, а не бути порожнім
+  // Поле показує запит активної вкладки; синхронізація під час рендеру,
+  // доки користувач просто друкує — не скидається.
   const [value, setValue] = useState(tags);
-  const searchTrigger = useSearchStore((s) => s.searchTrigger);
+  const searchKey = `${activeTabId}\u0000${tags}`;
+  const [prevSearchKey, setPrevSearchKey] = useState(searchKey);
 
-  const [prevTrigger, setPrevTrigger] = useState(searchTrigger);
-  if (searchTrigger !== prevTrigger) {
-    setPrevTrigger(searchTrigger);
+  if (searchKey !== prevSearchKey) {
+    setPrevSearchKey(searchKey);
     setValue(tags);
+    setOptions([]);
   }
 
   const fetchOptions = useCallback(async (query: string) => {
@@ -68,11 +72,9 @@ const Searchbar = () => {
     [fetchOptions]
   );
 
-  // Встановлення параметрів з пошука в стор => Загрузка постів, через useEffect в Posts.tsx на стор.параметр
+  // Пошук у поточній вкладці
   const handleSubmit = () => {
-    setParams({
-      tags: value
-    })
+    submitSearch(value);
   }
 
   // Пошук тегів по автокомліту
