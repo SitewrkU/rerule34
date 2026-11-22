@@ -1,6 +1,7 @@
 import {useLayoutEffect} from "react";
 import {useSearchStore} from "../../../../store/searchStore.ts";
 import {useSettingsStore} from "../../../../store/settingsStore.ts";
+import {useHomePostsStore} from "../../../../store/homePostsStore.ts";
 import {useSearchQuery} from "../../../../utils/useSearchQuery.ts";
 
 import {usePostsPagination} from "./hooks/usePostsPagination.ts";
@@ -27,31 +28,71 @@ const Posts = () => {
   const settings = useSettingsStore((state) => state.settings);
   const query = useSearchQuery();
 
-  const {allPosts, loadedBatches, hasMore, loading, error, loadBatch, reset: resetPosts} =
+  // Чи повернулися ми на Home з уже завантаженими постами
+  const wasRestored = useHomePostsStore(
+    (state) =>
+      state.query === query &&
+      state.handledSearchTrigger === searchTrigger &&
+      state.allPosts.length > 0
+  );
+
+  const {allPosts, loadedBatches, hasMore, loading, error, loadBatch} =
     usePostsPagination(query);
 
   const {
     page,
     handlePageChange,
-    reset: resetPage,
     totalPages,
     currentPagePosts,
     viewedPostsCount,
     estimatedTotal
   } = usePagePagination(allPosts, loadedBatches, hasMore, loadBatch);
 
-  const {reset: resetViewedTracker} = useViewedPostsTracker(viewedPostsCount);
+  const {reset: resetViewedTracker} = useViewedPostsTracker(viewedPostsCount, wasRestored);
 
 
   useLayoutEffect(() => {
-    resetPosts();
-    resetPage();
-    resetViewedTracker();
-    if (hasSearched) {
+    const shouldLoad = useHomePostsStore
+      .getState()
+      .beginSearch(query, searchTrigger, hasSearched);
+
+    if (!wasRestored) {
+      resetViewedTracker();
+      window.scrollTo({top: 0, behavior: 'instant'});
+    }
+
+    if (shouldLoad) {
       void loadBatch(0);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTrigger]);
+
+  // Повертаємо користувача на те місце, де він зупинився
+  useLayoutEffect(() => {
+    if (!wasRestored) return;
+
+    const y = useHomePostsStore.getState().scrollY;
+    if (y > 0) {
+      window.scrollTo({top: y, behavior: 'instant'});
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Запам'ятовуємо позицію скролу для наступного повернення.
+  // Саме layout-ефект: його cleanup виконується до видалення DOM, тому scrollY
+  // не встигає скинутись через коротшу сторінку, на яку ми переходимо.
+  useLayoutEffect(() => {
+    const handleScroll = () => {
+      useHomePostsStore.getState().setScrollY(window.scrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, {passive: true});
+
+    return () => {
+      handleScroll();
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   const handleClearClick = () => {
     resetParams();

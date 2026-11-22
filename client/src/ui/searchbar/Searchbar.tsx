@@ -21,10 +21,11 @@ const debounce = <Args extends unknown[]>(fn: (...args: Args) => void, delay: nu
 
 const Searchbar = () => {
   const [options, setOptions] = useState<AutoCompleteProps['options']>([]);
-  const [value, setValue] = useState('');
   const setParams = useSearchStore((state) => state.setParams);
 
   const tags = useSearchStore((s) => s.params.tags);
+  // При поверненні на Home поле має показувати поточний запит, а не бути порожнім
+  const [value, setValue] = useState(tags);
   const searchTrigger = useSearchStore((s) => s.searchTrigger);
 
   const [prevTrigger, setPrevTrigger] = useState(searchTrigger);
