@@ -68,7 +68,9 @@ export const SiteInfo = () => (
       <li>+ Незвичайні фан-налаштування, які роблять перегляд цікавішим</li>
       <li>Система фільтрації потенційно неприємних тем</li>
       <li>Налаштування пошуку, для найкращого досвіду</li>
+      <li>+ Готові пресети пошуку</li>
       <li>Проста система зберігання постів в колекції</li>
+      <li>Вкладки для зручнішого пошуку</li>
     </ul>
     <Collapse ghost items={items} style={{ width: '100%' }} />
     <p className={styles.version}>Made with love, by BattWrku • v{__APP_VERSION__}</p>
